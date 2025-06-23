@@ -41,7 +41,7 @@ const ROICalculator = () => {
             <div>
               <Label htmlFor="domain" className="flex items-center space-x-2 mb-2">
                 <Globe className="w-4 h-4" />
-                <span>Enter your domain to get notified</span>
+                <span>Enter your domain to get your ROI calculator</span>
               </Label>
               <Input
                 id="domain"
@@ -53,7 +53,7 @@ const ROICalculator = () => {
               />
             </div>
             <Button type="submit" className="w-full" disabled={!domain}>
-              Notify Me When Ready
+              Get My ROI Calculator
             </Button>
           </form>
         </CardContent>
