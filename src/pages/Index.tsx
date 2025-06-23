@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,7 +6,6 @@ import LeadsPage from "@/components/LeadsPage";
 import VoiceOutreach from "@/components/VoiceOutreach";
 import ROICalculator from "@/components/ROICalculator";
 import { Users, Bell, Target, TrendingUp, Moon, Sun, Diamond } from "lucide-react";
-
 const Index = () => {
   const [activeTab, setActiveTab] = useState("leads");
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -25,7 +23,7 @@ const Index = () => {
                 <div className="w-8 h-8 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center">
                   <Target className="w-5 h-5 text-white" />
                 </div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">LeadFlow AI</h1>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">Clyo</h1>
               </div>
               <div className="flex items-center space-x-4">
                 <div className="text-sm text-gray-500 dark:text-gray-400">
