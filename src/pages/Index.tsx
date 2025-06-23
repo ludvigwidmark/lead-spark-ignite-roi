@@ -43,10 +43,7 @@ const Index = () => {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="grid w-full grid-cols-5 lg:grid-cols-5 bg-white dark:bg-gray-800">
-              <TabsTrigger value="dashboard" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900">
-                <Users className="w-4 h-4" />
-                <span className="hidden sm:inline">Dashboard</span>
-              </TabsTrigger>
+              
               <TabsTrigger value="capture" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900">
                 <Target className="w-4 h-4" />
                 <span className="hidden sm:inline">Capture</span>
