@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,18 +8,14 @@ import VoiceOutreach from "@/components/VoiceOutreach";
 import ROICalculator from "@/components/ROICalculator";
 import Analytics from "@/components/Analytics";
 import { Users, Phone, Calculator, BarChart3, Target, TrendingUp, Moon, Sun } from "lucide-react";
-
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isDarkMode, setIsDarkMode] = useState(false);
-
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle('dark');
   };
-
-  return (
-    <div className={isDarkMode ? 'dark' : ''}>
+  return <div className={isDarkMode ? 'dark' : ''}>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
         {/* Header */}
         <header className="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700">
@@ -36,17 +31,8 @@ const Index = () => {
                 <div className="text-sm text-gray-500 dark:text-gray-400">
                   AI-Powered Lead Management Platform
                 </div>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={toggleDarkMode}
-                  className="border-gray-300 dark:border-gray-600"
-                >
-                  {isDarkMode ? (
-                    <Sun className="h-4 w-4" />
-                  ) : (
-                    <Moon className="h-4 w-4" />
-                  )}
+                <Button variant="outline" size="icon" onClick={toggleDarkMode} className="border-gray-300 dark:border-gray-600">
+                  {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 </Button>
               </div>
             </div>
@@ -73,10 +59,7 @@ const Index = () => {
                 <Calculator className="w-4 h-4" />
                 <span className="hidden sm:inline">ROI</span>
               </TabsTrigger>
-              <TabsTrigger value="analytics" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900">
-                <BarChart3 className="w-4 h-4" />
-                <span className="hidden sm:inline">Analytics</span>
-              </TabsTrigger>
+              
             </TabsList>
 
             <TabsContent value="dashboard">
@@ -101,8 +84,6 @@ const Index = () => {
           </Tabs>
         </main>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
