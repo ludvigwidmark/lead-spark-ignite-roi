@@ -130,34 +130,21 @@ const LeadsPage = () => {
         </Card>
       </div>
 
-      {/* Connect Lead Sources */}
-      <div className="flex justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <CardTitle className="flex items-center justify-center space-x-2">
-              <Plug className="w-5 h-5 text-blue-600" />
-              <span>Connect Lead Sources</span>
-            </CardTitle>
-            <CardDescription>
-              Integrate your CRM, forms, and marketing tools
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-center">
-            <Button onClick={handleConnectSources} className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-              <Plug className="w-4 h-4 mr-2" />
-              Connect Lead Sources
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Lead Pipeline */}
       <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Leads</CardTitle>
-          <CardDescription className="text-gray-600 dark:text-gray-400">
-            AI-scored leads ready for outreach
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-gray-900 dark:text-white">Leads</CardTitle>
+              <CardDescription className="text-gray-600 dark:text-gray-400">
+                AI-scored leads ready for outreach
+              </CardDescription>
+            </div>
+            <Button onClick={handleConnectSources} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+              <Plug className="w-4 h-4 mr-2" />
+              Connect Lead Sources
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
