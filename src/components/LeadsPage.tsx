@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +18,7 @@ const LeadsPage = () => {
       phone: "+1 (555) 123-4567",
       score: 92,
       status: "hot",
+      stage: Math.floor(Math.random() * 10) + 1,
       lastContact: "2 hours ago",
       nextAction: "AI Voice Call Scheduled"
     },
@@ -31,6 +31,7 @@ const LeadsPage = () => {
       phone: "+1 (555) 987-6543",
       score: 78,
       status: "warm",
+      stage: Math.floor(Math.random() * 10) + 1,
       lastContact: "1 day ago",
       nextAction: "Follow-up Email Sent"
     },
@@ -43,6 +44,7 @@ const LeadsPage = () => {
       phone: "+1 (555) 456-7890",
       score: 85,
       status: "hot",
+      stage: Math.floor(Math.random() * 10) + 1,
       lastContact: "4 hours ago",
       nextAction: "LinkedIn Message Pending"
     }
@@ -169,7 +171,7 @@ const LeadsPage = () => {
                   </div>
                   <div className="flex items-center space-x-2">
                     <Badge className={getStatusColor(lead.status)}>
-                      {lead.status.toUpperCase()}
+                      {lead.status.toUpperCase()} - Stage {lead.stage}
                     </Badge>
                     <span className={`font-bold ${getScoreColor(lead.score)}`}>
                       {lead.score}/100
@@ -178,16 +180,6 @@ const LeadsPage = () => {
                 </div>
 
                 <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
-                  <div className="flex items-center space-x-4">
-                    <span className="flex items-center space-x-1">
-                      <Mail className="w-4 h-4" />
-                      <span>{lead.email}</span>
-                    </span>
-                    <span className="flex items-center space-x-1">
-                      <Phone className="w-4 h-4" />
-                      <span>{lead.phone}</span>
-                    </span>
-                  </div>
                   <span>Last contact: {lead.lastContact}</span>
                 </div>
 
