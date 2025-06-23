@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -61,20 +60,20 @@ const LeadsPage = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "hot":
-        return "bg-gradient-to-r from-red-500 to-red-600 text-white border-0 shadow-sm";
+        return "bg-red-100 text-red-800";
       case "warm":
-        return "bg-gradient-to-r from-yellow-500 to-yellow-600 text-white border-0 shadow-sm";
+        return "bg-yellow-100 text-yellow-800";
       case "cold":
-        return "bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0 shadow-sm";
+        return "bg-blue-100 text-blue-800";
       default:
-        return "bg-gradient-to-r from-gray-500 to-gray-600 text-white border-0 shadow-sm";
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) return "text-green-600 font-bold";
-    if (score >= 70) return "text-yellow-600 font-bold";
-    return "text-red-600 font-bold";
+    if (score >= 90) return "text-green-600";
+    if (score >= 70) return "text-yellow-600";
+    return "text-red-600";
   };
 
   return (
@@ -160,34 +159,28 @@ const LeadsPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {leads.map((lead) => (
-              <div key={lead.id} className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-600 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                <div className="flex items-center justify-between mb-2">
+              <div key={lead.id} className="border dark:border-gray-600 rounded-lg p-2 space-y-1 bg-gray-50 dark:bg-gray-700">
+                <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                      {lead.name.split(' ').map(n => n[0]).join('')}
-                    </div>
                     <div>
                       <h4 className="font-semibold text-gray-900 dark:text-white">{lead.name}</h4>
                       <p className="text-sm text-gray-600 dark:text-gray-400">{lead.position} at {lead.company}</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2">
                     <Badge className={getStatusColor(lead.status)}>
                       {lead.status.toUpperCase()} - Stage {lead.stage}
                     </Badge>
-                    <div className="text-right">
-                      <span className={`text-lg ${getScoreColor(lead.score)}`}>
-                        {lead.score}
-                      </span>
-                      <span className="text-gray-400 text-sm">/100</span>
-                    </div>
+                    <span className={`font-bold ${getScoreColor(lead.score)}`}>
+                      {lead.score}/100
+                    </span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Last contact: {lead.lastContact}</span>
+                <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
+                  <span>Last contact: {lead.lastContact}</span>
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -196,15 +189,15 @@ const LeadsPage = () => {
                     <span className="text-sm font-medium text-gray-900 dark:text-white">{lead.nextAction}</span>
                   </div>
                   <div className="flex space-x-2">
-                    <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300">
                       <Phone className="w-4 h-4 mr-1" />
                       Call
                     </Button>
-                    <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300">
                       <Mail className="w-4 h-4 mr-1" />
                       Email
                     </Button>
-                    <Button size="sm" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-sm">
+                    <Button size="sm" className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
                       View Details
                     </Button>
                   </div>
