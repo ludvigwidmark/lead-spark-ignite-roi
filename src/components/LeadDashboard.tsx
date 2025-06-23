@@ -64,49 +64,49 @@ const LeadDashboard = () => {
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
-              <Users className="w-5 h-5 text-blue-600" />
+              <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               <div>
-                <p className="text-2xl font-bold">247</p>
-                <p className="text-sm text-gray-600">Total Leads</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">247</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Total Leads</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
-              <TrendingUp className="w-5 h-5 text-green-600" />
+              <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" />
               <div>
-                <p className="text-2xl font-bold">34</p>
-                <p className="text-sm text-gray-600">Hot Leads</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">34</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Hot Leads</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
-              <Phone className="w-5 h-5 text-purple-600" />
+              <Phone className="w-5 h-5 text-purple-600 dark:text-purple-400" />
               <div>
-                <p className="text-2xl font-bold">127</p>
-                <p className="text-sm text-gray-600">Calls Made</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">127</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Calls Made</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
-              <Star className="w-5 h-5 text-yellow-600" />
+              <Star className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
               <div>
-                <p className="text-2xl font-bold">18%</p>
-                <p className="text-sm text-gray-600">Conversion Rate</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">18%</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Conversion Rate</p>
               </div>
             </div>
           </CardContent>
@@ -114,22 +114,22 @@ const LeadDashboard = () => {
       </div>
 
       {/* Lead Pipeline */}
-      <Card>
+      <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <CardHeader>
-          <CardTitle>High-Priority Leads</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-gray-900 dark:text-white">High-Priority Leads</CardTitle>
+          <CardDescription className="text-gray-600 dark:text-gray-400">
             AI-scored leads ready for outreach
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {leads.map((lead) => (
-              <div key={lead.id} className="border rounded-lg p-4 space-y-3">
+              <div key={lead.id} className="border dark:border-gray-600 rounded-lg p-4 space-y-3 bg-gray-50 dark:bg-gray-700">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <div>
-                      <h4 className="font-semibold">{lead.name}</h4>
-                      <p className="text-sm text-gray-600">{lead.position} at {lead.company}</p>
+                      <h4 className="font-semibold text-gray-900 dark:text-white">{lead.name}</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{lead.position} at {lead.company}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -142,7 +142,7 @@ const LeadDashboard = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-sm text-gray-600">
+                <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
                   <div className="flex items-center space-x-4">
                     <span className="flex items-center space-x-1">
                       <Mail className="w-4 h-4" />
@@ -158,26 +158,26 @@ const LeadDashboard = () => {
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <MessageSquare className="w-4 h-4 text-blue-600" />
-                    <span className="text-sm font-medium">{lead.nextAction}</span>
+                    <MessageSquare className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">{lead.nextAction}</span>
                   </div>
                   <div className="flex space-x-2">
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300">
                       <Phone className="w-4 h-4 mr-1" />
                       Call
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300">
                       <Mail className="w-4 h-4 mr-1" />
                       Email
                     </Button>
-                    <Button size="sm">
+                    <Button size="sm" className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
                       View Details
                     </Button>
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <div className="flex justify-between text-xs text-gray-500">
+                  <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
                     <span>Lead Score</span>
                     <span>{lead.score}%</span>
                   </div>
