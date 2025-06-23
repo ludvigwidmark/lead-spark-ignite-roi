@@ -55,6 +55,13 @@ const LeadCapture = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleFillWithProspects = () => {
+    toast({
+      title: "Coming Soon!",
+      description: "Magical prospect filling is coming soon. Stay tuned for this amazing feature!",
+    });
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <Card>
@@ -172,6 +179,17 @@ const LeadCapture = () => {
               )}
             </Button>
           </form>
+
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <Button 
+              onClick={handleFillWithProspects}
+              variant="outline"
+              className="w-full bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 border-purple-200 text-purple-700 hover:text-purple-800 dark:from-purple-900/20 dark:to-pink-900/20 dark:border-purple-700 dark:text-purple-300 dark:hover:text-purple-200"
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              Fill with New Prospects
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
