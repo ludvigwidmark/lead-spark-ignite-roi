@@ -7,8 +7,7 @@ import LeadCapture from "@/components/LeadCapture";
 import LeadDashboard from "@/components/LeadDashboard";
 import VoiceOutreach from "@/components/VoiceOutreach";
 import ROICalculator from "@/components/ROICalculator";
-import Analytics from "@/components/Analytics";
-import { Users, Phone, Calculator, BarChart3, Target, TrendingUp, Moon, Sun } from "lucide-react";
+import { Users, Phone, Calculator, Target, TrendingUp, Moon, Sun } from "lucide-react";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -56,7 +55,7 @@ const Index = () => {
         {/* Main Content */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5 lg:grid-cols-5 bg-white dark:bg-gray-800">
+            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-4 bg-white dark:bg-gray-800">
               <TabsTrigger value="dashboard" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900">
                 <Users className="w-4 h-4" />
                 <span className="hidden sm:inline">Dashboard</span>
@@ -72,10 +71,6 @@ const Index = () => {
               <TabsTrigger value="roi" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900">
                 <Calculator className="w-4 h-4" />
                 <span className="hidden sm:inline">ROI</span>
-              </TabsTrigger>
-              <TabsTrigger value="analytics" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900">
-                <BarChart3 className="w-4 h-4" />
-                <span className="hidden sm:inline">Analytics</span>
               </TabsTrigger>
             </TabsList>
 
@@ -93,10 +88,6 @@ const Index = () => {
 
             <TabsContent value="roi">
               <ROICalculator />
-            </TabsContent>
-
-            <TabsContent value="analytics">
-              <Analytics />
             </TabsContent>
           </Tabs>
         </main>
