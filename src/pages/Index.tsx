@@ -25,16 +25,20 @@ const Index = () => {
         <header className="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-4 min-w-0 flex-1">
+                <div className="text-sm text-gray-500 dark:text-gray-400">
+                  AI-Powered Lead Management Platform
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-3 flex-shrink-0">
                 <div className="w-8 h-8 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center">
                   <Target className="w-5 h-5 text-white" />
                 </div>
                 <h1 className="text-xl font-bold text-gray-900 dark:text-white">LeadFlow AI</h1>
               </div>
-              <div className="flex items-center space-x-4">
-                <div className="text-sm text-gray-500 dark:text-gray-400">
-                  AI-Powered Lead Management Platform
-                </div>
+              
+              <div className="flex items-center justify-end min-w-0 flex-1">
                 <Button
                   variant="outline"
                   size="icon"
