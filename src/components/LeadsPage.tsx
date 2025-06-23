@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,73 +5,68 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plug } from "lucide-react";
-
 const LeadsPage = () => {
-  const { toast } = useToast();
-
-  const leads = [
-    {
-      id: 1,
-      name: "Sarah Johnson",
-      company: "TechCorp Inc",
-      position: "VP of Sales",
-      email: "sarah@techcorp.com",
-      phone: "+1 (555) 123-4567",
-      score: 92,
-      status: "hot",
-      lastContact: "2 hours ago",
-      nextAction: "AI Voice Call Scheduled"
-    },
-    {
-      id: 2,
-      name: "Michael Chen",
-      company: "DataFlow Systems",
-      position: "CTO",
-      email: "m.chen@dataflow.com",
-      phone: "+1 (555) 987-6543",
-      score: 78,
-      status: "warm",
-      lastContact: "1 day ago",
-      nextAction: "Follow-up Email Sent"
-    },
-    {
-      id: 3,
-      name: "Emily Rodriguez",
-      company: "CloudVision",
-      position: "Marketing Director",
-      email: "emily@cloudvision.com",
-      phone: "+1 (555) 456-7890",
-      score: 85,
-      status: "hot",
-      lastContact: "4 hours ago",
-      nextAction: "LinkedIn Message Pending"
-    }
-  ];
-
+  const {
+    toast
+  } = useToast();
+  const leads = [{
+    id: 1,
+    name: "Sarah Johnson",
+    company: "TechCorp Inc",
+    position: "VP of Sales",
+    email: "sarah@techcorp.com",
+    phone: "+1 (555) 123-4567",
+    score: 92,
+    status: "hot",
+    lastContact: "2 hours ago",
+    nextAction: "AI Voice Call Scheduled"
+  }, {
+    id: 2,
+    name: "Michael Chen",
+    company: "DataFlow Systems",
+    position: "CTO",
+    email: "m.chen@dataflow.com",
+    phone: "+1 (555) 987-6543",
+    score: 78,
+    status: "warm",
+    lastContact: "1 day ago",
+    nextAction: "Follow-up Email Sent"
+  }, {
+    id: 3,
+    name: "Emily Rodriguez",
+    company: "CloudVision",
+    position: "Marketing Director",
+    email: "emily@cloudvision.com",
+    phone: "+1 (555) 456-7890",
+    score: 85,
+    status: "hot",
+    lastContact: "4 hours ago",
+    nextAction: "LinkedIn Message Pending"
+  }];
   const handleConnectSources = () => {
     toast({
       title: "Lead Sources Integration",
-      description: "Connect your CRM, forms, and other lead sources to start capturing leads automatically.",
+      description: "Connect your CRM, forms, and other lead sources to start capturing leads automatically."
     });
   };
-
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "hot": return "bg-red-100 text-red-800";
-      case "warm": return "bg-yellow-100 text-yellow-800";
-      case "cold": return "bg-blue-100 text-blue-800";
-      default: return "bg-gray-100 text-gray-800";
+      case "hot":
+        return "bg-red-100 text-red-800";
+      case "warm":
+        return "bg-yellow-100 text-yellow-800";
+      case "cold":
+        return "bg-blue-100 text-blue-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
-
   const getScoreColor = (score: number) => {
     if (score >= 90) return "text-green-600";
     if (score >= 70) return "text-yellow-600";
     return "text-red-600";
   };
-
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
@@ -137,10 +131,7 @@ const LeadsPage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
-            <Button 
-              onClick={handleConnectSources} 
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-            >
+            <Button onClick={handleConnectSources} className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
               <Plug className="w-4 h-4 mr-2" />
               Connect Lead Sources
             </Button>
@@ -151,15 +142,14 @@ const LeadsPage = () => {
       {/* Lead Pipeline */}
       <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">High-Priority Leads</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-white">Leads</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             AI-scored leads ready for outreach
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {leads.map((lead) => (
-              <div key={lead.id} className="border dark:border-gray-600 rounded-lg p-4 space-y-3 bg-gray-50 dark:bg-gray-700">
+            {leads.map(lead => <div key={lead.id} className="border dark:border-gray-600 rounded-lg p-4 space-y-3 bg-gray-50 dark:bg-gray-700">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <div>
@@ -218,13 +208,10 @@ const LeadsPage = () => {
                   </div>
                   <Progress value={lead.score} className="h-2" />
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>;
 };
-
 export default LeadsPage;
