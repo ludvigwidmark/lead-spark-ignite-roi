@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import LeadsPage from "@/components/LeadsPage";
 import VoiceOutreach from "@/components/VoiceOutreach";
 import ROICalculator from "@/components/ROICalculator";
-import { Users, Phone, Calculator, Target, TrendingUp, Moon, Sun } from "lucide-react";
+import { Users, Phone, Bell, Target, TrendingUp, Moon, Sun } from "lucide-react";
+
 const Index = () => {
   const [activeTab, setActiveTab] = useState("leads");
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -51,7 +52,7 @@ const Index = () => {
                   <span className="hidden sm:inline">Outreach</span>
                 </TabsTrigger>
                 <TabsTrigger value="roi" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
-                  <Calculator className="w-4 h-4" />
+                  <Bell className="w-4 h-4" />
                   <span className="hidden sm:inline">Value</span>
                 </TabsTrigger>
               </TabsList>
