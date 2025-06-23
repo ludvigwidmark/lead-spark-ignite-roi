@@ -55,24 +55,26 @@ const Index = () => {
         {/* Main Content */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-4 bg-white dark:bg-gray-800">
-              <TabsTrigger value="dashboard" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900">
-                <Users className="w-4 h-4" />
-                <span className="hidden sm:inline">Dashboard</span>
-              </TabsTrigger>
-              <TabsTrigger value="capture" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900">
-                <Target className="w-4 h-4" />
-                <span className="hidden sm:inline">Capture</span>
-              </TabsTrigger>
-              <TabsTrigger value="outreach" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900">
-                <Phone className="w-4 h-4" />
-                <span className="hidden sm:inline">Outreach</span>
-              </TabsTrigger>
-              <TabsTrigger value="roi" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900">
-                <Calculator className="w-4 h-4" />
-                <span className="hidden sm:inline">ROI</span>
-              </TabsTrigger>
-            </TabsList>
+            <div className="flex justify-center">
+              <TabsList className="grid grid-cols-4 bg-white dark:bg-gray-800 w-fit">
+                <TabsTrigger value="dashboard" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
+                  <Users className="w-4 h-4" />
+                  <span className="hidden sm:inline">Dashboard</span>
+                </TabsTrigger>
+                <TabsTrigger value="capture" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
+                  <Target className="w-4 h-4" />
+                  <span className="hidden sm:inline">Capture</span>
+                </TabsTrigger>
+                <TabsTrigger value="outreach" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
+                  <Phone className="w-4 h-4" />
+                  <span className="hidden sm:inline">Outreach</span>
+                </TabsTrigger>
+                <TabsTrigger value="roi" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
+                  <Calculator className="w-4 h-4" />
+                  <span className="hidden sm:inline">ROI</span>
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
             <TabsContent value="dashboard">
               <LeadDashboard />
