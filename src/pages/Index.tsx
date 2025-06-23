@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -5,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import LeadsPage from "@/components/LeadsPage";
 import VoiceOutreach from "@/components/VoiceOutreach";
 import ROICalculator from "@/components/ROICalculator";
-import { Users, Bell, Target, TrendingUp, Moon, Sun } from "lucide-react";
+import { Users, Bell, Target, TrendingUp, Moon, Sun, Diamond } from "lucide-react";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("leads");
@@ -52,7 +53,7 @@ const Index = () => {
                   <span className="hidden sm:inline">Outreach</span>
                 </TabsTrigger>
                 <TabsTrigger value="roi" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
-                  <Bell className="w-4 h-4" />
+                  <Diamond className="w-4 h-4" />
                   <span className="hidden sm:inline">Value</span>
                 </TabsTrigger>
               </TabsList>
