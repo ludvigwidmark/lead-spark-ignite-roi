@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plug } from "lucide-react";
-
 const LeadsPage = () => {
   const {
     toast
@@ -67,8 +66,7 @@ const LeadsPage = () => {
     if (score >= 70) return "text-yellow-600";
     return "text-red-600";
   };
-  return (
-    <div className="space-y-6">
+  return <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
@@ -150,37 +148,33 @@ const LeadsPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            {leads.map((lead) => (
-              <div
-                key={lead.id}
-                className="border dark:border-gray-600 rounded-lg p-3 space-y-2 bg-gray-50 dark:bg-gray-700"
-              >
+          <div className="space-y-4">
+            {leads.map(lead => <div key={lead.id} className="border dark:border-gray-600 rounded-lg p-4 space-y-3 bg-gray-50 dark:bg-gray-700">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <div>
-                      <h4 className="font-semibold text-sm text-gray-900 dark:text-white">{lead.name}</h4>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">{lead.position} at {lead.company}</p>
+                      <h4 className="font-semibold text-gray-900 dark:text-white">{lead.name}</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{lead.position} at {lead.company}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Badge className={getStatusColor(lead.status)}>
                       {lead.status.toUpperCase()}
                     </Badge>
-                    <span className={`font-bold text-sm ${getScoreColor(lead.score)}`}>
+                    <span className={`font-bold ${getScoreColor(lead.score)}`}>
                       {lead.score}/100
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
+                <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
                   <div className="flex items-center space-x-4">
                     <span className="flex items-center space-x-1">
-                      <Mail className="w-3 h-3" />
+                      <Mail className="w-4 h-4" />
                       <span>{lead.email}</span>
                     </span>
                     <span className="flex items-center space-x-1">
-                      <Phone className="w-3 h-3" />
+                      <Phone className="w-4 h-4" />
                       <span>{lead.phone}</span>
                     </span>
                   </div>
@@ -189,19 +183,19 @@ const LeadsPage = () => {
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <MessageSquare className="w-3 h-3 text-blue-600 dark:text-blue-400" />
-                    <span className="text-xs font-medium text-gray-900 dark:text-white">{lead.nextAction}</span>
+                    <MessageSquare className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    <span className="text-sm font-medium text-gray-900 dark:text-white">{lead.nextAction}</span>
                   </div>
                   <div className="flex space-x-2">
-                    <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 h-7 px-2 text-xs">
-                      <Phone className="w-3 h-3 mr-1" />
+                    <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300">
+                      <Phone className="w-4 h-4 mr-1" />
                       Call
                     </Button>
-                    <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 h-7 px-2 text-xs">
-                      <Mail className="w-3 h-3 mr-1" />
+                    <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300">
+                      <Mail className="w-4 h-4 mr-1" />
                       Email
                     </Button>
-                    <Button size="sm" className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 h-7 px-2 text-xs">
+                    <Button size="sm" className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
                       View Details
                     </Button>
                   </div>
@@ -212,15 +206,12 @@ const LeadsPage = () => {
                     <span>Lead Score</span>
                     <span>{lead.score}%</span>
                   </div>
-                  <Progress value={lead.score} className="h-1.5" />
+                  <Progress value={lead.score} className="h-2" />
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>;
 };
-
 export default LeadsPage;
