@@ -3,14 +3,13 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import LeadCapture from "@/components/LeadCapture";
-import LeadDashboard from "@/components/LeadDashboard";
+import LeadsPage from "@/components/LeadsPage";
 import VoiceOutreach from "@/components/VoiceOutreach";
 import ROICalculator from "@/components/ROICalculator";
 import { Users, Phone, Calculator, Target, TrendingUp, Moon, Sun } from "lucide-react";
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState("leads");
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleDarkMode = () => {
@@ -56,14 +55,10 @@ const Index = () => {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <div className="flex justify-center">
-              <TabsList className="grid grid-cols-4 bg-white dark:bg-gray-800 w-fit">
-                <TabsTrigger value="dashboard" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
+              <TabsList className="grid grid-cols-3 bg-white dark:bg-gray-800 w-fit">
+                <TabsTrigger value="leads" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
                   <Users className="w-4 h-4" />
-                  <span className="hidden sm:inline">Dashboard</span>
-                </TabsTrigger>
-                <TabsTrigger value="capture" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
-                  <Target className="w-4 h-4" />
-                  <span className="hidden sm:inline">Capture</span>
+                  <span className="hidden sm:inline">Leads</span>
                 </TabsTrigger>
                 <TabsTrigger value="outreach" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
                   <Phone className="w-4 h-4" />
@@ -76,12 +71,8 @@ const Index = () => {
               </TabsList>
             </div>
 
-            <TabsContent value="dashboard">
-              <LeadDashboard />
-            </TabsContent>
-
-            <TabsContent value="capture">
-              <LeadCapture />
+            <TabsContent value="leads">
+              <LeadsPage />
             </TabsContent>
 
             <TabsContent value="outreach">
