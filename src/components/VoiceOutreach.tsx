@@ -41,33 +41,34 @@ const VoiceOutreach = () => {
 
   return (
     <div className="space-y-6">
-      {/* Get Luna Section */}
-      <div className="flex justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <CardTitle className="flex items-center justify-center space-x-2">
-              <Sparkles className="w-5 h-5 text-purple-600" />
-              <span>Meet Luna</span>
-            </CardTitle>
-            <CardDescription>
-              Your AI-powered voice assistant for outreach
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-center">
-            <Button 
-              onClick={handleGetLuna} 
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-            >
-              <Sparkles className="w-4 h-4 mr-2" />
-              Get your Luna
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Multi-channel Campaigns with Meet Luna in corner */}
+      <Card className="relative">
+        {/* Meet Luna Box - positioned in top right corner */}
+        <div className="absolute top-4 right-4 z-10">
+          <Card className="w-64 bg-white/95 backdrop-blur-sm shadow-lg border border-purple-200">
+            <CardHeader className="text-center pb-3">
+              <CardTitle className="flex items-center justify-center space-x-2 text-lg">
+                <Sparkles className="w-4 h-4 text-purple-600" />
+                <span>Meet Luna</span>
+              </CardTitle>
+              <CardDescription className="text-xs">
+                Your AI-powered voice assistant for outreach
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="text-center pt-0">
+              <Button 
+                onClick={handleGetLuna} 
+                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-sm"
+                size="sm"
+              >
+                <Sparkles className="w-3 h-3 mr-2" />
+                Get your Luna
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
 
-      {/* Multi-channel Campaigns */}
-      <Card>
-        <CardHeader>
+        <CardHeader className="pr-72">
           <CardTitle>Multi-channel Outreach Campaigns</CardTitle>
           <CardDescription>
             Coordinate voice, email, and social media outreach
