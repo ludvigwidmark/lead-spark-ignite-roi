@@ -1,4 +1,5 @@
 
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,8 +21,8 @@ const ROICalculator = () => {
       setIsSubmitting(true);
       
       try {
-        // Send data to Clay webhook
-        const response = await fetch("https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-f9baf00e-89ea-4a32-a6ce-875e6af6a408", {
+        // Send data to n8n webhook
+        const response = await fetch("https://ludvigwidmark.app.n8n.cloud/webhook-test/b98fab6f-93ee-43c7-978e-2a4a0c7430a5", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
