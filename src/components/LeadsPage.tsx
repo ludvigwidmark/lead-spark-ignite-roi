@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plug } from "lucide-react";
+import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plug, RotateCcw } from "lucide-react";
 
 const LeadsPage = () => {
   const { toast } = useToast();
@@ -55,6 +55,13 @@ const LeadsPage = () => {
     toast({
       title: "Lead Sources Integration",
       description: "Connect your CRM, forms, and other lead sources to start capturing leads automatically."
+    });
+  };
+
+  const handleReactivateOldCustomers = () => {
+    toast({
+      title: "Reactivate Old Customers",
+      description: "AI will analyze your old customers and leads to identify reactivation opportunities."
     });
   };
 
@@ -140,10 +147,16 @@ const LeadsPage = () => {
                 AI-scored leads ready for outreach
               </CardDescription>
             </div>
-            <Button onClick={handleConnectSources} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-              <Plug className="w-4 h-4 mr-2" />
-              Connect Lead Sources
-            </Button>
+            <div className="flex gap-2">
+              <Button onClick={handleReactivateOldCustomers} variant="outline" className="border-orange-300 dark:border-orange-600 text-orange-700 dark:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/20">
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Reactivate old customers/leads
+              </Button>
+              <Button onClick={handleConnectSources} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Plug className="w-4 h-4 mr-2" />
+                Connect Lead Sources
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
