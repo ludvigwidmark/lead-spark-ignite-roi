@@ -10,21 +10,51 @@ const ROICalculator = () => {
   const [domain, setDomain] = useState("");
   const [email, setEmail] = useState("");
   const [leadMagnetEmail, setLeadMagnetEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (domain) {
-      const message = email 
-        ? `We'll notify you at ${email} when the ROI calculator is ready.`
-        : `We'll notify you at ${domain} when the ROI calculator is ready.`;
+      setIsSubmitting(true);
       
-      toast({
-        title: "Thanks for your interest!",
-        description: message,
-      });
-      setDomain("");
-      setEmail("");
+      try {
+        // Send data to Clay webhook
+        await fetch("https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-f9baf00e-89ea-4a32-a6ce-875e6af6a408", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          mode: "no-cors",
+          body: JSON.stringify({
+            domain: domain,
+            email: email || null,
+            timestamp: new Date().toISOString(),
+            source: "roi_calculator"
+          }),
+        });
+
+        const message = email 
+          ? `We'll notify you at ${email} when the ROI calculator is ready.`
+          : `We'll notify you at ${domain} when the ROI calculator is ready.`;
+        
+        toast({
+          title: "Thanks for your interest!",
+          description: message,
+        });
+        setDomain("");
+        setEmail("");
+      } catch (error) {
+        console.error("Error sending to webhook:", error);
+        toast({
+          title: "Thanks for your interest!",
+          description: "We'll get back to you soon with your ROI calculator.",
+        });
+        setDomain("");
+        setEmail("");
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -85,8 +115,8 @@ const ROICalculator = () => {
               />
             </div>
             
-            <Button type="submit" className="w-full" disabled={!domain}>
-              Get My ROI Calculator
+            <Button type="submit" className="w-full" disabled={!domain || isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Get My ROI Calculator"}
             </Button>
           </form>
         </CardContent>
