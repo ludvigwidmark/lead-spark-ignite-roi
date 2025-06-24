@@ -22,7 +22,7 @@ const ROICalculator = () => {
       
       try {
         // Send data to n8n webhook
-        const response = await fetch("https://ludvigwidmark.app.n8n.cloud/webhook-test/b98fab6f-93ee-43c7-978e-2a4a0c7430a5", {
+        const response = await fetch("https://ludvigwidmark.app.n8n.cloud/webhook/b98fab6f-93ee-43c7-978e-2a4a0c7430a5", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
