@@ -44,33 +44,34 @@ const VoiceOutreach = () => {
       {/* Multi-channel Campaigns with integrated Luna section */}
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-start">
-            <div className="flex-1">
-              <CardTitle>Multi-channel Outreach Campaigns</CardTitle>
-              <CardDescription>
-                Coordinate voice, email, and social media outreach
-              </CardDescription>
+          <div className="space-y-4">
+            <div className="flex justify-between items-start">
+              <div className="flex-1">
+                <CardTitle>Multi-channel Outreach Campaigns</CardTitle>
+                <CardDescription>
+                  Coordinate voice, email, and social media outreach
+                </CardDescription>
+              </div>
             </div>
             
-            {/* Integrated Luna Section */}
-            <div className="ml-8 flex-shrink-0">
-              <div className="bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4 w-64">
-                <div className="text-center mb-3">
-                  <div className="flex items-center justify-center space-x-2 mb-2">
-                    <Sparkles className="w-4 h-4 text-purple-600" />
-                    <span className="font-semibold text-lg">Meet Luna</span>
+            {/* Horizontal Luna Section */}
+            <div className="bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-indigo-500/10 border border-purple-200/50 rounded-xl p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full">
+                    <Sparkles className="w-6 h-6 text-white" />
                   </div>
-                  <p className="text-xs text-gray-600">
-                    Your AI-powered voice assistant for outreach
-                  </p>
+                  <div>
+                    <h3 className="font-semibold text-lg text-gray-800">Meet Luna</h3>
+                    <p className="text-sm text-gray-600">Your AI-powered voice assistant for outreach campaigns</p>
+                  </div>
                 </div>
                 <Button 
                   onClick={handleGetLuna} 
-                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-sm"
-                  size="sm"
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-200"
                 >
-                  <Sparkles className="w-3 h-3 mr-2" />
-                  Get your Luna
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Get Luna
                 </Button>
               </div>
             </div>
