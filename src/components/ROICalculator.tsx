@@ -1,25 +1,30 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Calculator, Globe, Magnet, Sparkles } from "lucide-react";
+import { Calculator, Globe, Magnet, Sparkles, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const ROICalculator = () => {
   const [domain, setDomain] = useState("");
+  const [email, setEmail] = useState("");
   const [leadMagnetEmail, setLeadMagnetEmail] = useState("");
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (domain) {
+      const message = email 
+        ? `We'll notify you at ${email} when the ROI calculator is ready.`
+        : `We'll notify you at ${domain} when the ROI calculator is ready.`;
+      
       toast({
         title: "Thanks for your interest!",
-        description: `We'll notify you at ${domain} when the ROI calculator is ready.`,
+        description: message,
       });
       setDomain("");
+      setEmail("");
     }
   };
 
@@ -64,6 +69,22 @@ const ROICalculator = () => {
                 className="text-center"
               />
             </div>
+            
+            <div>
+              <Label htmlFor="email" className="flex items-center space-x-2 mb-2 text-xs text-gray-500 dark:text-gray-400">
+                <Mail className="w-3 h-3" />
+                <span>Email (optional)</span>
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="text-center text-sm bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+              />
+            </div>
+            
             <Button type="submit" className="w-full" disabled={!domain}>
               Get My ROI Calculator
             </Button>
