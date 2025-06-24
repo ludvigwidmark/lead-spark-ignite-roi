@@ -41,38 +41,40 @@ const VoiceOutreach = () => {
 
   return (
     <div className="space-y-6">
-      {/* Multi-channel Campaigns with Meet Luna in corner */}
-      <Card className="relative">
-        {/* Meet Luna Box - positioned in top right corner */}
-        <div className="absolute top-4 right-4 z-10">
-          <Card className="w-64 bg-white/95 backdrop-blur-sm shadow-lg border border-purple-200">
-            <CardHeader className="text-center pb-3">
-              <CardTitle className="flex items-center justify-center space-x-2 text-lg">
-                <Sparkles className="w-4 h-4 text-purple-600" />
-                <span>Meet Luna</span>
-              </CardTitle>
-              <CardDescription className="text-xs">
-                Your AI-powered voice assistant for outreach
+      {/* Multi-channel Campaigns with integrated Luna section */}
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-start">
+            <div className="flex-1">
+              <CardTitle>Multi-channel Outreach Campaigns</CardTitle>
+              <CardDescription>
+                Coordinate voice, email, and social media outreach
               </CardDescription>
-            </CardHeader>
-            <CardContent className="text-center pt-0">
-              <Button 
-                onClick={handleGetLuna} 
-                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-sm"
-                size="sm"
-              >
-                <Sparkles className="w-3 h-3 mr-2" />
-                Get your Luna
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-
-        <CardHeader className="pr-72">
-          <CardTitle>Multi-channel Outreach Campaigns</CardTitle>
-          <CardDescription>
-            Coordinate voice, email, and social media outreach
-          </CardDescription>
+            </div>
+            
+            {/* Integrated Luna Section */}
+            <div className="ml-8 flex-shrink-0">
+              <div className="bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4 w-64">
+                <div className="text-center mb-3">
+                  <div className="flex items-center justify-center space-x-2 mb-2">
+                    <Sparkles className="w-4 h-4 text-purple-600" />
+                    <span className="font-semibold text-lg">Meet Luna</span>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    Your AI-powered voice assistant for outreach
+                  </p>
+                </div>
+                <Button 
+                  onClick={handleGetLuna} 
+                  className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-sm"
+                  size="sm"
+                >
+                  <Sparkles className="w-3 h-3 mr-2" />
+                  Get your Luna
+                </Button>
+              </div>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
