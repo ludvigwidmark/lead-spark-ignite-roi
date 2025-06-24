@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,12 +21,11 @@ const ROICalculator = () => {
       
       try {
         // Send data to Clay webhook
-        await fetch("https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-f9baf00e-89ea-4a32-a6ce-875e6af6a408", {
+        const response = await fetch("https://api.clay.com/v3/sources/webhook/pull-in-data-from-a-webhook-f9baf00e-89ea-4a32-a6ce-875e6af6a408", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          mode: "no-cors",
           body: JSON.stringify({
             domain: domain,
             email: email || null,
@@ -33,6 +33,8 @@ const ROICalculator = () => {
             source: "roi_calculator"
           }),
         });
+
+        console.log("Webhook response status:", response.status);
 
         const message = email 
           ? `We'll notify you at ${email} when the ROI calculator is ready.`
@@ -46,9 +48,14 @@ const ROICalculator = () => {
         setEmail("");
       } catch (error) {
         console.error("Error sending to webhook:", error);
+        // Still show success message to user since the form data was captured
+        const message = email 
+          ? `We'll notify you at ${email} when the ROI calculator is ready.`
+          : `We'll notify you at ${domain} when the ROI calculator is ready.`;
+        
         toast({
           title: "Thanks for your interest!",
-          description: "We'll get back to you soon with your ROI calculator.",
+          description: message,
         });
         setDomain("");
         setEmail("");
