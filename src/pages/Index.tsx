@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -6,13 +6,21 @@ import LeadsPage from "@/components/LeadsPage";
 import VoiceOutreach from "@/components/VoiceOutreach";
 import ROICalculator from "@/components/ROICalculator";
 import { Users, Bell, Target, TrendingUp, Moon, Sun, Diamond } from "lucide-react";
+
 const Index = () => {
   const [activeTab, setActiveTab] = useState("leads");
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  // Apply dark mode on component mount
+  useEffect(() => {
+    document.documentElement.classList.add('dark');
+  }, []);
+
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle('dark');
   };
+
   return <div className={isDarkMode ? 'dark' : ''}>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
         {/* Header */}
@@ -73,4 +81,5 @@ const Index = () => {
       </div>
     </div>;
 };
+
 export default Index;
