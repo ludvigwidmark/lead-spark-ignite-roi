@@ -1,11 +1,10 @@
 
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Calculator, Globe, Magnet, Sparkles, Mail } from "lucide-react";
+import { Calculator, Globe, Magnet, Sparkles, Mail, ArrowRight, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const ROICalculator = () => {
@@ -78,103 +77,169 @@ const ROICalculator = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Calculator className="w-5 h-5" />
-            <span>ROI Calculator</span>
-          </CardTitle>
-          <CardDescription>
-            Calculate the potential return on investment
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center justify-center py-16">
-          <h3 className="text-2xl font-semibold text-gray-600 dark:text-gray-400 mb-8">Get yours now</h3>
-          
-          <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
-            <div>
-              <Label htmlFor="domain" className="flex items-center space-x-2 mb-2">
-                <Globe className="w-4 h-4" />
-                <span>Enter your domain to get your ROI calculator</span>
-              </Label>
-              <Input
-                id="domain"
-                type="url"
-                placeholder="https://yourdomain.com"
-                value={domain}
-                onChange={(e) => setDomain(e.target.value)}
-                className="text-center"
-              />
-            </div>
-            
-            <div>
-              <Label htmlFor="email" className="flex items-center space-x-2 mb-2 text-xs text-gray-500 dark:text-gray-400">
-                <Mail className="w-3 h-3" />
-                <span>Email (optional)</span>
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="text-center text-sm bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700"
-              />
-            </div>
-            
-            <Button type="submit" className="w-full" disabled={!domain || isSubmitting}>
-              {isSubmitting ? "Submitting..." : "Get My ROI Calculator"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-6">
+      <div className="max-w-6xl mx-auto space-y-12">
+        {/* Header Section */}
+        <div className="text-center space-y-4 py-12">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Supercharge Your Business
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Get powerful tools to capture leads, calculate ROI, and grow your business exponentially
+          </p>
+        </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Magnet className="w-5 h-5 text-purple-600" />
-            <span>Custom Lead Magnet</span>
-          </CardTitle>
-          <CardDescription>
-            Get a professionally designed lead magnet built for your business
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center justify-center py-16">
-          <div className="text-center mb-8">
-            <Sparkles className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-            <h3 className="text-2xl font-semibold text-gray-600 dark:text-gray-400 mb-2">Custom Lead Magnet</h3>
-            <p className="text-gray-500 dark:text-gray-400">
-              We'll create a high-converting lead magnet tailored to your industry and audience
-            </p>
-          </div>
-          
-          <form onSubmit={handleLeadMagnetSubmit} className="w-full max-w-md space-y-4">
-            <div>
-              <Label htmlFor="leadMagnetEmail" className="flex items-center space-x-2 mb-2">
-                <Globe className="w-4 h-4" />
-                <span>Enter your email to get your custom lead magnet</span>
-              </Label>
-              <Input
-                id="leadMagnetEmail"
-                type="email"
-                placeholder="your@email.com"
-                value={leadMagnetEmail}
-                onChange={(e) => setLeadMagnetEmail(e.target.value)}
-                className="text-center"
-              />
+        <div className="grid lg:grid-cols-2 gap-8">
+          {/* ROI Calculator Card */}
+          <Card className="group hover:shadow-2xl transition-all duration-300 border-0 bg-gradient-to-br from-white to-blue-50 dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 group-hover:from-blue-500/10 group-hover:to-purple-500/10 transition-all duration-300" />
+            <CardHeader className="relative pb-8">
+              <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl mb-6 mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <Calculator className="w-8 h-8 text-white" />
+              </div>
+              <CardTitle className="text-center text-2xl font-bold text-gray-900 dark:text-white">
+                ROI Calculator
+              </CardTitle>
+              <CardDescription className="text-center text-gray-600 dark:text-gray-400 text-lg">
+                See exactly how much our tools will boost your revenue
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="relative">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-3">
+                  <Label htmlFor="domain" className="flex items-center space-x-2 text-gray-700 dark:text-gray-300 font-medium">
+                    <Globe className="w-4 h-4" />
+                    <span>Your website URL</span>
+                  </Label>
+                  <Input
+                    id="domain"
+                    type="url"
+                    placeholder="https://yourbusiness.com"
+                    value={domain}
+                    onChange={(e) => setDomain(e.target.value)}
+                    className="h-12 text-center text-lg border-2 border-gray-200 dark:border-gray-700 focus:border-blue-500 dark:focus:border-blue-400 rounded-xl bg-white dark:bg-gray-800"
+                  />
+                </div>
+                
+                <div className="space-y-3">
+                  <Label htmlFor="email" className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+                    <Mail className="w-3 h-3" />
+                    <span>Email (get notified when ready)</span>
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="h-11 text-center bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600 rounded-lg"
+                  />
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                  disabled={!domain || isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <div className="flex items-center space-x-2">
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span>Processing...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center space-x-2">
+                      <span>Get My ROI Calculator</span>
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  )}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+
+          {/* Custom Lead Magnet Card */}
+          <Card className="group hover:shadow-2xl transition-all duration-300 border-0 bg-gradient-to-br from-white to-purple-50 dark:from-gray-800 dark:to-gray-900 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 group-hover:from-purple-500/10 group-hover:to-pink-500/10 transition-all duration-300" />
+            <CardHeader className="relative pb-8">
+              <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl mb-6 mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <Magnet className="w-8 h-8 text-white" />
+              </div>
+              <CardTitle className="text-center text-2xl font-bold text-gray-900 dark:text-white">
+                Custom Lead Magnet
+              </CardTitle>
+              <CardDescription className="text-center text-gray-600 dark:text-gray-400 text-lg">
+                Get a professionally designed lead magnet built for your business
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="relative">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 rounded-full mb-4">
+                  <Sparkles className="w-10 h-10 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  High-Converting Lead Magnets
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Tailored to your industry and audience for maximum impact
+                </p>
+              </div>
+              
+              <form onSubmit={handleLeadMagnetSubmit} className="space-y-6">
+                <div className="space-y-3">
+                  <Label htmlFor="leadMagnetEmail" className="flex items-center space-x-2 text-gray-700 dark:text-gray-300 font-medium">
+                    <Mail className="w-4 h-4" />
+                    <span>Your email address</span>
+                  </Label>
+                  <Input
+                    id="leadMagnetEmail"
+                    type="email"
+                    placeholder="your@email.com"
+                    value={leadMagnetEmail}
+                    onChange={(e) => setLeadMagnetEmail(e.target.value)}
+                    className="h-12 text-center text-lg border-2 border-gray-200 dark:border-gray-700 focus:border-purple-500 dark:focus:border-purple-400 rounded-xl bg-white dark:bg-gray-800"
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group"
+                  disabled={!leadMagnetEmail}
+                >
+                  <div className="flex items-center space-x-2">
+                    <Sparkles className="w-5 h-5" />
+                    <span>Get My Custom Lead Magnet</span>
+                    <Zap className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  </div>
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Features Section */}
+        <div className="grid md:grid-cols-3 gap-6 pt-12">
+          <div className="text-center p-6 rounded-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/20 dark:border-gray-700/20">
+            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <Zap className="w-6 h-6 text-white" />
             </div>
-            <Button 
-              type="submit" 
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
-              disabled={!leadMagnetEmail}
-            >
-              <Sparkles className="w-4 h-4 mr-2" />
-              Get My Custom Lead Magnet
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Lightning Fast</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">Get your tools deployed and working in minutes, not days</p>
+          </div>
+          <div className="text-center p-6 rounded-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/20 dark:border-gray-700/20">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <Calculator className="w-6 h-6 text-white" />
+            </div>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Data-Driven</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">Make decisions based on real ROI calculations and metrics</p>
+          </div>
+          <div className="text-center p-6 rounded-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200/20 dark:border-gray-700/20">
+            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-500 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <Sparkles className="w-6 h-6 text-white" />
+            </div>
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Custom Built</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">Every tool is tailored specifically for your business needs</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
