@@ -3,13 +3,14 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plug, RotateCcw } from "lucide-react";
+import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plug, RotateCcw, Upload } from "lucide-react";
 
 const LeadsPage = () => {
   const { toast } = useToast();
 
-  const leads = [
+  const [leads, setLeads] = useState([
     {
       id: 1,
       name: "Sarah Johnson",
@@ -49,7 +50,7 @@ const LeadsPage = () => {
       lastContact: "4 hours ago",
       nextAction: "LinkedIn Message Pending"
     }
-  ];
+  ]);
 
   const handleConnectSources = () => {
     toast({
@@ -63,6 +64,87 @@ const LeadsPage = () => {
       title: "Reactivate Old Customers",
       description: "AI will analyze your old customers and leads to identify reactivation opportunities."
     });
+  };
+
+  const handleCSVUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
+      toast({
+        title: "Invalid File Type",
+        description: "Please upload a CSV file.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const csvText = e.target?.result as string;
+      const lines = csvText.split('\n');
+      const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+      
+      // Expected headers: name, company, position, email, phone
+      const requiredHeaders = ['name', 'email'];
+      const missingHeaders = requiredHeaders.filter(header => !headers.includes(header));
+      
+      if (missingHeaders.length > 0) {
+        toast({
+          title: "Invalid CSV Format",
+          description: `Missing required columns: ${missingHeaders.join(', ')}. Required: name, email (Optional: company, position, phone)`,
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const newLeads = [];
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        
+        const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
+        const leadData: any = {};
+        
+        headers.forEach((header, index) => {
+          leadData[header] = values[index] || '';
+        });
+
+        if (leadData.name && leadData.email) {
+          newLeads.push({
+            id: Date.now() + i,
+            name: leadData.name,
+            company: leadData.company || 'Unknown Company',
+            position: leadData.position || 'Unknown Position',
+            email: leadData.email,
+            phone: leadData.phone || 'N/A',
+            score: Math.floor(Math.random() * 40) + 60, // Random score between 60-100
+            status: Math.random() > 0.7 ? 'hot' : Math.random() > 0.4 ? 'warm' : 'cold',
+            stage: Math.floor(Math.random() * 10) + 1,
+            lastContact: 'Just added',
+            nextAction: 'Initial Contact Needed'
+          });
+        }
+      }
+
+      if (newLeads.length > 0) {
+        setLeads(prev => [...prev, ...newLeads]);
+        toast({
+          title: "CSV Uploaded Successfully",
+          description: `Added ${newLeads.length} new leads to your pipeline.`
+        });
+      } else {
+        toast({
+          title: "No Valid Leads Found",
+          description: "Please check your CSV format and ensure required fields are present.",
+          variant: "destructive"
+        });
+      }
+    };
+
+    reader.readAsText(file);
+    // Reset the input
+    event.target.value = '';
   };
 
   const getStatusColor = (status: string) => {
@@ -93,7 +175,7 @@ const LeadsPage = () => {
             <div className="flex items-center space-x-2">
               <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">247</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">{leads.length}</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Total Leads</p>
               </div>
             </div>
@@ -105,7 +187,7 @@ const LeadsPage = () => {
             <div className="flex items-center space-x-2">
               <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" />
               <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">34</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">{leads.filter(lead => lead.status === 'hot').length}</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Hot Leads</p>
               </div>
             </div>
@@ -148,6 +230,18 @@ const LeadsPage = () => {
               </CardDescription>
             </div>
             <div className="flex gap-2">
+              <div className="relative">
+                <Input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleCSVUpload}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+                <Button variant="outline" className="border-green-300 dark:border-green-600 text-green-700 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-900/20">
+                  <Upload className="w-4 h-4 mr-2" />
+                  Upload CSV
+                </Button>
+              </div>
               <Button onClick={handleReactivateOldCustomers} variant="outline" className="border-orange-300 dark:border-orange-600 text-orange-700 dark:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/20">
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Reactivate old customers/leads
