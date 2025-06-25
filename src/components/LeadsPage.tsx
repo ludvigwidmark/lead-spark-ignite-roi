@@ -1,14 +1,16 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plug, RotateCcw, Upload } from "lucide-react";
+import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plug, RotateCcw, Upload, Eye } from "lucide-react";
+import LeadDetailsModal from "./LeadDetailsModal";
 
 const LeadsPage = () => {
   const { toast } = useToast();
+  const [selectedLead, setSelectedLead] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [leads, setLeads] = useState([
     {
@@ -22,7 +24,8 @@ const LeadsPage = () => {
       status: "hot",
       stage: Math.floor(Math.random() * 10) + 1,
       lastContact: "2 hours ago",
-      nextAction: "AI Voice Call Scheduled"
+      nextAction: "AI Voice Call Scheduled",
+      customData: {}
     },
     {
       id: 2,
@@ -35,7 +38,8 @@ const LeadsPage = () => {
       status: "warm",
       stage: Math.floor(Math.random() * 10) + 1,
       lastContact: "1 day ago",
-      nextAction: "Follow-up Email Sent"
+      nextAction: "Follow-up Email Sent",
+      customData: {}
     },
     {
       id: 3,
@@ -48,7 +52,8 @@ const LeadsPage = () => {
       status: "hot",
       stage: Math.floor(Math.random() * 10) + 1,
       lastContact: "4 hours ago",
-      nextAction: "LinkedIn Message Pending"
+      nextAction: "LinkedIn Message Pending",
+      customData: {}
     }
   ]);
 
@@ -64,6 +69,27 @@ const LeadsPage = () => {
       title: "Reactivate Old Customers",
       description: "AI will analyze your old customers and leads to identify reactivation opportunities."
     });
+  };
+
+  const handleViewDetails = (lead) => {
+    setSelectedLead(lead);
+    setIsModalOpen(true);
+  };
+
+  const normalizeColumnName = (header) => {
+    const normalized = header.toLowerCase().trim();
+    
+    // Map various name variations to our standard fields
+    if (normalized.includes('first') && normalized.includes('name')) return 'firstName';
+    if (normalized.includes('last') && normalized.includes('name')) return 'lastName';
+    if (normalized === 'name' || normalized === 'full name' || normalized === 'fullname') return 'name';
+    if (normalized === 'email' || normalized === 'email address') return 'email';
+    if (normalized === 'phone' || normalized === 'phone number' || normalized === 'mobile') return 'phone';
+    if (normalized === 'company' || normalized === 'organization' || normalized === 'employer') return 'company';
+    if (normalized === 'position' || normalized === 'title' || normalized === 'job title' || normalized === 'role') return 'position';
+    
+    // Return original header for custom columns
+    return header.trim();
   };
 
   const handleCSVUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,16 +109,17 @@ const LeadsPage = () => {
     reader.onload = (e) => {
       const csvText = e.target?.result as string;
       const lines = csvText.split('\n');
-      const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+      const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+      const normalizedHeaders = headers.map(normalizeColumnName);
       
-      // Expected headers: name, company, position, email, phone
-      const requiredHeaders = ['name', 'email'];
-      const missingHeaders = requiredHeaders.filter(header => !headers.includes(header));
+      // Check if we have at least one way to identify a person (name or email)
+      const hasName = normalizedHeaders.some(h => ['name', 'firstName', 'lastName'].includes(h));
+      const hasEmail = normalizedHeaders.includes('email');
       
-      if (missingHeaders.length > 0) {
+      if (!hasName && !hasEmail) {
         toast({
           title: "Invalid CSV Format",
-          description: `Missing required columns: ${missingHeaders.join(', ')}. Required: name, email (Optional: company, position, phone)`,
+          description: "CSV must contain at least a Name column or Email column to identify leads.",
           variant: "destructive"
         });
         return;
@@ -105,24 +132,64 @@ const LeadsPage = () => {
         
         const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
         const leadData: any = {};
+        const customData: any = {};
         
+        // Process each column
         headers.forEach((header, index) => {
-          leadData[header] = values[index] || '';
+          const normalizedHeader = normalizedHeaders[index];
+          const value = values[index] || '';
+          
+          // Handle standard fields
+          switch (normalizedHeader) {
+            case 'firstName':
+              leadData.firstName = value;
+              break;
+            case 'lastName':
+              leadData.lastName = value;
+              break;
+            case 'name':
+              leadData.name = value;
+              break;
+            case 'email':
+              leadData.email = value;
+              break;
+            case 'phone':
+              leadData.phone = value;
+              break;
+            case 'company':
+              leadData.company = value;
+              break;
+            case 'position':
+              leadData.position = value;
+              break;
+            default:
+              // Store as custom data
+              if (value) {
+                customData[header] = value;
+              }
+          }
         });
 
-        if (leadData.name && leadData.email) {
+        // Construct the name if we have firstName/lastName but no name
+        if (!leadData.name && (leadData.firstName || leadData.lastName)) {
+          leadData.name = `${leadData.firstName || ''} ${leadData.lastName || ''}`.trim();
+        }
+
+        // Only add lead if we have a name or email
+        if (leadData.name || leadData.email) {
           newLeads.push({
             id: Date.now() + i,
-            name: leadData.name,
+            name: leadData.name || 'Unknown Name',
             company: leadData.company || 'Unknown Company',
             position: leadData.position || 'Unknown Position',
-            email: leadData.email,
+            email: leadData.email || 'N/A',
             phone: leadData.phone || 'N/A',
-            score: Math.floor(Math.random() * 40) + 60, // Random score between 60-100
+            score: Math.floor(Math.random() * 40) + 60,
             status: Math.random() > 0.7 ? 'hot' : Math.random() > 0.4 ? 'warm' : 'cold',
             stage: Math.floor(Math.random() * 10) + 1,
             lastContact: 'Just added',
-            nextAction: 'Initial Contact Needed'
+            nextAction: 'Initial Contact Needed',
+            customData
           });
         }
       }
@@ -136,14 +203,13 @@ const LeadsPage = () => {
       } else {
         toast({
           title: "No Valid Leads Found",
-          description: "Please check your CSV format and ensure required fields are present.",
+          description: "Please check your CSV format and ensure it contains name or email columns.",
           variant: "destructive"
         });
       }
     };
 
     reader.readAsText(file);
-    // Reset the input
     event.target.value = '';
   };
 
@@ -298,7 +364,12 @@ const LeadsPage = () => {
                       <Mail className="w-4 h-4 mr-1" />
                       Email
                     </Button>
-                    <Button size="sm" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-sm">
+                    <Button 
+                      size="sm" 
+                      onClick={() => handleViewDetails(lead)}
+                      className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-sm"
+                    >
+                      <Eye className="w-4 h-4 mr-1" />
                       View Details
                     </Button>
                   </div>
@@ -308,6 +379,12 @@ const LeadsPage = () => {
           </div>
         </CardContent>
       </Card>
+
+      <LeadDetailsModal 
+        lead={selectedLead}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
