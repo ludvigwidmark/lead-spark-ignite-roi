@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,45 +6,36 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plug, RotateCcw, Upload, Eye } from "lucide-react";
 import LeadDetailsModal from "./LeadDetailsModal";
-interface LeadsPageProps {
-  initialLeads?: any[];
-}
-const LeadsPage = ({
-  initialLeads = []
-}: LeadsPageProps) => {
-  const {
-    toast
-  } = useToast();
+import { useLeads } from "@/hooks/useLeads";
+
+const LeadsPage = () => {
+  const { toast } = useToast();
+  const { leads, loading, addLeads } = useLeads();
   const [selectedLead, setSelectedLead] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [leads, setLeads] = useState<any[]>([]);
 
-  // Initialize leads with any passed initial leads
-  useEffect(() => {
-    if (initialLeads.length > 0) {
-      setLeads(initialLeads);
-    }
-  }, [initialLeads]);
   const handleConnectSources = () => {
     toast({
       title: "Lead Sources Integration",
       description: "Connect your CRM, forms, and other lead sources to start capturing leads automatically."
     });
   };
+
   const handleReactivateOldCustomers = () => {
     toast({
       title: "Reactivate Old Customers",
       description: "AI will analyze your old customers and leads to identify reactivation opportunities."
     });
   };
-  const handleViewDetails = lead => {
+
+  const handleViewDetails = (lead: any) => {
     setSelectedLead(lead);
     setIsModalOpen(true);
   };
-  const normalizeColumnName = header => {
+
+  const normalizeColumnName = (header: string) => {
     const normalized = header.toLowerCase().trim();
 
-    // Map various name variations to our standard fields
     if (normalized.includes('first') && normalized.includes('name')) return 'firstName';
     if (normalized.includes('last') && normalized.includes('name')) return 'lastName';
     if (normalized === 'name' || normalized === 'full name' || normalized === 'fullname') return 'name';
@@ -53,12 +44,13 @@ const LeadsPage = ({
     if (normalized === 'company' || normalized === 'organization' || normalized === 'employer') return 'company';
     if (normalized === 'position' || normalized === 'title' || normalized === 'job title' || normalized === 'role') return 'position';
 
-    // Return original header for custom columns
     return header.trim();
   };
-  const handleCSVUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleCSVUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+
     if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
       toast({
         title: "Invalid File Type",
@@ -67,16 +59,17 @@ const LeadsPage = ({
       });
       return;
     }
+
     const reader = new FileReader();
-    reader.onload = e => {
+    reader.onload = async (e) => {
       const csvText = e.target?.result as string;
       const lines = csvText.split('\n');
       const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
       const normalizedHeaders = headers.map(normalizeColumnName);
 
-      // Check if we have at least one way to identify a person (name or email)
       const hasName = normalizedHeaders.some(h => ['name', 'firstName', 'lastName'].includes(h));
       const hasEmail = normalizedHeaders.includes('email');
+
       if (!hasName && !hasEmail) {
         toast({
           title: "Invalid CSV Format",
@@ -85,20 +78,20 @@ const LeadsPage = ({
         });
         return;
       }
+
       const newLeads = [];
       for (let i = 1; i < lines.length; i++) {
         const line = lines[i].trim();
         if (!line) continue;
+
         const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
         const leadData: any = {};
         const customData: any = {};
 
-        // Process each column
         headers.forEach((header, index) => {
           const normalizedHeader = normalizedHeaders[index];
           const value = values[index] || '';
 
-          // Handle standard fields
           switch (normalizedHeader) {
             case 'firstName':
               leadData.firstName = value;
@@ -122,39 +115,44 @@ const LeadsPage = ({
               leadData.position = value;
               break;
             default:
-              // Store as custom data
               if (value) {
                 customData[header] = value;
               }
           }
         });
 
-        // Construct the name if we have firstName/lastName but no name
         if (!leadData.name && (leadData.firstName || leadData.lastName)) {
           leadData.name = `${leadData.firstName || ''} ${leadData.lastName || ''}`.trim();
         }
 
-        // Only add lead if we have a name or email
         if (leadData.name || leadData.email) {
           newLeads.push({
-            id: Date.now() + i,
             name: leadData.name || 'Unknown Name',
             company: leadData.company || 'Unknown Company',
             position: leadData.position || 'Unknown Position',
             email: leadData.email || 'N/A',
             phone: leadData.phone || 'N/A',
-            lastContact: 'Just added',
-            nextAction: 'Initial Contact Needed',
-            customData
+            last_contact: 'Just added',
+            next_action: 'Initial Contact Needed',
+            custom_data: customData
           });
         }
       }
+
       if (newLeads.length > 0) {
-        setLeads(prev => [...prev, ...newLeads]);
-        toast({
-          title: "CSV Uploaded Successfully",
-          description: `Added ${newLeads.length} new leads to your pipeline.`
-        });
+        const result = await addLeads(newLeads);
+        if (result?.error) {
+          toast({
+            title: "Error Uploading Leads",
+            description: "Failed to save leads to database. Please try again.",
+            variant: "destructive"
+          });
+        } else {
+          toast({
+            title: "CSV Uploaded Successfully",
+            description: `Added ${newLeads.length} new leads to your pipeline.`
+          });
+        }
       } else {
         toast({
           title: "No Valid Leads Found",
@@ -163,27 +161,22 @@ const LeadsPage = ({
         });
       }
     };
+
     reader.readAsText(file);
     event.target.value = '';
   };
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "hot":
-        return "bg-gradient-to-r from-red-500 to-red-600 text-white border-0 shadow-sm";
-      case "warm":
-        return "bg-gradient-to-r from-yellow-500 to-yellow-600 text-white border-0 shadow-sm";
-      case "cold":
-        return "bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0 shadow-sm";
-      default:
-        return "bg-gradient-to-r from-gray-500 to-gray-600 text-white border-0 shadow-sm";
-    }
-  };
-  const getScoreColor = (score: number) => {
-    if (score >= 90) return "text-green-600 font-bold";
-    if (score >= 70) return "text-yellow-600 font-bold";
-    return "text-red-600 font-bold";
-  };
-  return <div className="space-y-6">
+
+  if (loading) {
+    return (
+      <div className="text-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <p className="text-gray-600 dark:text-gray-400">Loading your leads...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
@@ -197,8 +190,6 @@ const LeadsPage = ({
             </div>
           </CardContent>
         </Card>
-
-        
 
         <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
           <CardContent className="p-6">
@@ -237,7 +228,12 @@ const LeadsPage = ({
             </div>
             <div className="flex gap-2">
               <div className="relative">
-                <Input type="file" accept=".csv" onChange={handleCSVUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                <Input 
+                  type="file" 
+                  accept=".csv" 
+                  onChange={handleCSVUpload} 
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                />
                 <Button variant="outline" className="border-green-300 dark:border-green-600 text-green-700 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-900/20">
                   <Upload className="w-4 h-4 mr-2" />
                   Upload CSV
@@ -277,7 +273,7 @@ const LeadsPage = ({
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center space-x-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                        {lead.name.split(' ').map(n => n[0]).join('')}
+                        {lead.name.split(' ').map((n: string) => n[0]).join('')}
                       </div>
                       <div>
                         <h4 className="font-semibold text-gray-900 dark:text-white">{lead.name}</h4>
@@ -287,13 +283,13 @@ const LeadsPage = ({
                   </div>
 
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Last contact: {lead.lastContact}</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Last contact: {lead.last_contact}</span>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <MessageSquare className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                      <span className="text-sm font-medium text-gray-900 dark:text-white">{lead.nextAction}</span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">{lead.next_action}</span>
                     </div>
                     <div className="flex space-x-2">
                       <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
@@ -316,6 +312,8 @@ const LeadsPage = ({
       </Card>
 
       <LeadDetailsModal lead={selectedLead} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </div>;
+    </div>
+  );
 };
+
 export default LeadsPage;

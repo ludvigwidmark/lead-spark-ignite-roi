@@ -7,15 +7,17 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { Target, Mail, Lock, User, ArrowLeft } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 interface AuthPageProps {
-  onAuthComplete: (user: any) => void;
+  onAuthComplete: () => void;
   onBack: () => void;
   leadCount?: number;
 }
 
 const AuthPage = ({ onAuthComplete, onBack, leadCount }: AuthPageProps) => {
   const { toast } = useToast();
+  const { signIn, signUp } = useAuth();
   const [isLogin, setIsLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -57,21 +59,36 @@ const AuthPage = ({ onAuthComplete, onBack, leadCount }: AuthPageProps) => {
       return;
     }
 
-    // Simulate auth process
-    setTimeout(() => {
-      const user = {
-        id: Date.now(),
-        name: formData.name || formData.email.split('@')[0],
-        email: formData.email
-      };
+    try {
+      let result;
+      if (isLogin) {
+        result = await signIn(formData.email, formData.password);
+      } else {
+        result = await signUp(formData.email, formData.password, formData.name);
+      }
 
-      onAuthComplete(user);
+      if (result.error) {
+        toast({
+          title: "Authentication Error",
+          description: result.error.message,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: isLogin ? "Welcome back!" : "Account created successfully!",
+          description: isLogin ? "You have been logged in." : "Please check your email to verify your account."
+        });
+        onAuthComplete();
+      }
+    } catch (error) {
       toast({
-        title: isLogin ? "Welcome back!" : "Account created successfully!",
-        description: `${isLogin ? 'Logged in' : 'Signed up'} as ${formData.email}`
+        title: "Authentication Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
       });
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -130,6 +147,7 @@ const AuthPage = ({ onAuthComplete, onBack, leadCount }: AuthPageProps) => {
                       value={formData.name}
                       onChange={handleInputChange}
                       className="pl-10"
+                      required={!isLogin}
                     />
                   </div>
                 </div>

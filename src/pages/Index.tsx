@@ -9,19 +9,58 @@ import VoiceOutreach from "@/components/VoiceOutreach";
 import LandingPage from "@/components/LandingPage";
 import AuthPage from "@/components/AuthPage";
 import { Users, Bell, Target, Moon, Sun, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useLeads } from "@/hooks/useLeads";
 
 const Index = () => {
   const { toast } = useToast();
+  const { user, loading, signOut } = useAuth();
+  const { addLeads } = useLeads();
   const [activeTab, setActiveTab] = useState("leads");
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [currentView, setCurrentView] = useState<'landing' | 'auth' | 'app'>('landing');
-  const [user, setUser] = useState<any>(null);
   const [tempLeads, setTempLeads] = useState<any[]>([]);
 
   // Apply dark mode on component mount
   useEffect(() => {
     document.documentElement.classList.add('dark');
   }, []);
+
+  // Handle authentication state changes
+  useEffect(() => {
+    if (!loading) {
+      if (user) {
+        setCurrentView('app');
+        // Save any temporary leads to the database
+        if (tempLeads.length > 0) {
+          handleSaveTempLeads();
+        }
+      } else if (tempLeads.length > 0) {
+        setCurrentView('auth');
+      } else {
+        setCurrentView('landing');
+      }
+    }
+  }, [user, loading, tempLeads]);
+
+  const handleSaveTempLeads = async () => {
+    if (tempLeads.length > 0) {
+      const result = await addLeads(tempLeads);
+      if (result?.error) {
+        toast({
+          title: "Error Saving Leads",
+          description: "Failed to save your leads. Please try again.",
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Leads Saved Successfully",
+          description: `${tempLeads.length} leads have been added to your account.`
+        });
+        setTempLeads([]);
+      }
+    }
+  };
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -30,7 +69,21 @@ const Index = () => {
 
   const handleLeadsUploaded = (leads: any[]) => {
     setTempLeads(leads);
-    setCurrentView('auth');
+    if (user) {
+      // User is already authenticated, save leads immediately
+      addLeads(leads).then((result) => {
+        if (!result?.error) {
+          toast({
+            title: "Leads Imported Successfully",
+            description: `${leads.length} leads have been added to your account.`
+          });
+          setTempLeads([]);
+        }
+      });
+    } else {
+      // User needs to authenticate first
+      setCurrentView('auth');
+    }
   };
 
   const handleConnectSources = () => {
@@ -38,36 +91,49 @@ const Index = () => {
       title: "Lead Sources Integration",
       description: "Connect your CRM, forms, and other lead sources to start capturing leads automatically."
     });
-    setCurrentView('auth');
-  };
-
-  const handleAuthComplete = (userData: any) => {
-    setUser(userData);
-    setCurrentView('app');
-    
-    if (tempLeads.length > 0) {
-      // In a real app, you'd save these leads to the user's account
-      toast({
-        title: "Leads Imported Successfully",
-        description: `${tempLeads.length} leads have been added to your account.`
-      });
+    if (!user) {
+      setCurrentView('auth');
     }
   };
 
-  const handleLogout = () => {
-    setUser(null);
-    setTempLeads([]);
-    setCurrentView('landing');
-    toast({
-      title: "Logged Out",
-      description: "You have been successfully logged out."
-    });
+  const handleAuthComplete = () => {
+    // The useEffect will handle the transition to 'app' view when user state changes
+  };
+
+  const handleLogout = async () => {
+    const { error } = await signOut();
+    if (error) {
+      toast({
+        title: "Logout Error",
+        description: error.message,
+        variant: "destructive"
+      });
+    } else {
+      setTempLeads([]);
+      setCurrentView('landing');
+      toast({
+        title: "Logged Out",
+        description: "You have been successfully logged out."
+      });
+    }
   };
 
   const handleBackToLanding = () => {
     setCurrentView('landing');
     setTempLeads([]);
   };
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Landing Page View
   if (currentView === 'landing') {
@@ -110,7 +176,7 @@ const Index = () => {
               </div>
               <div className="flex items-center space-x-4">
                 <div className="text-sm text-gray-500 dark:text-gray-400">
-                  Welcome, {user?.name}
+                  Welcome, {user?.user_metadata?.name || user?.email}
                 </div>
                 <Button variant="outline" size="icon" onClick={toggleDarkMode} className="border-gray-300 dark:border-gray-600">
                   {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
@@ -141,7 +207,7 @@ const Index = () => {
             </div>
 
             <TabsContent value="leads">
-              <LeadsPage initialLeads={tempLeads} />
+              <LeadsPage />
             </TabsContent>
 
             <TabsContent value="outreach">
