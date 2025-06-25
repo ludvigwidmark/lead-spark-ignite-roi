@@ -14,13 +14,13 @@ const GeometricLogo = ({ size = 'md', className = '' }: GeometricLogoProps) => {
   };
 
   return (
-    <div className={`${sizeClasses[size]} ${className} relative`}>
+    <div className={`${sizeClasses[size]} ${className} relative flex items-center justify-center`}>
       <svg width="100%" height="100%" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Main geometric shapes inspired by the logo in the image */}
-        <rect x="4" y="4" width="16" height="16" fill="currentColor" rx="2" />
-        <rect x="28" y="4" width="16" height="16" fill="currentColor" rx="2" transform="rotate(45 36 12)" />
-        <circle cx="12" cy="36" r="8" fill="currentColor" />
-        <polygon points="36,28 44,36 36,44 28,36" fill="currentColor" />
+        {/* Geometric shapes */}
+        <rect x="8" y="8" width="12" height="12" fill="currentColor" rx="2" />
+        <rect x="28" y="8" width="12" height="12" fill="currentColor" rx="2" />
+        <circle cx="14" cy="34" r="6" fill="currentColor" />
+        <polygon points="34,28 40,34 34,40 28,34" fill="currentColor" />
       </svg>
     </div>
   );

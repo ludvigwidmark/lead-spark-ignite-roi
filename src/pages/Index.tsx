@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,14 +16,9 @@ const Index = () => {
   const { user, loading, signOut } = useAuth();
   const { addLeads } = useLeads();
   const [activeTab, setActiveTab] = useState("leads");
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [currentView, setCurrentView] = useState<'landing' | 'auth' | 'app'>('landing');
   const [tempLeads, setTempLeads] = useState<any[]>([]);
-
-  // Apply dark mode on component mount
-  useEffect(() => {
-    document.documentElement.classList.add('dark');
-  }, []);
 
   // Handle authentication state changes
   useEffect(() => {
