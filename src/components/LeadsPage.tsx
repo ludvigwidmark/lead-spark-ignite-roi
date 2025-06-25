@@ -141,9 +141,6 @@ const LeadsPage = () => {
             position: leadData.position || 'Unknown Position',
             email: leadData.email || 'N/A',
             phone: leadData.phone || 'N/A',
-            score: Math.floor(Math.random() * 40) + 60,
-            status: Math.random() > 0.7 ? 'hot' : Math.random() > 0.4 ? 'warm' : 'cold',
-            stage: Math.floor(Math.random() * 10) + 1,
             lastContact: 'Just added',
             nextAction: 'Initial Contact Needed',
             customData
@@ -210,7 +207,7 @@ const LeadsPage = () => {
             <div className="flex items-center space-x-2">
               <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" />
               <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{leads.filter(lead => lead.status === 'hot').length}</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">0</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Hot Leads</p>
               </div>
             </div>
@@ -249,7 +246,7 @@ const LeadsPage = () => {
             <div>
               <CardTitle className="text-gray-900 dark:text-white">Leads</CardTitle>
               <CardDescription className="text-gray-600 dark:text-gray-400">
-                AI-scored leads ready for outreach
+                Manage your lead pipeline
               </CardDescription>
             </div>
             <div className="flex gap-2">
@@ -313,17 +310,6 @@ const LeadsPage = () => {
                       <div>
                         <h4 className="font-semibold text-gray-900 dark:text-white">{lead.name}</h4>
                         <p className="text-sm text-gray-600 dark:text-gray-400">{lead.position} at {lead.company}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <Badge className={getStatusColor(lead.status)}>
-                        {lead.status.toUpperCase()} - Stage {lead.stage}
-                      </Badge>
-                      <div className="text-right">
-                        <span className={`text-lg ${getScoreColor(lead.score)}`}>
-                          {lead.score}
-                        </span>
-                        <span className="text-gray-400 text-sm">/100</span>
                       </div>
                     </div>
                   </div>

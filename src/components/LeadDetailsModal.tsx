@@ -1,9 +1,8 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Phone, Mail, Building, User, Calendar, Target, Star } from "lucide-react";
+import { Phone, Mail, Building, User, Calendar, Target } from "lucide-react";
 
 interface LeadDetailsModalProps {
   lead: any;
@@ -13,25 +12,6 @@ interface LeadDetailsModalProps {
 
 const LeadDetailsModal = ({ lead, isOpen, onClose }: LeadDetailsModalProps) => {
   if (!lead) return null;
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "hot":
-        return "bg-gradient-to-r from-red-500 to-red-600 text-white border-0 shadow-sm";
-      case "warm":
-        return "bg-gradient-to-r from-yellow-500 to-yellow-600 text-white border-0 shadow-sm";
-      case "cold":
-        return "bg-gradient-to-r from-blue-500 to-blue-600 text-white border-0 shadow-sm";
-      default:
-        return "bg-gradient-to-r from-gray-500 to-gray-600 text-white border-0 shadow-sm";
-    }
-  };
-
-  const getScoreColor = (score: number) => {
-    if (score >= 90) return "text-green-600";
-    if (score >= 70) return "text-yellow-600";
-    return "text-red-600";
-  };
 
   const hasCustomData = lead.customData && Object.keys(lead.customData).length > 0;
 
@@ -51,19 +31,6 @@ const LeadDetailsModal = ({ lead, isOpen, onClose }: LeadDetailsModalProps) => {
         </DialogHeader>
 
         <div className="space-y-4">
-          {/* Status and Score */}
-          <div className="flex items-center justify-between">
-            <Badge className={getStatusColor(lead.status)}>
-              {lead.status.toUpperCase()} - Stage {lead.stage}
-            </Badge>
-            <div className="flex items-center space-x-2">
-              <Star className="w-5 h-5 text-yellow-500" />
-              <span className={`text-xl font-bold ${getScoreColor(lead.score)}`}>
-                {lead.score}/100
-              </span>
-            </div>
-          </div>
-
           <Separator />
 
           {/* Contact Information */}
