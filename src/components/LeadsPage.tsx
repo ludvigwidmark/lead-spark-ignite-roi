@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,12 +7,22 @@ import { useToast } from "@/hooks/use-toast";
 import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plug, RotateCcw, Upload, Eye } from "lucide-react";
 import LeadDetailsModal from "./LeadDetailsModal";
 
-const LeadsPage = () => {
+interface LeadsPageProps {
+  initialLeads?: any[];
+}
+
+const LeadsPage = ({ initialLeads = [] }: LeadsPageProps) => {
   const { toast } = useToast();
   const [selectedLead, setSelectedLead] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [leads, setLeads] = useState<any[]>([]);
 
-  const [leads, setLeads] = useState([]);
+  // Initialize leads with any passed initial leads
+  useEffect(() => {
+    if (initialLeads.length > 0) {
+      setLeads(initialLeads);
+    }
+  }, [initialLeads]);
 
   const handleConnectSources = () => {
     toast({

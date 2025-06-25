@@ -3,13 +3,20 @@ import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import LeadsPage from "@/components/LeadsPage";
 import VoiceOutreach from "@/components/VoiceOutreach";
-import { Users, Bell, Target, Moon, Sun } from "lucide-react";
+import LandingPage from "@/components/LandingPage";
+import AuthPage from "@/components/AuthPage";
+import { Users, Bell, Target, Moon, Sun, LogOut } from "lucide-react";
 
 const Index = () => {
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("leads");
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [currentView, setCurrentView] = useState<'landing' | 'auth' | 'app'>('landing');
+  const [user, setUser] = useState<any>(null);
+  const [tempLeads, setTempLeads] = useState<any[]>([]);
 
   // Apply dark mode on component mount
   useEffect(() => {
@@ -21,7 +28,75 @@ const Index = () => {
     document.documentElement.classList.toggle('dark');
   };
 
-  return <div className={isDarkMode ? 'dark' : ''}>
+  const handleLeadsUploaded = (leads: any[]) => {
+    setTempLeads(leads);
+    setCurrentView('auth');
+  };
+
+  const handleConnectSources = () => {
+    toast({
+      title: "Lead Sources Integration",
+      description: "Connect your CRM, forms, and other lead sources to start capturing leads automatically."
+    });
+    setCurrentView('auth');
+  };
+
+  const handleAuthComplete = (userData: any) => {
+    setUser(userData);
+    setCurrentView('app');
+    
+    if (tempLeads.length > 0) {
+      // In a real app, you'd save these leads to the user's account
+      toast({
+        title: "Leads Imported Successfully",
+        description: `${tempLeads.length} leads have been added to your account.`
+      });
+    }
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setTempLeads([]);
+    setCurrentView('landing');
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out."
+    });
+  };
+
+  const handleBackToLanding = () => {
+    setCurrentView('landing');
+    setTempLeads([]);
+  };
+
+  // Landing Page View
+  if (currentView === 'landing') {
+    return (
+      <div className={isDarkMode ? 'dark' : ''}>
+        <LandingPage 
+          onLeadsUploaded={handleLeadsUploaded}
+          onConnectSources={handleConnectSources}
+        />
+      </div>
+    );
+  }
+
+  // Auth Page View
+  if (currentView === 'auth') {
+    return (
+      <div className={isDarkMode ? 'dark' : ''}>
+        <AuthPage 
+          onAuthComplete={handleAuthComplete}
+          onBack={handleBackToLanding}
+          leadCount={tempLeads.length}
+        />
+      </div>
+    );
+  }
+
+  // Main App View
+  return (
+    <div className={isDarkMode ? 'dark' : ''}>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
         {/* Header */}
         <header className="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700">
@@ -35,10 +110,14 @@ const Index = () => {
               </div>
               <div className="flex items-center space-x-4">
                 <div className="text-sm text-gray-500 dark:text-gray-400">
-                  AI-Powered Lead Management Platform
+                  Welcome, {user?.name}
                 </div>
                 <Button variant="outline" size="icon" onClick={toggleDarkMode} className="border-gray-300 dark:border-gray-600">
                   {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                </Button>
+                <Button variant="outline" onClick={handleLogout} className="border-gray-300 dark:border-gray-600">
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
                 </Button>
               </div>
             </div>
@@ -62,7 +141,7 @@ const Index = () => {
             </div>
 
             <TabsContent value="leads">
-              <LeadsPage />
+              <LeadsPage initialLeads={tempLeads} />
             </TabsContent>
 
             <TabsContent value="outreach">
@@ -71,7 +150,8 @@ const Index = () => {
           </Tabs>
         </main>
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default Index;
