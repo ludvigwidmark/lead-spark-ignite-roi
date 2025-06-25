@@ -12,50 +12,7 @@ const LeadsPage = () => {
   const [selectedLead, setSelectedLead] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [leads, setLeads] = useState([
-    {
-      id: 1,
-      name: "Sarah Johnson",
-      company: "TechCorp Inc",
-      position: "VP of Sales",
-      email: "sarah@techcorp.com",
-      phone: "+1 (555) 123-4567",
-      score: 92,
-      status: "hot",
-      stage: Math.floor(Math.random() * 10) + 1,
-      lastContact: "2 hours ago",
-      nextAction: "AI Voice Call Scheduled",
-      customData: {}
-    },
-    {
-      id: 2,
-      name: "Michael Chen",
-      company: "DataFlow Systems",
-      position: "CTO",
-      email: "m.chen@dataflow.com",
-      phone: "+1 (555) 987-6543",
-      score: 78,
-      status: "warm",
-      stage: Math.floor(Math.random() * 10) + 1,
-      lastContact: "1 day ago",
-      nextAction: "Follow-up Email Sent",
-      customData: {}
-    },
-    {
-      id: 3,
-      name: "Emily Rodriguez",
-      company: "CloudVision",
-      position: "Marketing Director",
-      email: "emily@cloudvision.com",
-      phone: "+1 (555) 456-7890",
-      score: 85,
-      status: "hot",
-      stage: Math.floor(Math.random() * 10) + 1,
-      lastContact: "4 hours ago",
-      nextAction: "LinkedIn Message Pending",
-      customData: {}
-    }
-  ]);
+  const [leads, setLeads] = useState([]);
 
   const handleConnectSources = () => {
     toast({
@@ -265,7 +222,7 @@ const LeadsPage = () => {
             <div className="flex items-center space-x-2">
               <Phone className="w-5 h-5 text-purple-600 dark:text-purple-400" />
               <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">127</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">0</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Calls Made</p>
               </div>
             </div>
@@ -277,7 +234,7 @@ const LeadsPage = () => {
             <div className="flex items-center space-x-2">
               <Star className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
               <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">18%</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">0%</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Conversion Rate</p>
               </div>
             </div>
@@ -320,63 +277,89 @@ const LeadsPage = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            {leads.map((lead) => (
-              <div key={lead.id} className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-600 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                      {lead.name.split(' ').map(n => n[0]).join('')}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white">{lead.name}</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">{lead.position} at {lead.company}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Badge className={getStatusColor(lead.status)}>
-                      {lead.status.toUpperCase()} - Stage {lead.stage}
-                    </Badge>
-                    <div className="text-right">
-                      <span className={`text-lg ${getScoreColor(lead.score)}`}>
-                        {lead.score}
-                      </span>
-                      <span className="text-gray-400 text-sm">/100</span>
-                    </div>
-                  </div>
+          {leads.length === 0 ? (
+            <div className="text-center py-12">
+              <Users className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No leads yet</h3>
+              <p className="text-gray-500 dark:text-gray-400 mb-6">Get started by uploading a CSV file or connecting your lead sources.</p>
+              <div className="flex justify-center gap-4">
+                <div className="relative">
+                  <Input
+                    type="file"
+                    accept=".csv"
+                    onChange={handleCSVUpload}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  />
+                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                    <Upload className="w-4 h-4 mr-2" />
+                    Upload CSV
+                  </Button>
                 </div>
-
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm text-gray-600 dark:text-gray-400">Last contact: {lead.lastContact}</span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <MessageSquare className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                    <span className="text-sm font-medium text-gray-900 dark:text-white">{lead.nextAction}</span>
-                  </div>
-                  <div className="flex space-x-2">
-                    <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
-                      <Phone className="w-4 h-4 mr-1" />
-                      Call
-                    </Button>
-                    <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
-                      <Mail className="w-4 h-4 mr-1" />
-                      Email
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      onClick={() => handleViewDetails(lead)}
-                      className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-sm"
-                    >
-                      <Eye className="w-4 h-4 mr-1" />
-                      View Details
-                    </Button>
-                  </div>
-                </div>
+                <Button onClick={handleConnectSources} variant="outline">
+                  <Plug className="w-4 h-4 mr-2" />
+                  Connect Sources
+                </Button>
               </div>
-            ))}
-          </div>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {leads.map((lead) => (
+                <div key={lead.id} className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-600 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                        {lead.name.split(' ').map(n => n[0]).join('')}
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-900 dark:text-white">{lead.name}</h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{lead.position} at {lead.company}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Badge className={getStatusColor(lead.status)}>
+                        {lead.status.toUpperCase()} - Stage {lead.stage}
+                      </Badge>
+                      <div className="text-right">
+                        <span className={`text-lg ${getScoreColor(lead.score)}`}>
+                          {lead.score}
+                        </span>
+                        <span className="text-gray-400 text-sm">/100</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Last contact: {lead.lastContact}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <MessageSquare className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      <span className="text-sm font-medium text-gray-900 dark:text-white">{lead.nextAction}</span>
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <Phone className="w-4 h-4 mr-1" />
+                        Call
+                      </Button>
+                      <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <Mail className="w-4 h-4 mr-1" />
+                        Email
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        onClick={() => handleViewDetails(lead)}
+                        className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-sm"
+                      >
+                        <Eye className="w-4 h-4 mr-1" />
+                        View Details
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
 
