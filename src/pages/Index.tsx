@@ -5,9 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import LeadsPage from "@/components/LeadsPage";
 import VoiceOutreach from "@/components/VoiceOutreach";
-import ROICalculator from "@/components/ROICalculator";
-import AdoptionPage from "@/components/AdoptionPage";
-import { Users, Bell, Target, TrendingUp, Moon, Sun, Diamond, Lightbulb } from "lucide-react";
+import ValueAdoptionPage from "@/components/ValueAdoptionPage";
+import { Users, Bell, Target, TrendingUp, Moon, Sun, Diamond } from "lucide-react";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("leads");
@@ -51,7 +50,7 @@ const Index = () => {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <div className="flex justify-center">
-              <TabsList className="grid grid-cols-4 bg-white dark:bg-gray-800 w-fit">
+              <TabsList className="grid grid-cols-3 bg-white dark:bg-gray-800 w-fit">
                 <TabsTrigger value="leads" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
                   <Users className="w-4 h-4" />
                   <span className="hidden sm:inline">Leads</span>
@@ -60,13 +59,9 @@ const Index = () => {
                   <Bell className="w-4 h-4" />
                   <span className="hidden sm:inline">Outreach</span>
                 </TabsTrigger>
-                <TabsTrigger value="roi" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
+                <TabsTrigger value="value-adoption" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
                   <Diamond className="w-4 h-4" />
-                  <span className="hidden sm:inline">Value</span>
-                </TabsTrigger>
-                <TabsTrigger value="adoption" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
-                  <Lightbulb className="w-4 h-4" />
-                  <span className="hidden sm:inline">Adoption</span>
+                  <span className="hidden sm:inline">Value & Adoption</span>
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -79,12 +74,8 @@ const Index = () => {
               <VoiceOutreach />
             </TabsContent>
 
-            <TabsContent value="roi">
-              <ROICalculator />
-            </TabsContent>
-
-            <TabsContent value="adoption">
-              <AdoptionPage />
+            <TabsContent value="value-adoption">
+              <ValueAdoptionPage />
             </TabsContent>
           </Tabs>
         </main>
