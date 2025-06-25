@@ -5,8 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import LeadsPage from "@/components/LeadsPage";
 import VoiceOutreach from "@/components/VoiceOutreach";
-import ValueAdoptionPage from "@/components/ValueAdoptionPage";
-import { Users, Bell, Target, TrendingUp, Moon, Sun, Diamond } from "lucide-react";
+import { Users, Bell, Target, Moon, Sun } from "lucide-react";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("leads");
@@ -50,7 +49,7 @@ const Index = () => {
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <div className="flex justify-center">
-              <TabsList className="grid grid-cols-3 bg-white dark:bg-gray-800 w-fit">
+              <TabsList className="grid grid-cols-2 bg-white dark:bg-gray-800 w-fit">
                 <TabsTrigger value="leads" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
                   <Users className="w-4 h-4" />
                   <span className="hidden sm:inline">Leads</span>
@@ -58,10 +57,6 @@ const Index = () => {
                 <TabsTrigger value="outreach" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
                   <Bell className="w-4 h-4" />
                   <span className="hidden sm:inline">Outreach</span>
-                </TabsTrigger>
-                <TabsTrigger value="value-adoption" className="flex items-center space-x-2 data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 px-6">
-                  <Diamond className="w-4 h-4" />
-                  <span className="hidden sm:inline">Value & Adoption</span>
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -72,10 +67,6 @@ const Index = () => {
 
             <TabsContent value="outreach">
               <VoiceOutreach />
-            </TabsContent>
-
-            <TabsContent value="value-adoption">
-              <ValueAdoptionPage />
             </TabsContent>
           </Tabs>
         </main>
