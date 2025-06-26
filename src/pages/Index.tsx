@@ -20,6 +20,8 @@ const Index = () => {
   const [currentView, setCurrentView] = useState<'landing' | 'auth' | 'app'>('landing');
   const [tempLeads, setTempLeads] = useState<any[]>([]);
 
+  console.log("Index component rendering, currentView:", currentView, "user:", !!user, "loading:", loading);
+
   // Handle authentication state changes
   useEffect(() => {
     if (!loading) {
@@ -129,15 +131,14 @@ const Index = () => {
     );
   }
 
-  // Landing Page View
+  // Landing Page View - This should be showing!
   if (currentView === 'landing') {
+    console.log("Rendering landing page!");
     return (
-      <div className={isDarkMode ? 'dark' : ''}>
-        <LandingPage 
-          onLeadsUploaded={handleLeadsUploaded}
-          onConnectSources={handleConnectSources}
-        />
-      </div>
+      <LandingPage 
+        onLeadsUploaded={handleLeadsUploaded}
+        onConnectSources={handleConnectSources}
+      />
     );
   }
 
