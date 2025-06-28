@@ -71,7 +71,7 @@ const LeadsPage = () => {
 
   const handleCallLead = async (lead) => {
     try {
-      const webhookUrl = 'https://ludvigwidmark.app.n8n.cloud/webhook-test/lovable-webhook';
+      const webhookUrl = 'https://ludvigwidmark.app.n8n.cloud/webhook/lovable-webhook';
       const callbackUrl = `${window.location.origin}/api/vapi-callback`;
       
       const response = await fetch(webhookUrl, {
@@ -174,7 +174,7 @@ const LeadsPage = () => {
   const handleBulkCall = async () => {
     try {
       const selectedLeadData = leads.filter(lead => selectedLeads.has(lead.id));
-      const webhookUrl = 'https://ludvigwidmark.app.n8n.cloud/webhook-test/lovable-webhook';
+      const webhookUrl = 'https://ludvigwidmark.app.n8n.cloud/webhook/lovable-webhook';
       const callbackUrl = `${window.location.origin}/api/vapi-callback`;
       
       const response = await fetch(webhookUrl, {
