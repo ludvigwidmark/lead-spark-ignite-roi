@@ -115,7 +115,12 @@ const Landing = () => {
                       <FormItem>
                         <FormLabel className="text-black dark:text-white">Full Name</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="Enter your full name" />
+                          <Input 
+                            {...field} 
+                            placeholder="Enter your full name" 
+                            autoComplete="name"
+                            disabled={loading}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -135,7 +140,13 @@ const Landing = () => {
                       <FormItem>
                         <FormLabel className="text-black dark:text-white">Email</FormLabel>
                         <FormControl>
-                          <Input {...field} type="email" placeholder="Enter your email" />
+                          <Input 
+                            {...field} 
+                            type="email" 
+                            placeholder="Enter your email" 
+                            autoComplete="email"
+                            disabled={loading}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -155,7 +166,13 @@ const Landing = () => {
                       <FormItem>
                         <FormLabel className="text-black dark:text-white">Password</FormLabel>
                         <FormControl>
-                          <Input {...field} type="password" placeholder="Create a password" />
+                          <Input 
+                            {...field} 
+                            type="password" 
+                            placeholder="Create a password" 
+                            autoComplete="new-password"
+                            disabled={loading}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -187,7 +204,13 @@ const Landing = () => {
                       <FormItem>
                         <FormLabel className="text-black dark:text-white">Email</FormLabel>
                         <FormControl>
-                          <Input {...field} type="email" placeholder="Enter your email" />
+                          <Input 
+                            {...field} 
+                            type="email" 
+                            placeholder="Enter your email" 
+                            autoComplete="email"
+                            disabled={loading}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -201,7 +224,13 @@ const Landing = () => {
                       <FormItem>
                         <FormLabel className="text-black dark:text-white">Password</FormLabel>
                         <FormControl>
-                          <Input {...field} type="password" placeholder="Enter your password" />
+                          <Input 
+                            {...field} 
+                            type="password" 
+                            placeholder="Enter your password" 
+                            autoComplete="current-password"
+                            disabled={loading}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -224,6 +253,7 @@ const Landing = () => {
                 variant="link"
                 onClick={() => setIsSignUp(!isSignUp)}
                 className="text-titanium-600 dark:text-titanium-400 hover:text-black dark:hover:text-white"
+                disabled={loading}
               >
                 {isSignUp 
                   ? 'Already have an account? Sign in' 
