@@ -37,6 +37,7 @@ const LeadsPage = () => {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedLeads, setSelectedLeads] = useState<Set<string>>(new Set());
+  const [callingLeads, setCallingLeads] = useState<Set<string>>(new Set());
 
   // Fetch leads from database
   useEffect(() => {
@@ -71,6 +72,8 @@ const LeadsPage = () => {
 
   const handleCallLead = async (lead) => {
     try {
+      setCallingLeads(prev => new Set([...prev, lead.id]));
+      
       const webhookUrl = 'https://ludvigwidmark.app.n8n.cloud/webhook/lovable-webhook';
       const callbackUrl = `${window.location.origin}/api/vapi-callback`;
       
@@ -116,6 +119,12 @@ const LeadsPage = () => {
         title: "Error",
         description: "Failed to initiate call. Please try again.",
         variant: "destructive"
+      });
+    } finally {
+      setCallingLeads(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(lead.id);
+        return newSet;
       });
     }
   };
@@ -174,6 +183,10 @@ const LeadsPage = () => {
   const handleBulkCall = async () => {
     try {
       const selectedLeadData = leads.filter(lead => selectedLeads.has(lead.id));
+      const selectedLeadIds = Array.from(selectedLeads);
+      
+      setCallingLeads(prev => new Set([...prev, ...selectedLeadIds]));
+      
       const webhookUrl = 'https://ludvigwidmark.app.n8n.cloud/webhook/lovable-webhook';
       const callbackUrl = `${window.location.origin}/api/vapi-callback`;
       
@@ -198,7 +211,6 @@ const LeadsPage = () => {
 
       if (response.ok) {
         // Update all selected leads status to 'calling'
-        const selectedLeadIds = Array.from(selectedLeads);
         await supabase
           .from('user_leads')
           .update({ status: 'calling' })
@@ -221,6 +233,13 @@ const LeadsPage = () => {
         title: "Error",
         description: "Failed to initiate bulk call. Please try again.",
         variant: "destructive"
+      });
+    } finally {
+      const selectedLeadIds = Array.from(selectedLeads);
+      setCallingLeads(prev => {
+        const newSet = new Set(prev);
+        selectedLeadIds.forEach(id => newSet.delete(id));
+        return newSet;
       });
     }
   };
@@ -488,10 +507,10 @@ const LeadsPage = () => {
                         size="sm" 
                         onClick={() => handleCallLead(lead)}
                         className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800"
-                        disabled={lead.status === 'calling'}
+                        disabled={callingLeads.has(lead.id)}
                       >
                         <Phone className="w-4 h-4 mr-1" />
-                        {lead.status === 'calling' ? 'Calling...' : 'Call'}
+                        {callingLeads.has(lead.id) ? 'Calling...' : 'Call'}
                       </Button>
                       <Button variant="outline" size="sm" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
                         <Mail className="w-4 h-4 mr-1" />
