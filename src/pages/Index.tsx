@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -16,11 +17,14 @@ const Index = () => {
   const { user, loading, signOut } = useAuth();
   const { addLeads } = useLeads();
   const [activeTab, setActiveTab] = useState("leads");
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [currentView, setCurrentView] = useState<'landing' | 'auth' | 'app'>('landing');
   const [tempLeads, setTempLeads] = useState<any[]>([]);
 
-  console.log("Index component rendering, currentView:", currentView, "user:", !!user, "loading:", loading);
+  // Apply dark mode on component mount
+  useEffect(() => {
+    document.documentElement.classList.add('dark');
+  }, []);
 
   // Handle authentication state changes
   useEffect(() => {
@@ -131,14 +135,15 @@ const Index = () => {
     );
   }
 
-  // Landing Page View - This should be showing!
+  // Landing Page View
   if (currentView === 'landing') {
-    console.log("Rendering landing page!");
     return (
-      <LandingPage 
-        onLeadsUploaded={handleLeadsUploaded}
-        onConnectSources={handleConnectSources}
-      />
+      <div className={isDarkMode ? 'dark' : ''}>
+        <LandingPage 
+          onLeadsUploaded={handleLeadsUploaded}
+          onConnectSources={handleConnectSources}
+        />
+      </div>
     );
   }
 

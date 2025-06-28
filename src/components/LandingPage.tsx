@@ -4,8 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Plug, ArrowRight, Users, TrendingUp, Target } from "lucide-react";
-import GeometricLogo from "./GeometricLogo";
+import { Upload, Plug, Target, ArrowRight, Users, TrendingUp } from "lucide-react";
 
 interface LandingPageProps {
   onLeadsUploaded: (leads: any[]) => void;
@@ -15,8 +14,6 @@ interface LandingPageProps {
 const LandingPage = ({ onLeadsUploaded, onConnectSources }: LandingPageProps) => {
   const { toast } = useToast();
   const [isUploading, setIsUploading] = useState(false);
-
-  console.log("LandingPage is rendering");
 
   const normalizeColumnName = (header: string) => {
     const normalized = header.toLowerCase().trim();
@@ -148,143 +145,134 @@ const LandingPage = ({ onLeadsUploaded, onConnectSources }: LandingPageProps) =>
   };
 
   return (
-    <div className="min-h-screen font-work" style={{ 
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-    }}>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <header className="bg-black/20 backdrop-blur-sm border-b border-white/20">
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <GeometricLogo size="sm" className="text-white" />
-              <h1 className="text-xl font-bold text-white">Clyo</h1>
+              <div className="w-8 h-8 bg-blue-600 dark:bg-blue-500 rounded-lg flex items-center justify-center">
+                <Target className="w-5 h-5 text-white" />
+              </div>
+              <h1 className="text-xl font-bold text-gray-900 dark:text-white">Clyo</h1>
             </div>
-            <div className="text-sm text-white/80">
+            <div className="text-sm text-gray-500 dark:text-gray-400">
               AI-Powered Lead Management Platform
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
-        <div className="text-center mb-16">
-          <div className="mb-8">
-            <GeometricLogo size="lg" className="text-white mx-auto mb-6" />
-          </div>
-          
-          <h1 className="text-5xl font-bold text-white mb-6 leading-tight">
-            Build something
-            <br />
-            <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">Lovable</span>
+      {/* Hero Section */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            Transform Your Leads Into Revenue
           </h1>
-          
-          <p className="text-xl text-white/90 mb-12 max-w-2xl mx-auto">
-            Create apps and websites by chatting with AI
+          <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+            Upload your leads or connect your sources to get started with AI-powered lead management
           </p>
           
-          {/* Main Input Area */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl mb-16 max-w-3xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Upload CSV Card */}
-              <Card className="border-2 border-dashed border-gray-300 hover:border-black transition-colors bg-white">
-                <CardHeader className="text-center pb-4">
-                  <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center mx-auto mb-3">
-                    <Upload className="w-6 h-6 text-white" />
-                  </div>
-                  <CardTitle className="text-gray-900 text-lg">Upload CSV File</CardTitle>
-                  <CardDescription className="text-gray-600 text-sm">
-                    Upload your existing leads from a CSV file
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="relative">
-                    <Input
-                      type="file"
-                      accept=".csv"
-                      onChange={handleCSVUpload}
-                      disabled={isUploading}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    />
-                    <Button 
-                      className="bg-black hover:bg-gray-800 text-white w-full"
-                      disabled={isUploading}
-                    >
-                      {isUploading ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                          Processing...
-                        </>
-                      ) : (
-                        <>
-                          <Upload className="w-4 h-4 mr-2" />
-                          Choose File
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2 text-center">
-                    Supports Name, Email, Phone, Company columns
-                  </p>
-                </CardContent>
-              </Card>
-
-              {/* Connect Sources Card */}
-              <Card className="border-2 border-gray-200 hover:border-black transition-colors bg-white">
-                <CardHeader className="text-center pb-4">
-                  <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center mx-auto mb-3">
-                    <Plug className="w-6 h-6 text-white" />
-                  </div>
-                  <CardTitle className="text-gray-900 text-lg">Connect Sources</CardTitle>
-                  <CardDescription className="text-gray-600 text-sm">
-                    Connect your CRM and other lead sources
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <Button 
-                    onClick={onConnectSources}
-                    variant="outline" 
-                    className="border-black text-black hover:bg-black hover:text-white w-full"
-                  >
-                    <Plug className="w-4 h-4 mr-2" />
-                    Connect
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                  <p className="text-xs text-gray-500 mt-2 text-center">
-                    CRM, forms, webhooks supported
-                  </p>
-                </CardContent>
-              </Card>
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+              <Users className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">10,000+</h3>
+              <p className="text-gray-600 dark:text-gray-400">Leads Managed</p>
             </div>
-
-            <div className="flex items-center justify-center mt-6">
-              <span className="text-gray-400 text-sm mr-2">🌐</span>
-              <span className="text-gray-600 text-sm">Public</span>
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+              <TrendingUp className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">85%</h3>
+              <p className="text-gray-600 dark:text-gray-400">Conversion Rate</p>
+            </div>
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+              <Target className="w-8 h-8 text-purple-600 dark:text-purple-400 mx-auto mb-2" />
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">3x</h3>
+              <p className="text-gray-600 dark:text-gray-400">Faster Outreach</p>
             </div>
           </div>
+        </div>
 
-          {/* Stats Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <Users className="w-8 h-8 text-white mx-auto mb-3" />
-              <h3 className="text-2xl font-bold text-white">10,000+</h3>
-              <p className="text-white/80">Leads Managed</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <TrendingUp className="w-8 h-8 text-white mx-auto mb-3" />
-              <h3 className="text-2xl font-bold text-white">85%</h3>
-              <p className="text-white/80">Conversion Rate</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <Target className="w-8 h-8 text-white mx-auto mb-3" />
-              <h3 className="text-2xl font-bold text-white">3x</h3>
-              <p className="text-white/80">Faster Outreach</p>
-            </div>
-          </div>
+        {/* Action Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Upload CSV Card */}
+          <Card className="bg-white dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
+            <CardHeader className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Upload className="w-8 h-8 text-white" />
+              </div>
+              <CardTitle className="text-gray-900 dark:text-white">Upload CSV File</CardTitle>
+              <CardDescription className="text-gray-600 dark:text-gray-400">
+                Upload your existing leads from a CSV file and get started immediately
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="text-center">
+              <div className="relative">
+                <Input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleCSVUpload}
+                  disabled={isUploading}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+                <Button 
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 w-full"
+                  disabled={isUploading}
+                >
+                  {isUploading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-4 h-4 mr-2" />
+                      Choose CSV File
+                    </>
+                  )}
+                </Button>
+              </div>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
+                Supports Name, Email, Phone, Company, Position columns
+              </p>
+            </CardContent>
+          </Card>
 
-          {/* Bottom Text */}
-          <p className="text-white/80 text-sm">
-            Upload your leads or connect your sources to get started
+          {/* Connect Sources Card */}
+          <Card className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-400 transition-colors">
+            <CardHeader className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Plug className="w-8 h-8 text-white" />
+              </div>
+              <CardTitle className="text-gray-900 dark:text-white">Connect Lead Sources</CardTitle>
+              <CardDescription className="text-gray-600 dark:text-gray-400">
+                Connect your CRM, forms, and other lead sources for automatic sync
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="text-center">
+              <Button 
+                onClick={onConnectSources}
+                variant="outline" 
+                className="border-purple-300 dark:border-purple-600 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 w-full"
+              >
+                <Plug className="w-4 h-4 mr-2" />
+                Connect Sources
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
+                Supports CRM, forms, webhooks, and more
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="text-center mt-12">
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
+            Ready to supercharge your lead management?
+          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-500">
+            Upload your leads or connect your sources to get started - you'll create your account next
           </p>
         </div>
       </div>
