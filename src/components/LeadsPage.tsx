@@ -1,14 +1,26 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plus, Eye } from "lucide-react";
+import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plus, Eye, Trash2, AlertTriangle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import LeadDetailsModal from "./LeadDetailsModal";
 import AddLeadsModal from "./AddLeadsModal";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const LeadsPage = () => {
   const { toast } = useToast();
@@ -90,6 +102,68 @@ const LeadsPage = () => {
       toast({
         title: "Error",
         description: "Failed to initiate call. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDeleteLead = async (leadId) => {
+    try {
+      const { error } = await supabase
+        .from('user_leads')
+        .delete()
+        .eq('id', leadId);
+
+      if (error) {
+        console.error('Error deleting lead:', error);
+        toast({
+          title: "Error",
+          description: "Failed to delete lead.",
+          variant: "destructive"
+        });
+      } else {
+        setLeads(leads.filter(lead => lead.id !== leadId));
+        toast({
+          title: "Success",
+          description: "Lead deleted successfully."
+        });
+      }
+    } catch (error) {
+      console.error('Error deleting lead:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete lead.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDeleteAllLeads = async () => {
+    try {
+      const { error } = await supabase
+        .from('user_leads')
+        .delete()
+        .eq('user_id', user?.id);
+
+      if (error) {
+        console.error('Error deleting all leads:', error);
+        toast({
+          title: "Error",
+          description: "Failed to delete all leads.",
+          variant: "destructive"
+        });
+      } else {
+        setLeads([]);
+        toast({
+          title: "Success",
+          description: "All leads deleted successfully."
+        });
+      }
+    } catch (error) {
+      console.error('Error deleting all leads:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete all leads.",
         variant: "destructive"
       });
     }
@@ -192,13 +266,48 @@ const LeadsPage = () => {
                 Manage your lead pipeline
               </CardDescription>
             </div>
-            <Button 
-              onClick={() => setIsAddLeadsModalOpen(true)}
-              className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Leads
-            </Button>
+            <div className="flex space-x-2">
+              {leads.length > 0 && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button 
+                      variant="outline" 
+                      className="border-red-300 text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Delete All
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="flex items-center">
+                        <AlertTriangle className="w-5 h-5 text-red-500 mr-2" />
+                        Delete All Leads
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete all {leads.length} leads from your account.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction 
+                        onClick={handleDeleteAllLeads}
+                        className="bg-red-600 hover:bg-red-700 text-white"
+                      >
+                        Delete All Leads
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
+              <Button 
+                onClick={() => setIsAddLeadsModalOpen(true)}
+                className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Leads
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
@@ -262,6 +371,37 @@ const LeadsPage = () => {
                         <Eye className="w-4 h-4 mr-1" />
                         View Details
                       </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="border-red-300 text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle className="flex items-center">
+                              <AlertTriangle className="w-5 h-5 text-red-500 mr-2" />
+                              Delete Lead
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete {lead.name}? This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction 
+                              onClick={() => handleDeleteLead(lead.id)}
+                              className="bg-red-600 hover:bg-red-700 text-white"
+                            >
+                              Delete Lead
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </div>
                 </div>
