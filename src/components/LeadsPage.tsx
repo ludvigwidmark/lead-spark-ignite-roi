@@ -72,6 +72,7 @@ const LeadsPage = () => {
   const handleCallLead = async (lead) => {
     try {
       const webhookUrl = 'https://ludvigwidmark.app.n8n.cloud/webhook-test/lovable-webhook';
+      const callbackUrl = `${window.location.origin}/api/vapi-callback`;
       
       const response = await fetch(webhookUrl, {
         method: 'POST',
@@ -80,26 +81,31 @@ const LeadsPage = () => {
         },
         body: JSON.stringify({
           action: 'call_lead',
+          rowId: lead.id,
           lead: {
-            id: lead.id,
             name: lead.name,
             email: lead.email,
             phone: lead.phone,
-            company: lead.company,
-            position: lead.position,
-            last_contact: lead.last_contact,
-            next_action: lead.next_action,
-            custom_data: lead.custom_data
           },
+          callbackUrl: callbackUrl,
           timestamp: new Date().toISOString(),
           user_id: user?.id
         })
       });
 
       if (response.ok) {
+        // Update lead status to 'calling'
+        await supabase
+          .from('user_leads')
+          .update({ status: 'calling' })
+          .eq('id', lead.id);
+
+        // Refresh leads to show updated status
+        fetchLeads();
+
         toast({
           title: "Call Initiated",
-          description: `Lead information for ${lead.name} has been sent to the webhook.`
+          description: `Call initiated for ${lead.name}. The lead status has been updated.`
         });
       } else {
         throw new Error('Webhook request failed');
@@ -169,6 +175,7 @@ const LeadsPage = () => {
     try {
       const selectedLeadData = leads.filter(lead => selectedLeads.has(lead.id));
       const webhookUrl = 'https://ludvigwidmark.app.n8n.cloud/webhook-test/lovable-webhook';
+      const callbackUrl = `${window.location.origin}/api/vapi-callback`;
       
       const response = await fetch(webhookUrl, {
         method: 'POST',
@@ -178,22 +185,28 @@ const LeadsPage = () => {
         body: JSON.stringify({
           action: 'bulk_call_leads',
           leads: selectedLeadData.map(lead => ({
-            id: lead.id,
+            rowId: lead.id,
             name: lead.name,
             email: lead.email,
             phone: lead.phone,
-            company: lead.company,
-            position: lead.position,
-            last_contact: lead.last_contact,
-            next_action: lead.next_action,
-            custom_data: lead.custom_data
           })),
+          callbackUrl: callbackUrl,
           timestamp: new Date().toISOString(),
           user_id: user?.id
         })
       });
 
       if (response.ok) {
+        // Update all selected leads status to 'calling'
+        const selectedLeadIds = Array.from(selectedLeads);
+        await supabase
+          .from('user_leads')
+          .update({ status: 'calling' })
+          .in('id', selectedLeadIds);
+
+        // Refresh leads to show updated status
+        fetchLeads();
+
         toast({
           title: "Bulk Call Initiated",
           description: `Bulk call initiated for ${selectedLeadData.length} leads.`
@@ -243,6 +256,21 @@ const LeadsPage = () => {
     });
   };
 
+  const getCallStatusBadge = (lead) => {
+    if (lead.status === 'calling') {
+      return <Badge className="bg-yellow-500 text-white">Calling</Badge>;
+    }
+    if (lead.status === 'completed') {
+      if (lead.qualified === true) {
+        return <Badge className="bg-green-500 text-white">Qualified</Badge>;
+      } else if (lead.qualified === false) {
+        return <Badge className="bg-red-500 text-white">Not Qualified</Badge>;
+      }
+      return <Badge className="bg-blue-500 text-white">Call Completed</Badge>;
+    }
+    return null;
+  };
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -277,8 +305,10 @@ const LeadsPage = () => {
             <div className="flex items-center space-x-2">
               <TrendingUp className="w-5 h-5 text-titanium-600 dark:text-titanium-400" />
               <div>
-                <p className="text-2xl font-bold text-black dark:text-white">0</p>
-                <p className="text-sm text-titanium-600 dark:text-titanium-400">Hot Leads</p>
+                <p className="text-2xl font-bold text-black dark:text-white">
+                  {leads.filter(lead => lead.qualified === true).length}
+                </p>
+                <p className="text-sm text-titanium-600 dark:text-titanium-400">Qualified Leads</p>
               </div>
             </div>
           </CardContent>
@@ -289,7 +319,9 @@ const LeadsPage = () => {
             <div className="flex items-center space-x-2">
               <Phone className="w-5 h-5 text-titanium-600 dark:text-titanium-400" />
               <div>
-                <p className="text-2xl font-bold text-black dark:text-white">0</p>
+                <p className="text-2xl font-bold text-black dark:text-white">
+                  {leads.filter(lead => lead.status === 'completed').length}
+                </p>
                 <p className="text-sm text-titanium-600 dark:text-titanium-400">Calls Made</p>
               </div>
             </div>
@@ -301,8 +333,10 @@ const LeadsPage = () => {
             <div className="flex items-center space-x-2">
               <Star className="w-5 h-5 text-titanium-600 dark:text-titanium-400" />
               <div>
-                <p className="text-2xl font-bold text-black dark:text-white">0%</p>
-                <p className="text-sm text-titanium-600 dark:text-titanium-400">Conversion Rate</p>
+                <p className="text-2xl font-bold text-black dark:text-white">
+                  {leads.filter(lead => lead.meeting_booked === true).length}
+                </p>
+                <p className="text-sm text-titanium-600 dark:text-titanium-400">Meetings Booked</p>
               </div>
             </div>
           </CardContent>
@@ -426,10 +460,21 @@ const LeadsPage = () => {
                         <p className="text-sm text-titanium-600 dark:text-titanium-400">{lead.position} at {lead.company}</p>
                       </div>
                     </div>
+                    <div className="flex items-center space-x-2">
+                      {getCallStatusBadge(lead)}
+                      {lead.meeting_booked && (
+                        <Badge className="bg-purple-500 text-white">Meeting Booked</Badge>
+                      )}
+                    </div>
                   </div>
 
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm text-titanium-600 dark:text-titanium-400">Last contact: {lead.last_contact}</span>
+                    <span className="text-sm text-titanium-600 dark:text-titanium-400">
+                      Last contact: {lead.last_contact}
+                      {lead.call_duration && (
+                        <span className="ml-4">Call duration: {Math.round(lead.call_duration / 60)}min</span>
+                      )}
+                    </span>
                   </div>
 
                   <div className="flex items-center justify-between">
@@ -443,9 +488,10 @@ const LeadsPage = () => {
                         size="sm" 
                         onClick={() => handleCallLead(lead)}
                         className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800"
+                        disabled={lead.status === 'calling'}
                       >
                         <Phone className="w-4 h-4 mr-1" />
-                        Call
+                        {lead.status === 'calling' ? 'Calling...' : 'Call'}
                       </Button>
                       <Button variant="outline" size="sm" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
                         <Mail className="w-4 h-4 mr-1" />

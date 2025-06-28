@@ -168,44 +168,62 @@ export type Database = {
       }
       user_leads: {
         Row: {
+          call_completed_at: string | null
+          call_duration: number | null
           company: string | null
           created_at: string
           custom_data: Json | null
           email: string | null
           id: string
           last_contact: string | null
+          meeting_booked: boolean | null
           name: string
           next_action: string | null
           phone: string | null
           position: string | null
+          qualified: boolean | null
+          status: string | null
+          transcript: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          call_completed_at?: string | null
+          call_duration?: number | null
           company?: string | null
           created_at?: string
           custom_data?: Json | null
           email?: string | null
           id?: string
           last_contact?: string | null
+          meeting_booked?: boolean | null
           name: string
           next_action?: string | null
           phone?: string | null
           position?: string | null
+          qualified?: boolean | null
+          status?: string | null
+          transcript?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          call_completed_at?: string | null
+          call_duration?: number | null
           company?: string | null
           created_at?: string
           custom_data?: Json | null
           email?: string | null
           id?: string
           last_contact?: string | null
+          meeting_booked?: boolean | null
           name?: string
           next_action?: string | null
           phone?: string | null
           position?: string | null
+          qualified?: boolean | null
+          status?: string | null
+          transcript?: string | null
           updated_at?: string
           user_id?: string
         }
