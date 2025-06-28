@@ -1,10 +1,10 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Check, Zap, Brain, RotateCcw, BarChart3, Globe, Link } from 'lucide-react';
+import ROICalculator from '@/components/ROICalculator';
 
 const AstridLanding = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -279,48 +279,8 @@ const AstridLanding = () => {
         </div>
       </div>
 
-      {/* ROI Section */}
-      <div className="bg-primary text-primary-foreground py-20 relative">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6 font-work-sans">10X ROI GUARANTEE</h2>
-            <h3 className="text-2xl mb-4 font-work-sans">The Math is Simple</h3>
-            <p className="text-xl opacity-90 max-w-3xl mx-auto">
-              Companies using AI automation see 10-20% sales ROI boost⁴. With Astrid, you're not just saving costs—you're multiplying revenue.
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
-            <h4 className="text-2xl font-bold text-center mb-12 font-work-sans">Your Potential Returns</h4>
-            
-            <div className="grid md:grid-cols-2 gap-8">
-              <Card className="bg-background/10 border-primary-foreground/20">
-                <CardHeader>
-                  <CardTitle className="text-primary-foreground font-work-sans">Traditional SDR Costs</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3 text-primary-foreground/90">
-                  <div>€10,000/month - Salary & benefits</div>
-                  <div>€2,000/month - Tools & software</div>
-                  <div>€3,000 - Training & onboarding</div>
-                  <div>15 meetings/month - Average output</div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-background/10 border-primary-foreground/20">
-                <CardHeader>
-                  <CardTitle className="text-primary-foreground font-work-sans">With Astrid AI</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3 text-primary-foreground/90">
-                  <div>€2,490/month - All inclusive</div>
-                  <div>€0 - Tools included</div>
-                  <div>30 minutes - Setup time</div>
-                  <div>100+ meetings/month - Guaranteed output</div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* ROI Section - Replace with Calculator */}
+      <ROICalculator />
 
       {/* Process Section */}
       <div className="container mx-auto px-4 py-20 relative">
