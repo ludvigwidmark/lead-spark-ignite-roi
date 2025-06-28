@@ -6,15 +6,35 @@ import { Button } from "@/components/ui/button";
 import LeadsPage from "@/components/LeadsPage";
 import VoiceOutreach from "@/components/VoiceOutreach";
 import ClyoLogo from "@/components/ClyoLogo";
-import { Users, Bell, Moon, Sun } from "lucide-react";
+import { Users, Bell, Moon, Sun, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("leads");
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { signOut, user } = useAuth();
+  const { toast } = useToast();
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle('dark');
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Signed Out",
+        description: "You have been successfully signed out.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to sign out. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -31,6 +51,11 @@ const Index = () => {
               <div className="text-sm text-titanium-600 dark:text-titanium-400 font-medium">
                 AI-Powered Lead Management Platform
               </div>
+              {user && (
+                <div className="text-sm text-titanium-600 dark:text-titanium-400">
+                  {user.email}
+                </div>
+              )}
               <Button 
                 variant="outline" 
                 size="icon" 
@@ -38,6 +63,14 @@ const Index = () => {
                 className="border-titanium-300 dark:border-titanium-600 hover:bg-titanium-100 dark:hover:bg-titanium-800 text-black dark:text-white"
               >
                 {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              </Button>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={handleSignOut}
+                className="border-titanium-300 dark:border-titanium-600 hover:bg-titanium-100 dark:hover:bg-titanium-800 text-black dark:text-white"
+              >
+                <LogOut className="h-4 w-4" />
               </Button>
             </div>
           </div>
