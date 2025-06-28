@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import ClyoLogo from '@/components/ClyoLogo';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface AuthForm {
   email: string;
@@ -19,6 +20,7 @@ const Landing = () => {
   const [loading, setLoading] = useState(false);
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const form = useForm<AuthForm>({
     defaultValues: {
@@ -94,15 +96,15 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8">
+      <div className="w-full max-w-md space-y-6 sm:space-y-8">
         {/* Logo and Header */}
-        <div className="text-center space-y-4">
+        <div className="text-center space-y-3 sm:space-y-4">
           <div className="flex justify-center">
-            <ClyoLogo size="lg" className="text-black dark:text-white" />
+            <ClyoLogo size={isMobile ? "md" : "lg"} className="text-black dark:text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-black dark:text-white">Clyo</h1>
-            <p className="text-titanium-600 dark:text-titanium-400 mt-2">
+            <h1 className={`${isMobile ? 'text-2xl' : 'text-3xl'} font-bold text-black dark:text-white`}>Clyo</h1>
+            <p className={`text-titanium-600 dark:text-titanium-400 mt-2 ${isMobile ? 'text-sm px-4' : 'text-base'}`}>
               AI-Powered Lead Management Platform
             </p>
           </div>
@@ -110,18 +112,18 @@ const Landing = () => {
 
         {/* Auth Card */}
         <Card className="border-titanium-300 dark:border-titanium-600">
-          <CardHeader>
-            <CardTitle className="text-center text-black dark:text-white">
+          <CardHeader className="pb-4 sm:pb-6">
+            <CardTitle className={`text-center text-black dark:text-white ${isMobile ? 'text-lg' : 'text-xl'}`}>
               {isSignUp ? 'Create Account' : 'Sign In'}
             </CardTitle>
-            <CardDescription className="text-center text-titanium-600 dark:text-titanium-400">
+            <CardDescription className={`text-center text-titanium-600 dark:text-titanium-400 ${isMobile ? 'text-sm px-2' : 'text-base'}`}>
               {isSignUp 
                 ? 'Sign up to start managing your leads with AI' 
                 : 'Welcome back! Please sign in to continue'
               }
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-4 sm:px-6">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
                 <FormField
@@ -136,7 +138,7 @@ const Landing = () => {
                   }}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-black dark:text-white">Email</FormLabel>
+                      <FormLabel className="text-black dark:text-white text-sm sm:text-base">Email</FormLabel>
                       <FormControl>
                         <Input 
                           {...field} 
@@ -144,6 +146,7 @@ const Landing = () => {
                           placeholder="Enter your email" 
                           autoComplete="email"
                           disabled={loading}
+                          className={isMobile ? 'text-base' : 'text-sm'}
                         />
                       </FormControl>
                       <FormMessage />
@@ -162,7 +165,7 @@ const Landing = () => {
                   }}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-black dark:text-white">Password</FormLabel>
+                      <FormLabel className="text-black dark:text-white text-sm sm:text-base">Password</FormLabel>
                       <FormControl>
                         <Input 
                           {...field} 
@@ -170,6 +173,7 @@ const Landing = () => {
                           placeholder={isSignUp ? "Create a password" : "Enter your password"}
                           autoComplete={isSignUp ? "new-password" : "current-password"}
                           disabled={loading}
+                          className={isMobile ? 'text-base' : 'text-sm'}
                         />
                       </FormControl>
                       <FormMessage />
@@ -178,7 +182,7 @@ const Landing = () => {
                 />
                 <Button 
                   type="submit" 
-                  className="w-full" 
+                  className={`w-full ${isMobile ? 'py-3 text-base' : 'py-2 text-sm'}`}
                   disabled={loading}
                 >
                   {loading ? (isSignUp ? 'Creating Account...' : 'Signing In...') : (isSignUp ? 'Create Account' : 'Sign In')}
@@ -187,11 +191,11 @@ const Landing = () => {
             </Form>
 
             {/* Toggle between login and signup */}
-            <div className="mt-6 text-center">
+            <div className="mt-4 sm:mt-6 text-center">
               <Button
                 variant="link"
                 onClick={toggleMode}
-                className="text-titanium-600 dark:text-titanium-400 hover:text-black dark:hover:text-white"
+                className={`text-titanium-600 dark:text-titanium-400 hover:text-black dark:hover:text-white ${isMobile ? 'text-sm' : 'text-base'}`}
                 disabled={loading}
               >
                 {isSignUp 
