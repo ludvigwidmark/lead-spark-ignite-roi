@@ -117,8 +117,7 @@ const AstridLanding = () => {
               Make Every Interaction <span className="text-primary">Instantly Valuable</span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto font-work-sans">
-              Astrid AI calls your leads instantly, speaks like your best SDR, and never forgets to follow up. 
-              Join the AI revolution that's delivering 10X ROI for every euro invested.
+              With Astrid AI, your customers experience immediate value from the first moment.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
