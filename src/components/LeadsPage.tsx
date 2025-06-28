@@ -4,16 +4,18 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plug, RotateCcw, Upload, Eye } from "lucide-react";
+import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plus, Eye } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import LeadDetailsModal from "./LeadDetailsModal";
+import AddLeadsModal from "./AddLeadsModal";
 
 const LeadsPage = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const [selectedLead, setSelectedLead] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddLeadsModalOpen, setIsAddLeadsModalOpen] = useState(false);
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -93,211 +95,9 @@ const LeadsPage = () => {
     }
   };
 
-  const handleConnectSources = () => {
-    toast({
-      title: "Lead Sources Integration",
-      description: "Connect your CRM, forms, and other lead sources to start capturing leads automatically."
-    });
-  };
-
-  const handleReactivateOldCustomers = () => {
-    toast({
-      title: "Coming soon...",
-      description: "This feature will be available soon."
-    });
-  };
-
   const handleViewDetails = (lead) => {
     setSelectedLead(lead);
     setIsModalOpen(true);
-  };
-
-  const normalizeColumnName = (header) => {
-    const normalized = header.toLowerCase().trim();
-    
-    // Map various name variations to our standard fields
-    if (normalized.includes('first') && normalized.includes('name')) return 'firstName';
-    if (normalized.includes('last') && normalized.includes('name')) return 'lastName';
-    if (normalized === 'name' || normalized === 'full name' || normalized === 'fullname') return 'name';
-    if (normalized === 'email' || normalized === 'email address') return 'email';
-    if (normalized === 'phone' || normalized === 'phone number' || normalized === 'mobile') return 'phone';
-    if (normalized === 'company' || normalized === 'organization' || normalized === 'employer') return 'company';
-    if (normalized === 'position' || normalized === 'title' || normalized === 'job title' || normalized === 'role') return 'position';
-    
-    // Return original header for custom columns
-    return header.trim();
-  };
-
-  const insertLeadsToDatabase = async (newLeads) => {
-    if (!user) return;
-
-    try {
-      const leadsToInsert = newLeads.map(lead => ({
-        user_id: user.id,
-        name: lead.name,
-        email: lead.email,
-        phone: lead.phone,
-        company: lead.company,
-        position: lead.position,
-        last_contact: lead.lastContact,
-        next_action: lead.nextAction,
-        custom_data: lead.customData || {}
-      }));
-
-      const { error } = await supabase
-        .from('user_leads')
-        .insert(leadsToInsert);
-
-      if (error) {
-        console.error('Error inserting leads:', error);
-        toast({
-          title: "Error",
-          description: "Failed to save leads to database.",
-          variant: "destructive"
-        });
-        return false;
-      }
-
-      // Refresh the leads list
-      await fetchLeads();
-      return true;
-    } catch (error) {
-      console.error('Error inserting leads:', error);
-      toast({
-        title: "Error",
-        description: "Failed to save leads.",
-        variant: "destructive"
-      });
-      return false;
-    }
-  };
-
-  const handleCSVUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    if (file.type !== 'text/csv' && !file.name.endsWith('.csv')) {
-      toast({
-        title: "Invalid File Type",
-        description: "Please upload a CSV file.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please log in to upload leads.",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const csvText = e.target?.result as string;
-      const lines = csvText.split('\n');
-      const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
-      const normalizedHeaders = headers.map(normalizeColumnName);
-      
-      // Check if we have at least one way to identify a person (name or email)
-      const hasName = normalizedHeaders.some(h => ['name', 'firstName', 'lastName'].includes(h));
-      const hasEmail = normalizedHeaders.includes('email');
-      
-      if (!hasName && !hasEmail) {
-        toast({
-          title: "Invalid CSV Format",
-          description: "CSV must contain at least a Name column or Email column to identify leads.",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      const newLeads = [];
-      for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (!line) continue;
-        
-        const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
-        const leadData: any = {};
-        const customData: any = {};
-        
-        // Process each column
-        headers.forEach((header, index) => {
-          const normalizedHeader = normalizedHeaders[index];
-          const value = values[index] || '';
-          
-          // Handle standard fields
-          switch (normalizedHeader) {
-            case 'firstName':
-              leadData.firstName = value;
-              break;
-            case 'lastName':
-              leadData.lastName = value;
-              break;
-            case 'name':
-              leadData.name = value;
-              break;
-            case 'email':
-              leadData.email = value;
-              break;
-            case 'phone':
-              leadData.phone = value;
-              break;
-            case 'company':
-              leadData.company = value;
-              break;
-            case 'position':
-              leadData.position = value;
-              break;
-            default:
-              // Store as custom data
-              if (value) {
-                customData[header] = value;
-              }
-          }
-        });
-
-        // Construct the name if we have firstName/lastName but no name
-        if (!leadData.name && (leadData.firstName || leadData.lastName)) {
-          leadData.name = `${leadData.firstName || ''} ${leadData.lastName || ''}`.trim();
-        }
-
-        // Only add lead if we have a name or email
-        if (leadData.name || leadData.email) {
-          newLeads.push({
-            name: leadData.name || 'Unknown Name',
-            company: leadData.company || 'Unknown Company',
-            position: leadData.position || 'Unknown Position',
-            email: leadData.email || 'N/A',
-            phone: leadData.phone || 'N/A',
-            lastContact: 'Just added',
-            nextAction: 'Initial Contact Needed',
-            customData
-          });
-        }
-      }
-
-      if (newLeads.length > 0) {
-        const success = await insertLeadsToDatabase(newLeads);
-        if (success) {
-          toast({
-            title: "CSV Uploaded Successfully",
-            description: `Added ${newLeads.length} new leads to your pipeline.`
-          });
-        }
-      } else {
-        toast({
-          title: "No Valid Leads Found",
-          description: "Please check your CSV format and ensure it contains name or email columns.",
-          variant: "destructive"
-        });
-      }
-    };
-
-    reader.readAsText(file);
-    event.target.value = '';
   };
 
   const getStatusColor = (status: string) => {
@@ -392,28 +192,13 @@ const LeadsPage = () => {
                 Manage your lead pipeline
               </CardDescription>
             </div>
-            <div className="flex gap-2">
-              <div className="relative">
-                <Input
-                  type="file"
-                  accept=".csv"
-                  onChange={handleCSVUpload}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                />
-                <Button variant="outline" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
-                  <Upload className="w-4 h-4 mr-2" />
-                  Upload CSV
-                </Button>
-              </div>
-              <Button onClick={handleReactivateOldCustomers} variant="outline" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
-                <RotateCcw className="w-4 h-4 mr-2" />
-                Reactivate old customers/leads
-              </Button>
-              <Button onClick={handleConnectSources} className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200">
-                <Plug className="w-4 h-4 mr-2" />
-                Connect Lead Sources
-              </Button>
-            </div>
+            <Button 
+              onClick={() => setIsAddLeadsModalOpen(true)}
+              className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Leads
+            </Button>
           </div>
         </CardHeader>
         <CardContent>
@@ -421,25 +206,14 @@ const LeadsPage = () => {
             <div className="text-center py-12">
               <Users className="w-16 h-16 text-titanium-400 dark:text-titanium-600 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-black dark:text-white mb-2">No leads yet</h3>
-              <p className="text-titanium-600 dark:text-titanium-400 mb-6">Get started by uploading a CSV file or connecting your lead sources.</p>
-              <div className="flex justify-center gap-4">
-                <div className="relative">
-                  <Input
-                    type="file"
-                    accept=".csv"
-                    onChange={handleCSVUpload}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  />
-                  <Button className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200">
-                    <Upload className="w-4 h-4 mr-2" />
-                    Upload CSV
-                  </Button>
-                </div>
-                <Button onClick={handleConnectSources} variant="outline" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
-                  <Plug className="w-4 h-4 mr-2" />
-                  Connect Sources
-                </Button>
-              </div>
+              <p className="text-titanium-600 dark:text-titanium-400 mb-6">Get started by adding your first lead.</p>
+              <Button 
+                onClick={() => setIsAddLeadsModalOpen(true)}
+                className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Leads
+              </Button>
             </div>
           ) : (
             <div className="space-y-3">
@@ -501,6 +275,12 @@ const LeadsPage = () => {
         lead={selectedLead}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      <AddLeadsModal
+        isOpen={isAddLeadsModalOpen}
+        onClose={() => setIsAddLeadsModalOpen(false)}
+        onLeadsAdded={fetchLeads}
       />
     </div>
   );
