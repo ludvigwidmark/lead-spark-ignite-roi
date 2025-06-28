@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plus, Eye, Trash2, AlertTriangle, MoreVertical } from "lucide-react";
+import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plus, Eye, Trash2, AlertTriangle, MoreVertical, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import LeadDetailsModal from "./LeadDetailsModal";
@@ -236,6 +236,13 @@ const LeadsPage = () => {
     return "text-red-600 font-bold";
   };
 
+  const handleRunLeadMagnet = () => {
+    toast({
+      title: "Lead Magnet",
+      description: "Lead Magnet feature is coming soon! Stay tuned for updates.",
+    });
+  };
+
   if (loading) {
     return (
       <div className="space-y-6">
@@ -339,6 +346,10 @@ const LeadsPage = () => {
                         <DropdownMenuItem onClick={handleBulkCall}>
                           <Phone className="w-4 h-4 mr-2" />
                           Call Selected
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleRunLeadMagnet}>
+                          <Zap className="w-4 h-4 mr-2" />
+                          Run Lead Magnet
                         </DropdownMenuItem>
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
