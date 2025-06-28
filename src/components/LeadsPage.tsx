@@ -1,18 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plug, RotateCcw, Upload, Eye } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import LeadDetailsModal from "./LeadDetailsModal";
 
 const LeadsPage = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [selectedLead, setSelectedLead] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [leads, setLeads] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch leads from database
+  useEffect(() => {
+    if (user) {
+      fetchLeads();
+    }
+  }, [user]);
+
+  const fetchLeads = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('user_leads')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching leads:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load leads.",
+          variant: "destructive"
+        });
+      } else {
+        setLeads(data || []);
+      }
+    } catch (error) {
+      console.error('Error fetching leads:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleConnectSources = () => {
     toast({
@@ -49,7 +83,51 @@ const LeadsPage = () => {
     return header.trim();
   };
 
-  const handleCSVUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const insertLeadsToDatabase = async (newLeads) => {
+    if (!user) return;
+
+    try {
+      const leadsToInsert = newLeads.map(lead => ({
+        user_id: user.id,
+        name: lead.name,
+        email: lead.email,
+        phone: lead.phone,
+        company: lead.company,
+        position: lead.position,
+        last_contact: lead.lastContact,
+        next_action: lead.nextAction,
+        custom_data: lead.customData || {}
+      }));
+
+      const { error } = await supabase
+        .from('user_leads')
+        .insert(leadsToInsert);
+
+      if (error) {
+        console.error('Error inserting leads:', error);
+        toast({
+          title: "Error",
+          description: "Failed to save leads to database.",
+          variant: "destructive"
+        });
+        return false;
+      }
+
+      // Refresh the leads list
+      await fetchLeads();
+      return true;
+    } catch (error) {
+      console.error('Error inserting leads:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save leads.",
+        variant: "destructive"
+      });
+      return false;
+    }
+  };
+
+  const handleCSVUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -62,8 +140,17 @@ const LeadsPage = () => {
       return;
     }
 
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to upload leads.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       const csvText = e.target?.result as string;
       const lines = csvText.split('\n');
       const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
@@ -135,7 +222,6 @@ const LeadsPage = () => {
         // Only add lead if we have a name or email
         if (leadData.name || leadData.email) {
           newLeads.push({
-            id: Date.now() + i,
             name: leadData.name || 'Unknown Name',
             company: leadData.company || 'Unknown Company',
             position: leadData.position || 'Unknown Position',
@@ -149,11 +235,13 @@ const LeadsPage = () => {
       }
 
       if (newLeads.length > 0) {
-        setLeads(prev => [...prev, ...newLeads]);
-        toast({
-          title: "CSV Uploaded Successfully",
-          description: `Added ${newLeads.length} new leads to your pipeline.`
-        });
+        const success = await insertLeadsToDatabase(newLeads);
+        if (success) {
+          toast({
+            title: "CSV Uploaded Successfully",
+            description: `Added ${newLeads.length} new leads to your pipeline.`
+          });
+        }
       } else {
         toast({
           title: "No Valid Leads Found",
@@ -185,6 +273,16 @@ const LeadsPage = () => {
     if (score >= 70) return "text-yellow-600 font-bold";
     return "text-red-600 font-bold";
   };
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-center p-8">
+          <div className="text-titanium-600 dark:text-titanium-400">Loading leads...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -315,13 +413,13 @@ const LeadsPage = () => {
                   </div>
 
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm text-titanium-600 dark:text-titanium-400">Last contact: {lead.lastContact}</span>
+                    <span className="text-sm text-titanium-600 dark:text-titanium-400">Last contact: {lead.last_contact}</span>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <MessageSquare className="w-4 h-4 text-titanium-600 dark:text-titanium-400" />
-                      <span className="text-sm font-medium text-black dark:text-white">{lead.nextAction}</span>
+                      <span className="text-sm font-medium text-black dark:text-white">{lead.next_action}</span>
                     </div>
                     <div className="flex space-x-2">
                       <Button variant="outline" size="sm" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">

@@ -166,6 +166,51 @@ export type Database = {
           },
         ]
       }
+      user_leads: {
+        Row: {
+          company: string | null
+          created_at: string
+          custom_data: Json | null
+          email: string | null
+          id: string
+          last_contact: string | null
+          name: string
+          next_action: string | null
+          phone: string | null
+          position: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          custom_data?: Json | null
+          email?: string | null
+          id?: string
+          last_contact?: string | null
+          name: string
+          next_action?: string | null
+          phone?: string | null
+          position?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          custom_data?: Json | null
+          email?: string | null
+          id?: string
+          last_contact?: string | null
+          name?: string
+          next_action?: string | null
+          phone?: string | null
+          position?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_settings: {
         Row: {
           created_at: string
