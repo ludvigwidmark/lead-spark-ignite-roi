@@ -16,38 +16,35 @@ const ClyoLogo: React.FC<ClyoLogoProps> = ({ size = 'md', className = '' }) => {
   return (
     <div className={`${sizeClasses[size]} ${className} relative`}>
       <svg
-        viewBox="0 0 32 32"
+        viewBox="0 0 100 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-full"
       >
         {/* Main L shape - larger rectangle */}
         <rect
-          x="4"
-          y="4"
-          width="12"
-          height="20"
+          x="15"
+          y="15"
+          width="25"
+          height="55"
           fill="currentColor"
-          rx="1"
         />
-        {/* Smaller rectangle at bottom right */}
+        {/* Bottom horizontal part of L */}
         <rect
-          x="16"
-          y="16"
-          width="12"
-          height="8"
+          x="40"
+          y="55"
+          width="30"
+          height="15"
           fill="currentColor"
-          rx="1"
         />
-        {/* Small accent square at top right */}
+        {/* Small tilted square in upper right */}
         <rect
-          x="20"
-          y="4"
-          width="8"
-          height="8"
+          x="55"
+          y="25"
+          width="15"
+          height="15"
           fill="currentColor"
-          rx="1"
-          transform="rotate(15 24 8)"
+          transform="rotate(15 62.5 32.5)"
         />
       </svg>
     </div>
