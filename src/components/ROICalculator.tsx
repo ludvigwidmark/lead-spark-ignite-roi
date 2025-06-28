@@ -48,82 +48,94 @@ const ROICalculator = () => {
   return (
     <div className="bg-muted/30 py-20 relative">
       <div className="container mx-auto px-4">
-        <div className="max-w-2xl mx-auto">
-          <Card className="bg-white shadow-lg border-0">
+        <div className="max-w-lg mx-auto">
+          <Card className="bg-white shadow-xl border border-gray-200">
             <CardHeader className="text-center pb-4">
-              <CardTitle className="text-2xl font-bold text-gray-900 font-work-sans">ROI Calculator</CardTitle>
+              <CardTitle className="text-xl font-bold text-gray-900 font-work-sans">ROI Calculator</CardTitle>
               <p className="text-gray-600 text-sm">See your potential returns with Astrid AI</p>
             </CardHeader>
             
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-4">
               {/* Input Section */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700">SDR Monthly Salary (€)</Label>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label className="text-xs font-medium text-gray-700">SDR Monthly Salary (€)</Label>
                   <Input
                     type="number"
                     value={inputs.sdrSalary}
                     onChange={(e) => handleInputChange('sdrSalary', e.target.value)}
-                    className="border-gray-300 focus:border-primary"
+                    className="border-gray-300 focus:border-primary text-sm h-8"
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700">Meetings/Month</Label>
+                <div className="space-y-1">
+                  <Label className="text-xs font-medium text-gray-700">Meetings/Month</Label>
                   <Input
                     type="number"
                     value={inputs.sdrMeetingsPerMonth}
                     onChange={(e) => handleInputChange('sdrMeetingsPerMonth', e.target.value)}
-                    className="border-gray-300 focus:border-primary"
+                    className="border-gray-300 focus:border-primary text-sm h-8"
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700">Average Deal Value (€)</Label>
+                <div className="space-y-1">
+                  <Label className="text-xs font-medium text-gray-700">Average Deal Value (€)</Label>
                   <Input
                     type="number"
                     value={inputs.avgDealValue}
                     onChange={(e) => handleInputChange('avgDealValue', e.target.value)}
-                    className="border-gray-300 focus:border-primary"
+                    className="border-gray-300 focus:border-primary text-sm h-8"
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700">Conversion Rate (%)</Label>
+                <div className="space-y-1">
+                  <Label className="text-xs font-medium text-gray-700">Conversion Rate (%)</Label>
                   <Input
                     type="number"
                     value={inputs.conversionRate}
                     onChange={(e) => handleInputChange('conversionRate', e.target.value)}
-                    className="border-gray-300 focus:border-primary"
+                    className="border-gray-300 focus:border-primary text-sm h-8"
                   />
                 </div>
               </div>
 
               {/* Results Section */}
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <div className="text-sm text-gray-600 mb-1">Traditional SDR</div>
-                  <div className="text-2xl font-bold text-gray-900 mb-1">{sdrROI.toFixed(0)}%</div>
+              <div className="grid grid-cols-2 gap-3 pt-3 border-t border-gray-200">
+                <div className="text-center p-3 bg-gray-50 rounded-lg">
+                  <div className="text-xs text-gray-600 mb-1">Traditional SDR</div>
+                  <div className="text-xl font-bold text-gray-900 mb-1">{sdrROI.toFixed(0)}%</div>
                   <div className="text-xs text-gray-500">Annual ROI</div>
                 </div>
 
-                <div className="text-center p-4 bg-primary/5 rounded-lg">
-                  <div className="text-sm text-gray-600 mb-1">With Astrid AI</div>
-                  <div className="text-2xl font-bold text-primary mb-1">{astridROI.toFixed(0)}%</div>
+                <div className="text-center p-3 bg-primary/5 rounded-lg">
+                  <div className="text-xs text-gray-600 mb-1">With Astrid AI</div>
+                  <div className="text-xl font-bold text-primary mb-1">{astridROI.toFixed(0)}%</div>
                   <div className="text-xs text-gray-500">Annual ROI</div>
                 </div>
               </div>
 
               {/* Summary */}
-              <div className="text-center pt-4 border-t border-gray-200">
-                <div className="text-3xl font-bold text-primary mb-2 font-work-sans">
+              <div className="text-center pt-3 border-t border-gray-200">
+                <div className="text-2xl font-bold text-primary mb-1 font-work-sans">
                   {roiImprovement.toFixed(1)}X
                 </div>
-                <p className="text-lg font-medium text-gray-900 mb-1">ROI Improvement</p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm font-medium text-gray-900 mb-1">ROI Improvement</p>
+                <p className="text-xs text-gray-600">
                   Save €{(sdrAnnualCost - astridAnnualCost).toLocaleString()} annually while generating 
                   €{(astridAnnualRevenue - sdrAnnualRevenue).toLocaleString()} more revenue
                 </p>
+              </div>
+
+              {/* VimOS Signature */}
+              <div className="text-center pt-3 border-t border-gray-100">
+                <a 
+                  href="https://vimos.withclyo.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-xs text-gray-500 hover:text-gray-700 transition-colors inline-flex items-center gap-1"
+                >
+                  Powered by VimOS⚡️
+                </a>
               </div>
             </CardContent>
           </Card>
