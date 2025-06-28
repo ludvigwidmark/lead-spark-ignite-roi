@@ -306,80 +306,80 @@ const LeadsPage = () => {
       <Card className="bg-white dark:bg-black border-titanium-300 dark:border-titanium-700">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center justify-between w-full">
               <div>
                 <CardTitle className="text-black dark:text-white">Leads</CardTitle>
-                <CardDescription className="text-titanium-600 dark:text-titanium-400">
-                  Manage your lead pipeline
+                <CardDescription className="text-titanium-600 dark:text-titanium-400 flex items-center space-x-4">
+                  <span>Manage your lead pipeline</span>
+                  {leads.length > 0 && (
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={isAllSelected}
+                        onCheckedChange={handleSelectAll}
+                        className="data-[state=indeterminate]:bg-titanium-600"
+                      />
+                      <label className="text-sm font-medium text-black dark:text-white">
+                        Select All ({leads.length})
+                      </label>
+                    </div>
+                  )}
                 </CardDescription>
               </div>
-              {leads.length > 0 && (
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    checked={isAllSelected}
-                    onCheckedChange={handleSelectAll}
-                    className="data-[state=indeterminate]:bg-titanium-600"
-                  />
-                  <label className="text-sm font-medium text-black dark:text-white">
-                    Select All ({leads.length})
-                  </label>
-                </div>
-              )}
-            </div>
-            <div className="flex space-x-2">
-              {selectedLeads.size > 0 && (
-                <div className="flex space-x-2">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline" className="border-titanium-300 dark:border-titanium-600">
-                        <MoreVertical className="w-4 h-4 mr-2" />
-                        Actions ({selectedLeads.size})
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem onClick={handleBulkCall}>
-                        <Phone className="w-4 h-4 mr-2" />
-                        Call Selected
-                      </DropdownMenuItem>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                            <Trash2 className="w-4 h-4 mr-2" />
-                            Delete Selected
-                          </DropdownMenuItem>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle className="flex items-center">
-                              <AlertTriangle className="w-5 h-5 text-red-500 mr-2" />
-                              Delete Selected Leads
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Are you sure you want to delete {selectedLeads.size} selected lead(s)? This action cannot be undone.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction 
-                              onClick={handleBulkDelete}
-                              className="bg-red-600 hover:bg-red-700 text-white"
-                            >
+              <div className="flex space-x-2">
+                {selectedLeads.size > 0 && (
+                  <div className="flex space-x-2">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="border-titanium-300 dark:border-titanium-600">
+                          <MoreVertical className="w-4 h-4 mr-2" />
+                          Actions ({selectedLeads.size})
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem onClick={handleBulkCall}>
+                          <Phone className="w-4 h-4 mr-2" />
+                          Call Selected
+                        </DropdownMenuItem>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                              <Trash2 className="w-4 h-4 mr-2" />
                               Delete Selected
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              )}
-              <Button 
-                onClick={() => setIsAddLeadsModalOpen(true)}
-                className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Leads
-              </Button>
+                            </DropdownMenuItem>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle className="flex items-center">
+                                <AlertTriangle className="w-5 h-5 text-red-500 mr-2" />
+                                Delete Selected Leads
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete {selectedLeads.size} selected lead(s)? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction 
+                                onClick={handleBulkDelete}
+                                className="bg-red-600 hover:bg-red-700 text-white"
+                              >
+                                Delete Selected
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                )}
+                <Button 
+                  onClick={() => setIsAddLeadsModalOpen(true)}
+                  className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Leads
+                </Button>
+              </div>
             </div>
           </div>
         </CardHeader>
