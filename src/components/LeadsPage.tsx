@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -37,7 +36,7 @@ const LeadsPage = () => {
   const [isAddLeadsModalOpen, setIsAddLeadsModalOpen] = useState(false);
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedLeads, setSelectedLeads] = useState(new Set());
+  const [selectedLeads, setSelectedLeads] = useState<Set<string>>(new Set());
 
   // Fetch leads from database
   useEffect(() => {
@@ -115,7 +114,7 @@ const LeadsPage = () => {
     }
   };
 
-  const handleSelectLead = (leadId, checked) => {
+  const handleSelectLead = (leadId: string, checked: boolean) => {
     const newSelectedLeads = new Set(selectedLeads);
     if (checked) {
       newSelectedLeads.add(leadId);
@@ -125,7 +124,7 @@ const LeadsPage = () => {
     setSelectedLeads(newSelectedLeads);
   };
 
-  const handleSelectAll = (checked) => {
+  const handleSelectAll = (checked: boolean) => {
     if (checked) {
       setSelectedLeads(new Set(leads.map(lead => lead.id)));
     } else {
@@ -135,7 +134,7 @@ const LeadsPage = () => {
 
   const handleBulkDelete = async () => {
     try {
-      const selectedLeadIds = Array.from(selectedLeads);
+      const selectedLeadIds = Array.from(selectedLeads) as string[];
       const { error } = await supabase
         .from('user_leads')
         .delete()
@@ -405,7 +404,7 @@ const LeadsPage = () => {
                       <div className="flex items-center space-x-3">
                         <Checkbox
                           checked={selectedLeads.has(lead.id)}
-                          onCheckedChange={(checked) => handleSelectLead(lead.id, checked)}
+                          onCheckedChange={(checked) => handleSelectLead(lead.id, !!checked)}
                         />
                         <div className="w-10 h-10 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-semibold text-sm">
                           {lead.name.split(' ').map(n => n[0]).join('')}
