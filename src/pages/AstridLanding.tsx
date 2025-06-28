@@ -114,7 +114,7 @@ const AstridLanding = () => {
 
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 font-work-sans">
-              Convert Leads in <span className="text-primary">2 Minutes</span>, Not 47 Hours
+              Make Every Interaction <span className="text-primary">Instantly Valuable</span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto font-work-sans">
               Astrid AI calls your leads instantly, speaks like your best SDR, and never forgets to follow up. 
