@@ -29,14 +29,16 @@ const Landing = () => {
     defaultValues: {
       email: '',
       password: ''
-    }
+    },
+    mode: 'onSubmit'
   });
 
   const signUpForm = useForm<SignUpForm>({
     defaultValues: {
       email: '',
       password: ''
-    }
+    },
+    mode: 'onSubmit'
   });
 
   const handleLogin = async (data: LoginForm) => {
