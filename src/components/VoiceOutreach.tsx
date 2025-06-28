@@ -4,38 +4,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, MessageSquare, Linkedin, Phone, Sparkles } from "lucide-react";
+import { Mail, MessageSquare, Linkedin, Phone, Sparkles, Plus } from "lucide-react";
 
 const VoiceOutreach = () => {
   const { toast } = useToast();
-
-  const campaigns = [
-    {
-      id: 1,
-      name: "Q1 Enterprise Outreach",
-      status: "active",
-      leads: 45,
-      calls: 127,
-      emails: 89,
-      linkedin: 34,
-      conversion: "18%"
-    },
-    {
-      id: 2,
-      name: "SMB Follow-up Campaign",
-      status: "paused",
-      leads: 23,
-      calls: 67,
-      emails: 156,
-      linkedin: 12,
-      conversion: "12%"
-    }
-  ];
 
   const handleGetLuna = () => {
     toast({
       title: "Luna Coming Soon!",
       description: "Our AI voice agent Luna will be available soon. Stay tuned for updates!",
+    });
+  };
+
+  const handleCreateCampaign = () => {
+    toast({
+      title: "Feature Coming Soon",
+      description: "Campaign creation will be available soon!",
     });
   };
 
@@ -78,44 +62,19 @@ const VoiceOutreach = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {campaigns.map((campaign) => (
-              <div key={campaign.id} className="border rounded-lg p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center space-x-3">
-                    <h4 className="font-semibold">{campaign.name}</h4>
-                    <Badge className={campaign.status === "active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
-                      {campaign.status}
-                    </Badge>
-                  </div>
-                  <div className="flex space-x-2">
-                    <Button variant="outline" size="sm">Edit</Button>
-                    <Button size="sm">View Details</Button>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
-                  <div className="flex items-center space-x-2">
-                    <Phone className="w-4 h-4 text-blue-600" />
-                    <span>{campaign.calls} calls</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Mail className="w-4 h-4 text-green-600" />
-                    <span>{campaign.emails} emails</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Linkedin className="w-4 h-4 text-blue-700" />
-                    <span>{campaign.linkedin} LinkedIn</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span>{campaign.leads} leads</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="font-medium text-green-600">{campaign.conversion} conversion</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+          {/* Empty State */}
+          <div className="text-center py-12">
+            <div className="flex items-center justify-center w-16 h-16 bg-titanium-100 dark:bg-titanium-800 rounded-full mx-auto mb-4">
+              <MessageSquare className="w-8 h-8 text-titanium-600 dark:text-titanium-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-black dark:text-white mb-2">No campaigns yet</h3>
+            <p className="text-titanium-600 dark:text-titanium-400 mb-6 max-w-md mx-auto">
+              Create your first multi-channel outreach campaign to start engaging with your leads across voice, email, and social media.
+            </p>
+            <Button onClick={handleCreateCampaign} className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200">
+              <Plus className="w-4 h-4 mr-2" />
+              Create Campaign
+            </Button>
           </div>
         </CardContent>
       </Card>
