@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -190,49 +191,49 @@ const LeadsPage = () => {
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+        <Card className="bg-white dark:bg-black border-titanium-300 dark:border-titanium-700">
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
-              <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              <Users className="w-5 h-5 text-titanium-600 dark:text-titanium-400" />
               <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{leads.length}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Total Leads</p>
+                <p className="text-2xl font-bold text-black dark:text-white">{leads.length}</p>
+                <p className="text-sm text-titanium-600 dark:text-titanium-400">Total Leads</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+        <Card className="bg-white dark:bg-black border-titanium-300 dark:border-titanium-700">
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
-              <TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" />
+              <TrendingUp className="w-5 h-5 text-titanium-600 dark:text-titanium-400" />
               <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">0</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Hot Leads</p>
+                <p className="text-2xl font-bold text-black dark:text-white">0</p>
+                <p className="text-sm text-titanium-600 dark:text-titanium-400">Hot Leads</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+        <Card className="bg-white dark:bg-black border-titanium-300 dark:border-titanium-700">
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
-              <Phone className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+              <Phone className="w-5 h-5 text-titanium-600 dark:text-titanium-400" />
               <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">0</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Calls Made</p>
+                <p className="text-2xl font-bold text-black dark:text-white">0</p>
+                <p className="text-sm text-titanium-600 dark:text-titanium-400">Calls Made</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+        <Card className="bg-white dark:bg-black border-titanium-300 dark:border-titanium-700">
           <CardContent className="p-6">
             <div className="flex items-center space-x-2">
-              <Star className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+              <Star className="w-5 h-5 text-titanium-600 dark:text-titanium-400" />
               <div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">0%</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Conversion Rate</p>
+                <p className="text-2xl font-bold text-black dark:text-white">0%</p>
+                <p className="text-sm text-titanium-600 dark:text-titanium-400">Conversion Rate</p>
               </div>
             </div>
           </CardContent>
@@ -240,12 +241,12 @@ const LeadsPage = () => {
       </div>
 
       {/* Lead Pipeline */}
-      <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+      <Card className="bg-white dark:bg-black border-titanium-300 dark:border-titanium-700">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-gray-900 dark:text-white">Leads</CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400">
+              <CardTitle className="text-black dark:text-white">Leads</CardTitle>
+              <CardDescription className="text-titanium-600 dark:text-titanium-400">
                 Manage your lead pipeline
               </CardDescription>
             </div>
@@ -257,16 +258,16 @@ const LeadsPage = () => {
                   onChange={handleCSVUpload}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
-                <Button variant="outline" className="border-green-300 dark:border-green-600 text-green-700 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-900/20">
+                <Button variant="outline" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
                   <Upload className="w-4 h-4 mr-2" />
                   Upload CSV
                 </Button>
               </div>
-              <Button onClick={handleReactivateOldCustomers} variant="outline" className="border-orange-300 dark:border-orange-600 text-orange-700 dark:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/20">
+              <Button onClick={handleReactivateOldCustomers} variant="outline" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Reactivate old customers/leads
               </Button>
-              <Button onClick={handleConnectSources} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+              <Button onClick={handleConnectSources} className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200">
                 <Plug className="w-4 h-4 mr-2" />
                 Connect Lead Sources
               </Button>
@@ -276,9 +277,9 @@ const LeadsPage = () => {
         <CardContent>
           {leads.length === 0 ? (
             <div className="text-center py-12">
-              <Users className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No leads yet</h3>
-              <p className="text-gray-500 dark:text-gray-400 mb-6">Get started by uploading a CSV file or connecting your lead sources.</p>
+              <Users className="w-16 h-16 text-titanium-400 dark:text-titanium-600 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-black dark:text-white mb-2">No leads yet</h3>
+              <p className="text-titanium-600 dark:text-titanium-400 mb-6">Get started by uploading a CSV file or connecting your lead sources.</p>
               <div className="flex justify-center gap-4">
                 <div className="relative">
                   <Input
@@ -287,12 +288,12 @@ const LeadsPage = () => {
                     onChange={handleCSVUpload}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
-                  <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                  <Button className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200">
                     <Upload className="w-4 h-4 mr-2" />
                     Upload CSV
                   </Button>
                 </div>
-                <Button onClick={handleConnectSources} variant="outline">
+                <Button onClick={handleConnectSources} variant="outline" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
                   <Plug className="w-4 h-4 mr-2" />
                   Connect Sources
                 </Button>
@@ -301,41 +302,41 @@ const LeadsPage = () => {
           ) : (
             <div className="space-y-3">
               {leads.map((lead) => (
-                <div key={lead.id} className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-600 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                <div key={lead.id} className="bg-titanium-50 dark:bg-titanium-900 rounded-xl p-4 border border-titanium-200 dark:border-titanium-700 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                      <div className="w-10 h-10 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-semibold text-sm">
                         {lead.name.split(' ').map(n => n[0]).join('')}
                       </div>
                       <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-white">{lead.name}</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{lead.position} at {lead.company}</p>
+                        <h4 className="font-semibold text-black dark:text-white">{lead.name}</h4>
+                        <p className="text-sm text-titanium-600 dark:text-titanium-400">{lead.position} at {lead.company}</p>
                       </div>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Last contact: {lead.lastContact}</span>
+                    <span className="text-sm text-titanium-600 dark:text-titanium-400">Last contact: {lead.lastContact}</span>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <MessageSquare className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                      <span className="text-sm font-medium text-gray-900 dark:text-white">{lead.nextAction}</span>
+                      <MessageSquare className="w-4 h-4 text-titanium-600 dark:text-titanium-400" />
+                      <span className="text-sm font-medium text-black dark:text-white">{lead.nextAction}</span>
                     </div>
                     <div className="flex space-x-2">
-                      <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
+                      <Button variant="outline" size="sm" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
                         <Phone className="w-4 h-4 mr-1" />
                         Call
                       </Button>
-                      <Button variant="outline" size="sm" className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600">
+                      <Button variant="outline" size="sm" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
                         <Mail className="w-4 h-4 mr-1" />
                         Email
                       </Button>
                       <Button 
                         size="sm" 
                         onClick={() => handleViewDetails(lead)}
-                        className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-sm"
+                        className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200"
                       >
                         <Eye className="w-4 h-4 mr-1" />
                         View Details
