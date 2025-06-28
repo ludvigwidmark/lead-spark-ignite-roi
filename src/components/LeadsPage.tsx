@@ -48,6 +48,51 @@ const LeadsPage = () => {
     }
   };
 
+  const handleCallLead = async (lead) => {
+    try {
+      const webhookUrl = 'https://ludvigwidmark.app.n8n.cloud/webhook-test/lovable-webhook';
+      
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'call_lead',
+          lead: {
+            id: lead.id,
+            name: lead.name,
+            email: lead.email,
+            phone: lead.phone,
+            company: lead.company,
+            position: lead.position,
+            last_contact: lead.last_contact,
+            next_action: lead.next_action,
+            custom_data: lead.custom_data
+          },
+          timestamp: new Date().toISOString(),
+          user_id: user?.id
+        })
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Call Initiated",
+          description: `Lead information for ${lead.name} has been sent to the webhook.`
+        });
+      } else {
+        throw new Error('Webhook request failed');
+      }
+    } catch (error) {
+      console.error('Error calling webhook:', error);
+      toast({
+        title: "Error",
+        description: "Failed to initiate call. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
   const handleConnectSources = () => {
     toast({
       title: "Lead Sources Integration",
@@ -422,7 +467,12 @@ const LeadsPage = () => {
                       <span className="text-sm font-medium text-black dark:text-white">{lead.next_action}</span>
                     </div>
                     <div className="flex space-x-2">
-                      <Button variant="outline" size="sm" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => handleCallLead(lead)}
+                        className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800"
+                      >
                         <Phone className="w-4 h-4 mr-1" />
                         Call
                       </Button>
