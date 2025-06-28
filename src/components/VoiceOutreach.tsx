@@ -55,20 +55,20 @@ const VoiceOutreach = () => {
             </div>
             
             {/* Horizontal Luna Section */}
-            <div className="bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-indigo-500/10 border border-purple-200/50 rounded-xl p-4">
+            <div className="bg-titanium-50 dark:bg-titanium-900 border border-titanium-300 dark:border-titanium-700 rounded-xl p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                  <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full">
-                    <Sparkles className="w-6 h-6 text-white" />
+                  <div className="flex items-center justify-center w-12 h-12 bg-black dark:bg-white rounded-full">
+                    <Sparkles className="w-6 h-6 text-white dark:text-black" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg text-gray-800">Meet Luna</h3>
-                    <p className="text-sm text-gray-600">Your AI-powered voice assistant for outreach campaigns</p>
+                    <h3 className="font-semibold text-lg text-black dark:text-white">Meet Luna</h3>
+                    <p className="text-sm text-titanium-600 dark:text-titanium-400">Your AI-powered voice assistant for outreach campaigns</p>
                   </div>
                 </div>
                 <Button 
                   onClick={handleGetLuna} 
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-200"
+                  className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200 shadow-lg hover:shadow-xl transition-all duration-200"
                 >
                   <Sparkles className="w-4 h-4 mr-2" />
                   Get Luna
