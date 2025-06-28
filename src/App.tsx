@@ -20,8 +20,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/landing" element={<AstridLanding />} />
-            <Route path="/" element={
+            <Route path="/" element={<AstridLanding />} />
+            <Route path="/app" element={
               <ProtectedRoute>
                 <Index />
               </ProtectedRoute>

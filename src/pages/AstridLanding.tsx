@@ -1,5 +1,3 @@
-
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -66,7 +64,7 @@ const AstridLanding = () => {
   };
 
   const handleNavigateToAuth = () => {
-    navigate('/');
+    navigate('/app');
   };
 
   // Geometric Logo Component - Updated to match the uploaded design
@@ -364,4 +362,3 @@ const AstridLanding = () => {
 };
 
 export default AstridLanding;
-
