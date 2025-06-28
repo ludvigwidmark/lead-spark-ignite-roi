@@ -97,10 +97,14 @@ const LeadsPage = () => {
       });
 
       if (response.ok) {
-        // Update lead status to 'calling'
+        // Update lead status to 'calling' and increment call count
+        const currentCallCount = lead.call_count || 0;
         await supabase
           .from('user_leads')
-          .update({ status: 'calling' })
+          .update({ 
+            status: 'calling',
+            call_count: currentCallCount + 1
+          })
           .eq('id', lead.id);
 
         // Refresh leads to show updated status
@@ -277,7 +281,8 @@ const LeadsPage = () => {
 
   const getCallStatusBadge = (lead) => {
     if (lead.status === 'calling') {
-      return <Badge className="bg-yellow-500 text-white">Calling</Badge>;
+      const stepNumber = (lead.call_count || 0) + 1;
+      return <Badge className="bg-yellow-500 text-white">Step {stepNumber}</Badge>;
     }
     if (lead.status === 'completed') {
       if (lead.qualified === true) {
