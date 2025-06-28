@@ -9,12 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import ClyoLogo from '@/components/ClyoLogo';
 
-interface LoginForm {
-  email: string;
-  password: string;
-}
-
-interface SignUpForm {
+interface AuthForm {
   email: string;
   password: string;
 }
@@ -25,7 +20,7 @@ const Landing = () => {
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
 
-  const loginForm = useForm<LoginForm>({
+  const form = useForm<AuthForm>({
     defaultValues: {
       email: '',
       password: ''
@@ -33,45 +28,68 @@ const Landing = () => {
     mode: 'onSubmit'
   });
 
-  const signUpForm = useForm<SignUpForm>({
-    defaultValues: {
-      email: '',
-      password: ''
-    },
-    mode: 'onSubmit'
-  });
-
-  const handleLogin = async (data: LoginForm) => {
-    setLoading(true);
-    const { error } = await signIn(data.email, data.password);
+  const handleSubmit = async (data: AuthForm) => {
+    console.log('Form submitted with data:', data);
     
-    if (error) {
+    // Validate that we have both email and password
+    if (!data.email || !data.password) {
       toast({
-        title: "Login Failed",
-        description: error.message,
+        title: "Validation Error",
+        description: "Please provide both email and password.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setLoading(true);
+    
+    try {
+      if (isSignUp) {
+        console.log('Attempting signup...');
+        const { error } = await signUp(data.email, data.password);
+        
+        if (error) {
+          console.error('Signup error:', error);
+          toast({
+            title: "Sign Up Failed",
+            description: error.message,
+            variant: "destructive"
+          });
+        } else {
+          toast({
+            title: "Account Created",
+            description: "Please check your email to verify your account.",
+          });
+          form.reset();
+        }
+      } else {
+        console.log('Attempting signin...');
+        const { error } = await signIn(data.email, data.password);
+        
+        if (error) {
+          console.error('Signin error:', error);
+          toast({
+            title: "Login Failed",
+            description: error.message,
+            variant: "destructive"
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
         variant: "destructive"
       });
     }
+    
     setLoading(false);
   };
 
-  const handleSignUp = async (data: SignUpForm) => {
-    setLoading(true);
-    const { error } = await signUp(data.email, data.password);
-    
-    if (error) {
-      toast({
-        title: "Sign Up Failed",
-        description: error.message,
-        variant: "destructive"
-      });
-    } else {
-      toast({
-        title: "Account Created",
-        description: "Please check your email to verify your account.",
-      });
-    }
-    setLoading(false);
+  const toggleMode = () => {
+    setIsSignUp(!isSignUp);
+    form.reset(); // Clear the form when switching modes
   };
 
   return (
@@ -104,117 +122,75 @@ const Landing = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {isSignUp ? (
-              <Form {...signUpForm}>
-                <form onSubmit={signUpForm.handleSubmit(handleSignUp)} className="space-y-4">
-                  <FormField
-                    control={signUpForm.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-black dark:text-white">Email</FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field} 
-                            type="email" 
-                            placeholder="Enter your email" 
-                            autoComplete="email"
-                            disabled={loading}
-                            required
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={signUpForm.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-black dark:text-white">Password</FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field} 
-                            type="password" 
-                            placeholder="Create a password" 
-                            autoComplete="new-password"
-                            disabled={loading}
-                            required
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
-                    disabled={loading}
-                  >
-                    {loading ? 'Creating Account...' : 'Create Account'}
-                  </Button>
-                </form>
-              </Form>
-            ) : (
-              <Form {...loginForm}>
-                <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-4">
-                  <FormField
-                    control={loginForm.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-black dark:text-white">Email</FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field} 
-                            type="email" 
-                            placeholder="Enter your email" 
-                            autoComplete="email"
-                            disabled={loading}
-                            required
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={loginForm.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-black dark:text-white">Password</FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field} 
-                            type="password" 
-                            placeholder="Enter your password" 
-                            autoComplete="current-password"
-                            disabled={loading}
-                            required
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
-                    disabled={loading}
-                  >
-                    {loading ? 'Signing In...' : 'Sign In'}
-                  </Button>
-                </form>
-              </Form>
-            )}
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  rules={{
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email address"
+                    }
+                  }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-black dark:text-white">Email</FormLabel>
+                      <FormControl>
+                        <Input 
+                          {...field} 
+                          type="email" 
+                          placeholder="Enter your email" 
+                          autoComplete="email"
+                          disabled={loading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  rules={{
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters"
+                    }
+                  }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-black dark:text-white">Password</FormLabel>
+                      <FormControl>
+                        <Input 
+                          {...field} 
+                          type="password" 
+                          placeholder={isSignUp ? "Create a password" : "Enter your password"}
+                          autoComplete={isSignUp ? "new-password" : "current-password"}
+                          disabled={loading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  disabled={loading}
+                >
+                  {loading ? (isSignUp ? 'Creating Account...' : 'Signing In...') : (isSignUp ? 'Create Account' : 'Sign In')}
+                </Button>
+              </form>
+            </Form>
 
             {/* Toggle between login and signup */}
             <div className="mt-6 text-center">
               <Button
                 variant="link"
-                onClick={() => setIsSignUp(!isSignUp)}
+                onClick={toggleMode}
                 className="text-titanium-600 dark:text-titanium-400 hover:text-black dark:hover:text-white"
                 disabled={loading}
               >
