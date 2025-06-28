@@ -4,8 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plus, Eye, Trash2, AlertTriangle } from "lucide-react";
+import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plus, Eye, Trash2, AlertTriangle, MoreVertical } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import LeadDetailsModal from "./LeadDetailsModal";
@@ -21,6 +22,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const LeadsPage = () => {
   const { toast } = useToast();
@@ -30,6 +37,7 @@ const LeadsPage = () => {
   const [isAddLeadsModalOpen, setIsAddLeadsModalOpen] = useState(false);
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedLeads, setSelectedLeads] = useState(new Set());
 
   // Fetch leads from database
   useEffect(() => {
@@ -107,63 +115,99 @@ const LeadsPage = () => {
     }
   };
 
-  const handleDeleteLead = async (leadId) => {
+  const handleSelectLead = (leadId, checked) => {
+    const newSelectedLeads = new Set(selectedLeads);
+    if (checked) {
+      newSelectedLeads.add(leadId);
+    } else {
+      newSelectedLeads.delete(leadId);
+    }
+    setSelectedLeads(newSelectedLeads);
+  };
+
+  const handleSelectAll = (checked) => {
+    if (checked) {
+      setSelectedLeads(new Set(leads.map(lead => lead.id)));
+    } else {
+      setSelectedLeads(new Set());
+    }
+  };
+
+  const handleBulkDelete = async () => {
     try {
+      const selectedLeadIds = Array.from(selectedLeads);
       const { error } = await supabase
         .from('user_leads')
         .delete()
-        .eq('id', leadId);
+        .in('id', selectedLeadIds);
 
       if (error) {
-        console.error('Error deleting lead:', error);
+        console.error('Error deleting leads:', error);
         toast({
           title: "Error",
-          description: "Failed to delete lead.",
+          description: "Failed to delete selected leads.",
           variant: "destructive"
         });
       } else {
-        setLeads(leads.filter(lead => lead.id !== leadId));
+        setLeads(leads.filter(lead => !selectedLeads.has(lead.id)));
+        setSelectedLeads(new Set());
         toast({
           title: "Success",
-          description: "Lead deleted successfully."
+          description: `Successfully deleted ${selectedLeadIds.length} lead(s).`
         });
       }
     } catch (error) {
-      console.error('Error deleting lead:', error);
+      console.error('Error deleting leads:', error);
       toast({
         title: "Error",
-        description: "Failed to delete lead.",
+        description: "Failed to delete selected leads.",
         variant: "destructive"
       });
     }
   };
 
-  const handleDeleteAllLeads = async () => {
+  const handleBulkCall = async () => {
     try {
-      const { error } = await supabase
-        .from('user_leads')
-        .delete()
-        .eq('user_id', user?.id);
+      const selectedLeadData = leads.filter(lead => selectedLeads.has(lead.id));
+      const webhookUrl = 'https://ludvigwidmark.app.n8n.cloud/webhook-test/lovable-webhook';
+      
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'bulk_call_leads',
+          leads: selectedLeadData.map(lead => ({
+            id: lead.id,
+            name: lead.name,
+            email: lead.email,
+            phone: lead.phone,
+            company: lead.company,
+            position: lead.position,
+            last_contact: lead.last_contact,
+            next_action: lead.next_action,
+            custom_data: lead.custom_data
+          })),
+          timestamp: new Date().toISOString(),
+          user_id: user?.id
+        })
+      });
 
-      if (error) {
-        console.error('Error deleting all leads:', error);
+      if (response.ok) {
         toast({
-          title: "Error",
-          description: "Failed to delete all leads.",
-          variant: "destructive"
+          title: "Bulk Call Initiated",
+          description: `Bulk call initiated for ${selectedLeadData.length} leads.`
         });
+        setSelectedLeads(new Set());
       } else {
-        setLeads([]);
-        toast({
-          title: "Success",
-          description: "All leads deleted successfully."
-        });
+        throw new Error('Webhook request failed');
       }
     } catch (error) {
-      console.error('Error deleting all leads:', error);
+      console.error('Error initiating bulk call:', error);
       toast({
         title: "Error",
-        description: "Failed to delete all leads.",
+        description: "Failed to initiate bulk call. Please try again.",
         variant: "destructive"
       });
     }
@@ -202,6 +246,9 @@ const LeadsPage = () => {
       </div>
     );
   }
+
+  const isAllSelected = leads.length > 0 && selectedLeads.size === leads.length;
+  const isIndeterminate = selectedLeads.size > 0 && selectedLeads.size < leads.length;
 
   return (
     <div className="space-y-6">
@@ -267,38 +314,51 @@ const LeadsPage = () => {
               </CardDescription>
             </div>
             <div className="flex space-x-2">
-              {leads.length > 0 && (
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button 
-                      variant="outline" 
-                      className="border-red-300 text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
-                    >
-                      <Trash2 className="w-4 h-4 mr-2" />
-                      Delete All
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle className="flex items-center">
-                        <AlertTriangle className="w-5 h-5 text-red-500 mr-2" />
-                        Delete All Leads
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete all {leads.length} leads from your account.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction 
-                        onClick={handleDeleteAllLeads}
-                        className="bg-red-600 hover:bg-red-700 text-white"
-                      >
-                        Delete All Leads
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+              {selectedLeads.size > 0 && (
+                <div className="flex space-x-2">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" className="border-titanium-300 dark:border-titanium-600">
+                        <MoreVertical className="w-4 h-4 mr-2" />
+                        Actions ({selectedLeads.size})
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem onClick={handleBulkCall}>
+                        <Phone className="w-4 h-4 mr-2" />
+                        Call Selected
+                      </DropdownMenuItem>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Delete Selected
+                          </DropdownMenuItem>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle className="flex items-center">
+                              <AlertTriangle className="w-5 h-5 text-red-500 mr-2" />
+                              Delete Selected Leads
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete {selectedLeads.size} selected lead(s)? This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction 
+                              onClick={handleBulkDelete}
+                              className="bg-red-600 hover:bg-red-700 text-white"
+                            >
+                              Delete Selected
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               )}
               <Button 
                 onClick={() => setIsAddLeadsModalOpen(true)}
@@ -325,88 +385,75 @@ const LeadsPage = () => {
               </Button>
             </div>
           ) : (
-            <div className="space-y-3">
-              {leads.map((lead) => (
-                <div key={lead.id} className="bg-titanium-50 dark:bg-titanium-900 rounded-xl p-4 border border-titanium-200 dark:border-titanium-700 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-semibold text-sm">
-                        {lead.name.split(' ').map(n => n[0]).join('')}
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-black dark:text-white">{lead.name}</h4>
-                        <p className="text-sm text-titanium-600 dark:text-titanium-400">{lead.position} at {lead.company}</p>
-                      </div>
-                    </div>
-                  </div>
+            <>
+              {/* Select All Checkbox */}
+              <div className="flex items-center space-x-2 mb-4 pb-3 border-b border-titanium-200 dark:border-titanium-700">
+                <Checkbox
+                  checked={isAllSelected}
+                  onCheckedChange={handleSelectAll}
+                  className="data-[state=indeterminate]:bg-titanium-600"
+                />
+                <label className="text-sm font-medium text-black dark:text-white">
+                  Select All ({leads.length})
+                </label>
+              </div>
 
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm text-titanium-600 dark:text-titanium-400">Last contact: {lead.last_contact}</span>
-                  </div>
+              <div className="space-y-3">
+                {leads.map((lead) => (
+                  <div key={lead.id} className="bg-titanium-50 dark:bg-titanium-900 rounded-xl p-4 border border-titanium-200 dark:border-titanium-700 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center space-x-3">
+                        <Checkbox
+                          checked={selectedLeads.has(lead.id)}
+                          onCheckedChange={(checked) => handleSelectLead(lead.id, checked)}
+                        />
+                        <div className="w-10 h-10 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-semibold text-sm">
+                          {lead.name.split(' ').map(n => n[0]).join('')}
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-black dark:text-white">{lead.name}</h4>
+                          <p className="text-sm text-titanium-600 dark:text-titanium-400">{lead.position} at {lead.company}</p>
+                        </div>
+                      </div>
+                    </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <MessageSquare className="w-4 h-4 text-titanium-600 dark:text-titanium-400" />
-                      <span className="text-sm font-medium text-black dark:text-white">{lead.next_action}</span>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-sm text-titanium-600 dark:text-titanium-400">Last contact: {lead.last_contact}</span>
                     </div>
-                    <div className="flex space-x-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        onClick={() => handleCallLead(lead)}
-                        className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800"
-                      >
-                        <Phone className="w-4 h-4 mr-1" />
-                        Call
-                      </Button>
-                      <Button variant="outline" size="sm" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
-                        <Mail className="w-4 h-4 mr-1" />
-                        Email
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        onClick={() => handleViewDetails(lead)}
-                        className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200"
-                      >
-                        <Eye className="w-4 h-4 mr-1" />
-                        View Details
-                      </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            className="border-red-300 text-red-600 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle className="flex items-center">
-                              <AlertTriangle className="w-5 h-5 text-red-500 mr-2" />
-                              Delete Lead
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Are you sure you want to delete {lead.name}? This action cannot be undone.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction 
-                              onClick={() => handleDeleteLead(lead.id)}
-                              className="bg-red-600 hover:bg-red-700 text-white"
-                            >
-                              Delete Lead
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <MessageSquare className="w-4 h-4 text-titanium-600 dark:text-titanium-400" />
+                        <span className="text-sm font-medium text-black dark:text-white">{lead.next_action}</span>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => handleCallLead(lead)}
+                          className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800"
+                        >
+                          <Phone className="w-4 h-4 mr-1" />
+                          Call
+                        </Button>
+                        <Button variant="outline" size="sm" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
+                          <Mail className="w-4 h-4 mr-1" />
+                          Email
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          onClick={() => handleViewDetails(lead)}
+                          className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200"
+                        >
+                          <Eye className="w-4 h-4 mr-1" />
+                          View Details
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </>
           )}
         </CardContent>
       </Card>
