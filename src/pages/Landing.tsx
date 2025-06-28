@@ -17,7 +17,6 @@ interface LoginForm {
 interface SignUpForm {
   email: string;
   password: string;
-  fullName: string;
 }
 
 const Landing = () => {
@@ -36,8 +35,7 @@ const Landing = () => {
   const signUpForm = useForm<SignUpForm>({
     defaultValues: {
       email: '',
-      password: '',
-      fullName: ''
+      password: ''
     }
   });
 
@@ -57,7 +55,7 @@ const Landing = () => {
 
   const handleSignUp = async (data: SignUpForm) => {
     setLoading(true);
-    const { error } = await signUp(data.email, data.password, data.fullName);
+    const { error } = await signUp(data.email, data.password);
     
     if (error) {
       toast({
@@ -107,25 +105,6 @@ const Landing = () => {
             {isSignUp ? (
               <Form {...signUpForm}>
                 <form onSubmit={signUpForm.handleSubmit(handleSignUp)} className="space-y-4">
-                  <FormField
-                    control={signUpForm.control}
-                    name="fullName"
-                    rules={{ required: 'Full name is required' }}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-black dark:text-white">Full Name</FormLabel>
-                        <FormControl>
-                          <Input 
-                            {...field} 
-                            placeholder="Enter your full name" 
-                            autoComplete="name"
-                            disabled={loading}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                   <FormField
                     control={signUpForm.control}
                     name="email"
