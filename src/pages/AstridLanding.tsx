@@ -117,7 +117,7 @@ const AstridLanding = () => {
               Make Every Interaction <span className="text-primary">Every Lead Counts. Make It Count Instantly.</span>
             </h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto font-work-sans">
-              With Astrid AI, your customers experience immediate value from the first moment.
+              Astrid AI converts leads instantly and never lets potential slip through the cracks.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
