@@ -61,25 +61,61 @@ const AstridLanding = () => {
     }
   };
 
+  // Geometric Logo Component
+  const GeometricLogo = ({ className = "w-12 h-12" }) => (
+    <div className={`${className} relative`}>
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+        <rect x="20" y="40" width="35" height="35" fill="currentColor" />
+        <rect x="45" y="15" width="25" height="25" fill="currentColor" transform="rotate(45 57.5 27.5)" />
+      </svg>
+    </div>
+  );
+
+  // Animated Background Shapes
+  const AnimatedShapes = () => (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden">
+      {/* Floating geometric shapes */}
+      <div className="absolute top-20 left-10 w-8 h-8 bg-titanium-300 opacity-30 animate-pulse"></div>
+      <div className="absolute top-40 right-20 w-6 h-6 bg-titanium-400 opacity-40 rotate-45 animate-bounce"></div>
+      <div className="absolute bottom-40 left-20 w-10 h-10 bg-titanium-300 opacity-30 rounded-full animate-pulse"></div>
+      <div className="absolute top-60 left-1/2 w-4 h-4 bg-titanium-400 opacity-50 rotate-45 animate-bounce"></div>
+      <div className="absolute bottom-60 right-10 w-12 h-4 bg-titanium-300 opacity-30 animate-pulse"></div>
+      <div className="absolute top-32 right-1/3 w-6 h-6 bg-titanium-400 opacity-40 animate-bounce"></div>
+      
+      {/* Larger background shapes */}
+      <div className="absolute -top-10 -right-10 w-32 h-32 bg-titanium-200 opacity-20 rotate-12 animate-pulse"></div>
+      <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-titanium-200 opacity-15 rounded-full animate-pulse"></div>
+      <div className="absolute top-1/2 -right-20 w-24 h-24 bg-titanium-300 opacity-20 rotate-45 animate-bounce"></div>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background font-work-sans relative">
+      <AnimatedShapes />
+      
       {/* Hero Section */}
       <div className="relative bg-gradient-to-b from-background to-muted/50">
         <div className="container mx-auto px-4 py-20">
+          {/* Logo Header */}
+          <div className="text-center mb-12">
+            <GeometricLogo className="w-16 h-16 mx-auto mb-4 text-foreground" />
+            <h2 className="text-2xl font-semibold text-foreground">Astrid</h2>
+          </div>
+
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-6 font-work-sans">
               Convert Leads in <span className="text-primary">2 Minutes</span>, Not 47 Hours
             </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto font-work-sans">
               Astrid AI calls your leads instantly, speaks like your best SDR, and never forgets to follow up. 
               Join the AI revolution that's delivering 10X ROI for every euro invested.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button size="lg" className="text-lg px-8 py-4">
+              <Button size="lg" className="text-lg px-8 py-4 font-work-sans">
                 Start Your 30-Min Setup
               </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-4">
+              <Button variant="outline" size="lg" className="text-lg px-8 py-4 font-work-sans">
                 Try Astrid Now →
               </Button>
             </div>
@@ -103,15 +139,15 @@ const AstridLanding = () => {
       </div>
 
       {/* Demo Section */}
-      <div className="container mx-auto px-4 py-20">
-        <Card className="max-w-2xl mx-auto">
+      <div className="container mx-auto px-4 py-20 relative">
+        <Card className="max-w-2xl mx-auto border-titanium-300">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl mb-2">Experience Astrid in Action</CardTitle>
+            <CardTitle className="text-3xl mb-2 font-work-sans">Experience Astrid in Action</CardTitle>
             <p className="text-muted-foreground">Enter your number and watch Astrid convert you</p>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <label className="text-sm font-medium text-foreground block mb-2">Company</label>
+              <label className="text-sm font-medium text-foreground block mb-2 font-work-sans">Company</label>
               <Input
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
@@ -120,7 +156,7 @@ const AstridLanding = () => {
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-foreground block mb-2">Phone Number</label>
+              <label className="text-sm font-medium text-foreground block mb-2 font-work-sans">Phone Number</label>
               <Input
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
@@ -131,7 +167,7 @@ const AstridLanding = () => {
             <Button 
               onClick={handleTryAstrid}
               disabled={loading}
-              className="w-full text-lg py-6"
+              className="w-full text-lg py-6 font-work-sans"
             >
               {loading ? 'Requesting Call...' : 'Get Instant Call from Astrid'}
             </Button>
@@ -140,19 +176,19 @@ const AstridLanding = () => {
       </div>
 
       {/* Stats Section */}
-      <div className="bg-muted/30 py-20">
+      <div className="bg-muted/30 py-20 relative">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold text-primary mb-2">391%</div>
+              <div className="text-4xl font-bold text-primary mb-2 font-work-sans">391%</div>
               <p className="text-muted-foreground">Higher conversion when calling within 1 minute¹</p>
             </div>
             <div>
-              <div className="text-4xl font-bold text-primary mb-2">21x</div>
+              <div className="text-4xl font-bold text-primary mb-2 font-work-sans">21x</div>
               <p className="text-muted-foreground">More likely to qualify leads in 5 minutes vs 30²</p>
             </div>
             <div>
-              <div className="text-4xl font-bold text-primary mb-2">€8,000</div>
+              <div className="text-4xl font-bold text-primary mb-2 font-work-sans">€8,000</div>
               <p className="text-muted-foreground">Monthly savings vs human SDR³</p>
             </div>
           </div>
@@ -160,19 +196,19 @@ const AstridLanding = () => {
       </div>
 
       {/* Features Section */}
-      <div className="container mx-auto px-4 py-20">
+      <div className="container mx-auto px-4 py-20 relative">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-foreground mb-6">Why Leading Companies Choose Astrid</h2>
+          <h2 className="text-4xl font-bold text-foreground mb-6 font-work-sans">Why Leading Companies Choose Astrid</h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Stop losing leads to slow response times. Astrid ensures every lead gets the attention they deserve, instantly.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <Card>
+          <Card className="border-titanium-300 hover:shadow-lg transition-shadow">
             <CardHeader>
               <Zap className="h-12 w-12 text-primary mb-4" />
-              <CardTitle>2-Minute Response Time</CardTitle>
+              <CardTitle className="font-work-sans">2-Minute Response Time</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -181,10 +217,10 @@ const AstridLanding = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-titanium-300 hover:shadow-lg transition-shadow">
             <CardHeader>
               <Brain className="h-12 w-12 text-primary mb-4" />
-              <CardTitle>Human-Like Conversations</CardTitle>
+              <CardTitle className="font-work-sans">Human-Like Conversations</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -193,10 +229,10 @@ const AstridLanding = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-titanium-300 hover:shadow-lg transition-shadow">
             <CardHeader>
               <RotateCcw className="h-12 w-12 text-primary mb-4" />
-              <CardTitle>Infinite Follow-Up</CardTitle>
+              <CardTitle className="font-work-sans">Infinite Follow-Up</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -205,10 +241,10 @@ const AstridLanding = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-titanium-300 hover:shadow-lg transition-shadow">
             <CardHeader>
               <BarChart3 className="h-12 w-12 text-primary mb-4" />
-              <CardTitle>Real-Time Analytics</CardTitle>
+              <CardTitle className="font-work-sans">Real-Time Analytics</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -217,10 +253,10 @@ const AstridLanding = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-titanium-300 hover:shadow-lg transition-shadow">
             <CardHeader>
               <Globe className="h-12 w-12 text-primary mb-4" />
-              <CardTitle>24/7 Global Coverage</CardTitle>
+              <CardTitle className="font-work-sans">24/7 Global Coverage</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -229,10 +265,10 @@ const AstridLanding = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-titanium-300 hover:shadow-lg transition-shadow">
             <CardHeader>
               <Link className="h-12 w-12 text-primary mb-4" />
-              <CardTitle>Seamless Integration</CardTitle>
+              <CardTitle className="font-work-sans">Seamless Integration</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -244,23 +280,23 @@ const AstridLanding = () => {
       </div>
 
       {/* ROI Section */}
-      <div className="bg-primary text-primary-foreground py-20">
+      <div className="bg-primary text-primary-foreground py-20 relative">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6">10X ROI GUARANTEE</h2>
-            <h3 className="text-2xl mb-4">The Math is Simple</h3>
+            <h2 className="text-4xl font-bold mb-6 font-work-sans">10X ROI GUARANTEE</h2>
+            <h3 className="text-2xl mb-4 font-work-sans">The Math is Simple</h3>
             <p className="text-xl opacity-90 max-w-3xl mx-auto">
               Companies using AI automation see 10-20% sales ROI boost⁴. With Astrid, you're not just saving costs—you're multiplying revenue.
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <h4 className="text-2xl font-bold text-center mb-12">Your Potential Returns</h4>
+            <h4 className="text-2xl font-bold text-center mb-12 font-work-sans">Your Potential Returns</h4>
             
             <div className="grid md:grid-cols-2 gap-8">
               <Card className="bg-background/10 border-primary-foreground/20">
                 <CardHeader>
-                  <CardTitle className="text-primary-foreground">Traditional SDR Costs</CardTitle>
+                  <CardTitle className="text-primary-foreground font-work-sans">Traditional SDR Costs</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 text-primary-foreground/90">
                   <div>€10,000/month - Salary & benefits</div>
@@ -272,7 +308,7 @@ const AstridLanding = () => {
 
               <Card className="bg-background/10 border-primary-foreground/20">
                 <CardHeader>
-                  <CardTitle className="text-primary-foreground">With Astrid AI</CardTitle>
+                  <CardTitle className="text-primary-foreground font-work-sans">With Astrid AI</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 text-primary-foreground/90">
                   <div>€2,490/month - All inclusive</div>
@@ -287,19 +323,19 @@ const AstridLanding = () => {
       </div>
 
       {/* Process Section */}
-      <div className="container mx-auto px-4 py-20">
+      <div className="container mx-auto px-4 py-20 relative">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-foreground mb-6">From Setup to Success in 30 Minutes</h2>
+          <h2 className="text-4xl font-bold text-foreground mb-6 font-work-sans">From Setup to Success in 30 Minutes</h2>
           <p className="text-xl text-muted-foreground">
             Faster solution adoption accelerates value creation, making everyone's life better
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          <Card>
+          <Card className="border-titanium-300 hover:shadow-lg transition-shadow">
             <CardHeader>
-              <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mb-4">1</div>
-              <CardTitle>Quick Onboarding Call</CardTitle>
+              <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mb-4 font-work-sans">1</div>
+              <CardTitle className="font-work-sans">Quick Onboarding Call</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -308,10 +344,10 @@ const AstridLanding = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-titanium-300 hover:shadow-lg transition-shadow">
             <CardHeader>
-              <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mb-4">2</div>
-              <CardTitle>Instant Integration</CardTitle>
+              <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mb-4 font-work-sans">2</div>
+              <CardTitle className="font-work-sans">Instant Integration</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -320,10 +356,10 @@ const AstridLanding = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-titanium-300 hover:shadow-lg transition-shadow">
             <CardHeader>
-              <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mb-4">3</div>
-              <CardTitle>Launch & Scale</CardTitle>
+              <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xl font-bold mb-4 font-work-sans">3</div>
+              <CardTitle className="font-work-sans">Launch & Scale</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
@@ -335,14 +371,14 @@ const AstridLanding = () => {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-muted/30 py-20">
+      <div className="bg-muted/30 py-20 relative">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold text-foreground mb-6">Ready to Transform Your Sales?</h2>
+          <h2 className="text-4xl font-bold text-foreground mb-6 font-work-sans">Ready to Transform Your Sales?</h2>
           <p className="text-xl text-muted-foreground mb-8">
             Join innovative companies already experiencing the power of instant lead response
           </p>
           
-          <Button size="lg" className="text-lg px-8 py-4 mb-4">
+          <Button size="lg" className="text-lg px-8 py-4 mb-4 font-work-sans">
             Start Your Free Trial
           </Button>
           
