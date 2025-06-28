@@ -306,11 +306,25 @@ const LeadsPage = () => {
       <Card className="bg-white dark:bg-black border-titanium-300 dark:border-titanium-700">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-black dark:text-white">Leads</CardTitle>
-              <CardDescription className="text-titanium-600 dark:text-titanium-400">
-                Manage your lead pipeline
-              </CardDescription>
+            <div className="flex items-center space-x-4">
+              <div>
+                <CardTitle className="text-black dark:text-white">Leads</CardTitle>
+                <CardDescription className="text-titanium-600 dark:text-titanium-400">
+                  Manage your lead pipeline
+                </CardDescription>
+              </div>
+              {leads.length > 0 && (
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={isAllSelected}
+                    onCheckedChange={handleSelectAll}
+                    className="data-[state=indeterminate]:bg-titanium-600"
+                  />
+                  <label className="text-sm font-medium text-black dark:text-white">
+                    Select All ({leads.length})
+                  </label>
+                </div>
+              )}
             </div>
             <div className="flex space-x-2">
               {selectedLeads.size > 0 && (
@@ -384,75 +398,61 @@ const LeadsPage = () => {
               </Button>
             </div>
           ) : (
-            <>
-              {/* Select All Checkbox */}
-              <div className="flex items-center space-x-2 mb-4 pb-3 border-b border-titanium-200 dark:border-titanium-700">
-                <Checkbox
-                  checked={isAllSelected}
-                  onCheckedChange={handleSelectAll}
-                  className="data-[state=indeterminate]:bg-titanium-600"
-                />
-                <label className="text-sm font-medium text-black dark:text-white">
-                  Select All ({leads.length})
-                </label>
-              </div>
-
-              <div className="space-y-3">
-                {leads.map((lead) => (
-                  <div key={lead.id} className="bg-titanium-50 dark:bg-titanium-900 rounded-xl p-4 border border-titanium-200 dark:border-titanium-700 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center space-x-3">
-                        <Checkbox
-                          checked={selectedLeads.has(lead.id)}
-                          onCheckedChange={(checked) => handleSelectLead(lead.id, !!checked)}
-                        />
-                        <div className="w-10 h-10 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-semibold text-sm">
-                          {lead.name.split(' ').map(n => n[0]).join('')}
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-black dark:text-white">{lead.name}</h4>
-                          <p className="text-sm text-titanium-600 dark:text-titanium-400">{lead.position} at {lead.company}</p>
-                        </div>
+            <div className="space-y-3">
+              {leads.map((lead) => (
+                <div key={lead.id} className="bg-titanium-50 dark:bg-titanium-900 rounded-xl p-4 border border-titanium-200 dark:border-titanium-700 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-3">
+                      <Checkbox
+                        checked={selectedLeads.has(lead.id)}
+                        onCheckedChange={(checked) => handleSelectLead(lead.id, !!checked)}
+                      />
+                      <div className="w-10 h-10 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-semibold text-sm">
+                        {lead.name.split(' ').map(n => n[0]).join('')}
                       </div>
-                    </div>
-
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm text-titanium-600 dark:text-titanium-400">Last contact: {lead.last_contact}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <MessageSquare className="w-4 h-4 text-titanium-600 dark:text-titanium-400" />
-                        <span className="text-sm font-medium text-black dark:text-white">{lead.next_action}</span>
-                      </div>
-                      <div className="flex space-x-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => handleCallLead(lead)}
-                          className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800"
-                        >
-                          <Phone className="w-4 h-4 mr-1" />
-                          Call
-                        </Button>
-                        <Button variant="outline" size="sm" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
-                          <Mail className="w-4 h-4 mr-1" />
-                          Email
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          onClick={() => handleViewDetails(lead)}
-                          className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200"
-                        >
-                          <Eye className="w-4 h-4 mr-1" />
-                          View Details
-                        </Button>
+                      <div>
+                        <h4 className="font-semibold text-black dark:text-white">{lead.name}</h4>
+                        <p className="text-sm text-titanium-600 dark:text-titanium-400">{lead.position} at {lead.company}</p>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </>
+
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm text-titanium-600 dark:text-titanium-400">Last contact: {lead.last_contact}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <MessageSquare className="w-4 h-4 text-titanium-600 dark:text-titanium-400" />
+                      <span className="text-sm font-medium text-black dark:text-white">{lead.next_action}</span>
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => handleCallLead(lead)}
+                        className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800"
+                      >
+                        <Phone className="w-4 h-4 mr-1" />
+                        Call
+                      </Button>
+                      <Button variant="outline" size="sm" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
+                        <Mail className="w-4 h-4 mr-1" />
+                        Email
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        onClick={() => handleViewDetails(lead)}
+                        className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200"
+                      >
+                        <Eye className="w-4 h-4 mr-1" />
+                        View Details
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
         </CardContent>
       </Card>
