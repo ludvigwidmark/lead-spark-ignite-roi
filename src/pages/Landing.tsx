@@ -110,13 +110,6 @@ const Landing = () => {
                   <FormField
                     control={signUpForm.control}
                     name="email"
-                    rules={{ 
-                      required: 'Email is required',
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: 'Invalid email address'
-                      }
-                    }}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-black dark:text-white">Email</FormLabel>
@@ -127,6 +120,7 @@ const Landing = () => {
                             placeholder="Enter your email" 
                             autoComplete="email"
                             disabled={loading}
+                            required
                           />
                         </FormControl>
                         <FormMessage />
@@ -136,13 +130,6 @@ const Landing = () => {
                   <FormField
                     control={signUpForm.control}
                     name="password"
-                    rules={{ 
-                      required: 'Password is required',
-                      minLength: {
-                        value: 6,
-                        message: 'Password must be at least 6 characters'
-                      }
-                    }}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-black dark:text-white">Password</FormLabel>
@@ -153,6 +140,7 @@ const Landing = () => {
                             placeholder="Create a password" 
                             autoComplete="new-password"
                             disabled={loading}
+                            required
                           />
                         </FormControl>
                         <FormMessage />
@@ -174,13 +162,6 @@ const Landing = () => {
                   <FormField
                     control={loginForm.control}
                     name="email"
-                    rules={{ 
-                      required: 'Email is required',
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: 'Invalid email address'
-                      }
-                    }}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-black dark:text-white">Email</FormLabel>
@@ -191,6 +172,7 @@ const Landing = () => {
                             placeholder="Enter your email" 
                             autoComplete="email"
                             disabled={loading}
+                            required
                           />
                         </FormControl>
                         <FormMessage />
@@ -200,7 +182,6 @@ const Landing = () => {
                   <FormField
                     control={loginForm.control}
                     name="password"
-                    rules={{ required: 'Password is required' }}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-black dark:text-white">Password</FormLabel>
@@ -211,6 +192,7 @@ const Landing = () => {
                             placeholder="Enter your password" 
                             autoComplete="current-password"
                             disabled={loading}
+                            required
                           />
                         </FormControl>
                         <FormMessage />
