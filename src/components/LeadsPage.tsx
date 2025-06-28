@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -24,8 +23,8 @@ const LeadsPage = () => {
 
   const handleReactivateOldCustomers = () => {
     toast({
-      title: "Reactivate Old Customers",
-      description: "AI will analyze your old customers and leads to identify reactivation opportunities."
+      title: "Coming soon...",
+      description: "This feature will be available soon."
     });
   };
 
