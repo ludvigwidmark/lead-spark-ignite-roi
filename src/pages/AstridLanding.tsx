@@ -1,10 +1,12 @@
 
+
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Check, Zap, Brain, RotateCcw, BarChart3, Globe, Link } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import ROICalculator from '@/components/ROICalculator';
 
 const AstridLanding = () => {
@@ -12,6 +14,7 @@ const AstridLanding = () => {
   const [company, setCompany] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleTryAstrid = async () => {
     if (!phoneNumber.trim()) {
@@ -60,6 +63,10 @@ const AstridLanding = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleNavigateToAuth = () => {
+    navigate('/');
   };
 
   // Geometric Logo Component - Updated to match the uploaded design
@@ -117,10 +124,10 @@ const AstridLanding = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button size="lg" className="text-lg px-8 py-4 font-work-sans">
+              <Button size="lg" className="text-lg px-8 py-4 font-work-sans" onClick={handleNavigateToAuth}>
                 Start Your 30-Min Setup
               </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-4 font-work-sans">
+              <Button variant="outline" size="lg" className="text-lg px-8 py-4 font-work-sans" onClick={handleNavigateToAuth}>
                 Try Astrid Now →
               </Button>
             </div>
@@ -343,7 +350,7 @@ const AstridLanding = () => {
             Join innovative companies already experiencing the power of instant lead response
           </p>
           
-          <Button size="lg" className="text-lg px-8 py-4 mb-4 font-work-sans">
+          <Button size="lg" className="text-lg px-8 py-4 mb-4 font-work-sans" onClick={handleNavigateToAuth}>
             Start Your Free Trial
           </Button>
           
@@ -357,3 +364,4 @@ const AstridLanding = () => {
 };
 
 export default AstridLanding;
+
