@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
@@ -5,10 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Calculator, Settings2 } from "lucide-react";
+import { Magnet, Settings2, HelpCircle } from "lucide-react";
 
 const ConfigurationPage = () => {
-  const [roiCalculatorEnabled, setRoiCalculatorEnabled] = useState(false);
+  const [leadMagnetEnabled, setLeadMagnetEnabled] = useState(false);
   const [workEmail, setWorkEmail] = useState("");
   const [pricingHints, setPricingHints] = useState("");
   const [customerOutcomes, setCustomerOutcomes] = useState("");
@@ -17,9 +18,9 @@ const ConfigurationPage = () => {
   const [currency, setCurrency] = useState("");
   const [roiTimeframe, setRoiTimeframe] = useState("");
 
-  const handleGenerateCalculator = () => {
+  const handleGenerateLeadMagnet = () => {
     // This will be connected to backend later
-    console.log("Generating ROI Calculator with:", {
+    console.log("Generating Lead Magnet with:", {
       workEmail,
       pricingHints,
       customerOutcomes,
@@ -28,6 +29,11 @@ const ConfigurationPage = () => {
       currency,
       roiTimeframe
     });
+  };
+
+  const handleSetupHelp = () => {
+    // This will be connected to backend later
+    console.log("Requesting setup help for Lead Magnet");
   };
 
   return (
@@ -39,42 +45,47 @@ const ConfigurationPage = () => {
         </div>
       </div>
 
-      {/* ROI Calculator Feature Toggle */}
+      {/* Lead Magnet Feature Toggle */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <Calculator className="w-6 h-6 text-primary" />
+              <Magnet className="w-6 h-6 text-primary" />
               <div>
-                <CardTitle>AI Built ROI Calculator</CardTitle>
+                <CardTitle>Lead Magnet</CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  Generate a custom ROI calculator for your offer in minutes
+                  Create high-value lead magnets that convert prospects into engaged customers
                 </p>
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <Label htmlFor="roi-calculator-toggle" className="text-sm">
+              <Label htmlFor="lead-magnet-toggle" className="text-sm">
                 Enable
               </Label>
               <Switch
-                id="roi-calculator-toggle"
-                checked={roiCalculatorEnabled}
-                onCheckedChange={setRoiCalculatorEnabled}
+                id="lead-magnet-toggle"
+                checked={leadMagnetEnabled}
+                onCheckedChange={setLeadMagnetEnabled}
               />
             </div>
           </div>
         </CardHeader>
 
-        {roiCalculatorEnabled && (
+        {leadMagnetEnabled && (
           <CardContent className="pt-0">
             <div className="bg-muted/50 rounded-lg p-6">
               <div className="text-center mb-6">
                 <h3 className="text-xl font-semibold mb-2">
-                  Get an AI Built ROI Calculator for your offer in minutes
+                  Get a custom lead magnet for your offer in minutes
                 </h3>
-                <p className="text-muted-foreground text-sm max-w-2xl mx-auto">
-                  Drop your company email. Our custom software AI scans your site, captures pricing, proof, branding and everything that matters. A conversion ready calculator lands in your inbox before your coffee cools.
+                <p className="text-muted-foreground text-sm max-w-2xl mx-auto mb-4">
+                  We'll create value-driven content that attracts your ideal prospects. Our AI analyzes your business, builds compelling lead magnets, and automates the entire process for both new leads and existing customers.
                 </p>
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                  <p className="text-sm text-blue-800 dark:text-blue-200">
+                    <strong>What we'll set up:</strong> High-converting lead magnets, automated nurture sequences, value-first content that builds trust, and seamless integration with your existing customer journey. Perfect for capturing quality leads and re-engaging existing customers with fresh value.
+                  </p>
+                </div>
               </div>
 
               <div className="space-y-6">
@@ -186,15 +197,23 @@ const ConfigurationPage = () => {
                   </div>
                 </div>
 
-                {/* Generate Button */}
-                <div className="pt-4">
+                {/* Action Buttons */}
+                <div className="pt-4 flex flex-col sm:flex-row gap-3">
                   <Button 
-                    onClick={handleGenerateCalculator}
-                    className="w-full sm:w-auto px-8 py-3"
+                    onClick={handleGenerateLeadMagnet}
+                    className="flex-1 sm:flex-none px-8 py-3"
                     disabled={!workEmail.trim()}
                   >
-                    <Calculator className="w-4 h-4 mr-2" />
-                    Generate ROI Calculator
+                    <Magnet className="w-4 h-4 mr-2" />
+                    Generate Lead Magnet
+                  </Button>
+                  <Button 
+                    onClick={handleSetupHelp}
+                    variant="outline"
+                    className="flex-1 sm:flex-none px-6 py-3"
+                  >
+                    <HelpCircle className="w-4 h-4 mr-2" />
+                    Get help with setup
                   </Button>
                 </div>
               </div>
