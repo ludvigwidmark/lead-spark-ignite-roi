@@ -5,8 +5,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import LeadsPage from "@/components/LeadsPage";
 import VoiceOutreach from "@/components/VoiceOutreach";
+import ConfigurationPage from "@/components/ConfigurationPage";
 import ClyoLogo from "@/components/ClyoLogo";
-import { Users, Bell, Moon, Sun, LogOut, Menu } from "lucide-react";
+import { Users, Bell, Settings, Moon, Sun, LogOut, Menu } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -87,7 +88,7 @@ const Index = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
           <div className="flex justify-center">
-            <TabsList className="grid grid-cols-2 bg-white dark:bg-black w-full sm:w-fit border border-titanium-300 dark:border-titanium-600">
+            <TabsList className="grid grid-cols-3 bg-white dark:bg-black w-full sm:w-fit border border-titanium-300 dark:border-titanium-600">
               <TabsTrigger 
                 value="leads" 
                 className="flex items-center justify-center space-x-1 sm:space-x-2 data-[state=active]:bg-titanium-100 dark:data-[state=active]:bg-titanium-800 px-3 sm:px-6 py-2 sm:py-3 font-medium text-black dark:text-white hover:bg-titanium-50 dark:hover:bg-titanium-900 text-sm sm:text-base"
@@ -102,6 +103,13 @@ const Index = () => {
                 <Bell className="w-3 h-3 sm:w-4 sm:h-4" />
                 <span>Outreach</span>
               </TabsTrigger>
+              <TabsTrigger 
+                value="configuration" 
+                className="flex items-center justify-center space-x-1 sm:space-x-2 data-[state=active]:bg-titanium-100 dark:data-[state=active]:bg-titanium-800 px-3 sm:px-6 py-2 sm:py-3 font-medium text-black dark:text-white hover:bg-titanium-50 dark:hover:bg-titanium-900 text-sm sm:text-base"
+              >
+                <Settings className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span>Configuration</span>
+              </TabsTrigger>
             </TabsList>
           </div>
 
@@ -111,6 +119,10 @@ const Index = () => {
 
           <TabsContent value="outreach" className="mt-4 sm:mt-6">
             <VoiceOutreach />
+          </TabsContent>
+
+          <TabsContent value="configuration" className="mt-4 sm:mt-6">
+            <ConfigurationPage />
           </TabsContent>
         </Tabs>
       </main>
