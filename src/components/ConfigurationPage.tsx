@@ -6,10 +6,12 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Magnet, Settings2, HelpCircle } from "lucide-react";
+import { Magnet, Settings2, HelpCircle, Users, BarChart3 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const ConfigurationPage = () => {
   const [leadMagnetEnabled, setLeadMagnetEnabled] = useState(false);
+  const [retentionEnabled, setRetentionEnabled] = useState(false);
   const [workEmail, setWorkEmail] = useState("");
   const [pricingHints, setPricingHints] = useState("");
   const [customerOutcomes, setCustomerOutcomes] = useState("");
@@ -17,6 +19,7 @@ const ConfigurationPage = () => {
   const [averageDealSize, setAverageDealSize] = useState("");
   const [currency, setCurrency] = useState("");
   const [roiTimeframe, setRoiTimeframe] = useState("");
+  const { toast } = useToast();
 
   const handleGenerateLeadMagnet = () => {
     // This will be connected to backend later
@@ -34,6 +37,13 @@ const ConfigurationPage = () => {
   const handleSetupHelp = () => {
     // This will be connected to backend later
     console.log("Requesting setup help for Lead Magnet");
+  };
+
+  const handleRetentionSetupHelp = () => {
+    toast({
+      title: "Coming Soon",
+      description: "PostHog integration and retention setup help is coming soon! Stay tuned for updates."
+    });
   };
 
   return (
@@ -214,6 +224,76 @@ const ConfigurationPage = () => {
                   >
                     <HelpCircle className="w-4 h-4 mr-2" />
                     Get help with setup
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        )}
+      </Card>
+
+      {/* Retention Feature Toggle */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Users className="w-6 h-6 text-primary" />
+              <div>
+                <CardTitle>Retention</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Keep customers engaged longer with data-driven insights and automated retention strategies
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="retention-toggle" className="text-sm">
+                Enable
+              </Label>
+              <Switch
+                id="retention-toggle"
+                checked={retentionEnabled}
+                onCheckedChange={setRetentionEnabled}
+              />
+            </div>
+          </div>
+        </CardHeader>
+
+        {retentionEnabled && (
+          <CardContent className="pt-0">
+            <div className="bg-muted/50 rounded-lg p-6">
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-semibold mb-2">
+                  Boost customer retention with AI-powered insights
+                </h3>
+                <p className="text-muted-foreground text-sm max-w-2xl mx-auto mb-4">
+                  Integrate with PostHog to track user behavior, identify at-risk customers, and automatically trigger retention campaigns to keep your customers engaged longer.
+                </p>
+                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
+                  <p className="text-sm text-green-800 dark:text-green-200">
+                    <strong>What we'll set up:</strong> PostHog integration for behavioral tracking, automated retention campaigns, churn prediction models, personalized re-engagement sequences, and customer health scoring to maximize lifetime value.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="text-center">
+                  <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                  <h4 className="text-lg font-medium mb-2">Coming Soon</h4>
+                  <p className="text-sm text-muted-foreground mb-6">
+                    PostHog integration and retention features are currently in development. 
+                    Get notified when it's ready and receive help setting it up.
+                  </p>
+                </div>
+
+                {/* Action Button */}
+                <div className="pt-4 flex justify-center">
+                  <Button 
+                    onClick={handleRetentionSetupHelp}
+                    variant="outline"
+                    className="px-8 py-3"
+                  >
+                    <HelpCircle className="w-4 h-4 mr-2" />
+                    Get help with PostHog setup
                   </Button>
                 </div>
               </div>
