@@ -87,8 +87,8 @@ const Index = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-          <div className="flex justify-center">
-            <TabsList className="grid grid-cols-3 bg-white dark:bg-black w-full sm:w-fit border border-titanium-300 dark:border-titanium-600">
+          <div className="flex justify-center w-full">
+            <TabsList className="grid grid-cols-3 bg-white dark:bg-black border border-titanium-300 dark:border-titanium-600 mx-auto">
               <TabsTrigger 
                 value="leads" 
                 className="flex items-center justify-center space-x-1 sm:space-x-2 data-[state=active]:bg-titanium-100 dark:data-[state=active]:bg-titanium-800 px-3 sm:px-6 py-2 sm:py-3 font-medium text-black dark:text-white hover:bg-titanium-50 dark:hover:bg-titanium-900 text-sm sm:text-base"
