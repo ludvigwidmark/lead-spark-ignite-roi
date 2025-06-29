@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
@@ -6,12 +5,13 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Magnet, Settings2, HelpCircle, Users, BarChart3 } from "lucide-react";
+import { Magnet, Settings2, HelpCircle, Users, BarChart3, Handshake, TrendingUp, Calculator, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const ConfigurationPage = () => {
   const [leadMagnetEnabled, setLeadMagnetEnabled] = useState(false);
   const [retentionEnabled, setRetentionEnabled] = useState(false);
+  const [partnersEnabled, setPartnersEnabled] = useState(false);
   const [workEmail, setWorkEmail] = useState("");
   const [pricingHints, setPricingHints] = useState("");
   const [customerOutcomes, setCustomerOutcomes] = useState("");
@@ -43,6 +43,27 @@ const ConfigurationPage = () => {
     toast({
       title: "Coming Soon",
       description: "PostHog integration and retention setup help is coming soon! Stay tuned for updates."
+    });
+  };
+
+  const handleRunBulkAnalysis = () => {
+    toast({
+      title: "Coming Soon",
+      description: "AI Impact Analysis for all customers/leads will be available soon! This feature will analyze your entire customer base."
+    });
+  };
+
+  const handleViewReferralEarnings = () => {
+    toast({
+      title: "Coming Soon",
+      description: "Referral earnings dashboard is in development! You'll be able to track all earnings from ROI calculator referrals."
+    });
+  };
+
+  const handleExportAnalytics = () => {
+    toast({
+      title: "Coming Soon",
+      description: "Analytics export functionality is coming soon! Export all your impact analysis and referral data."
     });
   };
 
@@ -295,6 +316,118 @@ const ConfigurationPage = () => {
                     <HelpCircle className="w-4 h-4 mr-2" />
                     Get help with PostHog setup
                   </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        )}
+      </Card>
+
+      {/* Partners Feature Toggle */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Handshake className="w-6 h-6 text-primary" />
+              <div>
+                <CardTitle>Partners</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Run AI Impact Analysis on customers/leads and track referral earnings from ROI calculator
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="partners-toggle" className="text-sm">
+                Enable
+              </Label>
+              <Switch
+                id="partners-toggle"
+                checked={partnersEnabled}
+                onCheckedChange={setPartnersEnabled}
+              />
+            </div>
+          </div>
+        </CardHeader>
+
+        {partnersEnabled && (
+          <CardContent className="pt-0">
+            <div className="bg-muted/50 rounded-lg p-6">
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-semibold mb-2">
+                  AI Impact Analysis & Referral Tracking
+                </h3>
+                <p className="text-muted-foreground text-sm max-w-2xl mx-auto mb-4">
+                  Analyze the business impact for all your customers and leads while tracking earnings from ROI calculator referrals. Get comprehensive insights into your partner ecosystem.
+                </p>
+                <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 mb-6">
+                  <p className="text-sm text-purple-800 dark:text-purple-200">
+                    <strong>What you'll get:</strong> Bulk AI Impact Analysis for all customers/leads, referral earnings tracking, ROI calculator usage analytics, partner performance metrics, and automated impact reports to maximize your partnership revenue.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                {/* Metrics Dashboard Preview */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <TrendingUp className="w-5 h-5 text-green-500" />
+                      <h4 className="font-medium">Total Referral Earnings</h4>
+                    </div>
+                    <p className="text-2xl font-bold text-green-600">$12,450</p>
+                    <p className="text-xs text-muted-foreground">+23% from last month</p>
+                  </div>
+
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Calculator className="w-5 h-5 text-blue-500" />
+                      <h4 className="font-medium">Customers Analyzed</h4>
+                    </div>
+                    <p className="text-2xl font-bold text-blue-600">247</p>
+                    <p className="text-xs text-muted-foreground">AI Impact Analysis sent</p>
+                  </div>
+
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <FileText className="w-5 h-5 text-orange-500" />
+                      <h4 className="font-medium">ROI Calculators Shared</h4>
+                    </div>
+                    <p className="text-2xl font-bold text-orange-600">89</p>
+                    <p className="text-xs text-muted-foreground">Leading to referrals</p>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="pt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <Button 
+                    onClick={handleRunBulkAnalysis}
+                    className="px-6 py-3"
+                  >
+                    <BarChart3 className="w-4 h-4 mr-2" />
+                    Run Bulk Analysis
+                  </Button>
+                  <Button 
+                    onClick={handleViewReferralEarnings}
+                    variant="outline"
+                    className="px-6 py-3"
+                  >
+                    <TrendingUp className="w-4 h-4 mr-2" />
+                    View Earnings
+                  </Button>
+                  <Button 
+                    onClick={handleExportAnalytics}
+                    variant="outline"
+                    className="px-6 py-3"
+                  >
+                    <FileText className="w-4 h-4 mr-2" />
+                    Export Analytics
+                  </Button>
+                </div>
+
+                <div className="text-center pt-4">
+                  <p className="text-xs text-muted-foreground">
+                    Note: These are preview metrics. Actual data will be available once backend integration is complete.
+                  </p>
                 </div>
               </div>
             </div>
