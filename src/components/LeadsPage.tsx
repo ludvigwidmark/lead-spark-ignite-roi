@@ -5,13 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plus, Eye, Trash2, AlertTriangle, MoreVertical, Zap } from "lucide-react";
+import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plus, Eye, Trash2, AlertTriangle, MoreVertical, Zap, Search } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import LeadDetailsModal from "./LeadDetailsModal";
 import AddLeadsModal from "./AddLeadsModal";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
 const LeadsPage = () => {
   const {
     toast
@@ -257,6 +258,13 @@ const LeadsPage = () => {
     }
     return null;
   };
+  const handleGetMoreLeads = () => {
+    toast({
+      title: "Coming Soon",
+      description: "AI-powered lead generation is coming soon! Stay tuned for updates."
+    });
+  };
+
   if (loading) {
     return <div className="space-y-6">
         <div className="flex items-center justify-center p-8">
@@ -387,6 +395,10 @@ const LeadsPage = () => {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>}
+                <Button onClick={handleGetMoreLeads} variant="outline" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
+                  <Search className="w-4 h-4 mr-2" />
+                  Get More Leads
+                </Button>
                 <Button onClick={() => setIsAddLeadsModalOpen(true)} className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Leads
@@ -399,11 +411,17 @@ const LeadsPage = () => {
           {leads.length === 0 ? <div className="text-center py-12">
               <Users className="w-16 h-16 text-titanium-400 dark:text-titanium-600 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-black dark:text-white mb-2">No leads yet</h3>
-              <p className="text-titanium-600 dark:text-titanium-400 mb-6">Get started by adding your first lead.</p>
-              <Button onClick={() => setIsAddLeadsModalOpen(true)} className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200">
-                <Plus className="w-4 h-4 mr-2" />
-                Add Leads
-              </Button>
+              <p className="text-titanium-600 dark:text-titanium-400 mb-6">Get started by adding your first lead or let AI find leads for you.</p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button onClick={handleGetMoreLeads} variant="outline" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
+                  <Search className="w-4 h-4 mr-2" />
+                  Get More Leads
+                </Button>
+                <Button onClick={() => setIsAddLeadsModalOpen(true)} className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Leads
+                </Button>
+              </div>
             </div> : <div className="space-y-3">
               {leads.map(lead => <div key={lead.id} className="bg-titanium-50 dark:bg-titanium-900 rounded-xl p-4 border border-titanium-200 dark:border-titanium-700 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.01]">
                   <div className="flex items-center justify-between mb-2">
@@ -460,4 +478,5 @@ const LeadsPage = () => {
       <AddLeadsModal isOpen={isAddLeadsModalOpen} onClose={() => setIsAddLeadsModalOpen(false)} onLeadsAdded={fetchLeads} />
     </div>;
 };
+
 export default LeadsPage;
