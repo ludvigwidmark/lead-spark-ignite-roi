@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Check, Zap, Brain, RotateCcw, BarChart3, Globe, Link } from 'lucide-react';
+import { Check, Zap, Brain, RotateCcw, BarChart3, Globe, Link, LogIn } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ROICalculator from '@/components/ROICalculator';
 
@@ -103,11 +102,28 @@ const AstridLanding = () => {
     <div className="min-h-screen bg-background font-work-sans relative">
       <AnimatedShapes />
       
+      {/* Header with Login Button */}
+      <header className="relative z-10 flex justify-between items-center p-4 sm:p-6">
+        <div className="flex items-center space-x-2">
+          <GeometricLogo className="w-8 h-8 text-foreground" />
+          <span className="text-lg font-semibold text-foreground">Astrid</span>
+        </div>
+        <Button 
+          variant="outline" 
+          size={window.innerWidth < 640 ? "sm" : "default"} 
+          onClick={handleNavigateToAuth}
+          className="flex items-center space-x-2"
+        >
+          <LogIn className="w-4 h-4" />
+          <span>Login</span>
+        </Button>
+      </header>
+      
       {/* Hero Section */}
       <div className="relative bg-gradient-to-b from-background to-muted/50">
-        <div className="container mx-auto px-4 py-12 sm:py-20">
-          {/* Logo Header */}
-          <div className="text-center mb-8 sm:mb-12">
+        <div className="container mx-auto px-4 py-8 sm:py-16">
+          {/* Logo Header - Updated spacing since we now have header */}
+          <div className="text-center mb-6 sm:mb-8">
             <GeometricLogo className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-foreground" />
             <h2 className="text-xl sm:text-2xl font-semibold text-foreground">Astrid</h2>
           </div>
