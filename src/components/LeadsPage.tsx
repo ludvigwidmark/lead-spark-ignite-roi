@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plus, Eye, Trash2, AlertTriangle, MoreVertical, Zap, Search } from "lucide-react";
+import { Users, TrendingUp, Phone, Mail, Star, MessageSquare, Plus, Eye, Trash2, AlertTriangle, MoreVertical, Zap, Wand } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import LeadDetailsModal from "./LeadDetailsModal";
@@ -396,7 +396,7 @@ const LeadsPage = () => {
                     </DropdownMenu>
                   </div>}
                 <Button onClick={handleGetMoreLeads} variant="outline" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
-                  <Search className="w-4 h-4 mr-2" />
+                  <Wand className="w-4 h-4 mr-2" />
                   Get More Leads
                 </Button>
                 <Button onClick={() => setIsAddLeadsModalOpen(true)} className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200">
@@ -414,7 +414,7 @@ const LeadsPage = () => {
               <p className="text-titanium-600 dark:text-titanium-400 mb-6">Get started by adding your first lead or let AI find leads for you.</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Button onClick={handleGetMoreLeads} variant="outline" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
-                  <Search className="w-4 h-4 mr-2" />
+                  <Wand className="w-4 h-4 mr-2" />
                   Get More Leads
                 </Button>
                 <Button onClick={() => setIsAddLeadsModalOpen(true)} className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200">
