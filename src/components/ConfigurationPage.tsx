@@ -107,16 +107,11 @@ const ConfigurationPage = () => {
             <div className="bg-muted/50 rounded-lg p-6">
               <div className="text-center mb-6">
                 <h3 className="text-xl font-semibold mb-2">
-                  Get a custom lead magnet for your offer in minutes
+                  Create your custom lead magnet
                 </h3>
                 <p className="text-muted-foreground text-sm max-w-2xl mx-auto mb-4">
-                  We'll create value-driven content that attracts your ideal prospects. Our AI analyzes your business, builds compelling lead magnets, and automates the entire process for both new leads and existing customers.
+                  AI-powered lead magnets that attract your ideal prospects and build trust with existing customers.
                 </p>
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
-                  <p className="text-sm text-blue-800 dark:text-blue-200">
-                    <strong>What we'll set up:</strong> High-converting lead magnets, automated nurture sequences, value-first content that builds trust, and seamless integration with your existing customer journey. Perfect for capturing quality leads and re-engaging existing customers with fresh value.
-                  </p>
-                </div>
               </div>
 
               <div className="space-y-6">
@@ -144,7 +139,7 @@ const ConfigurationPage = () => {
                     />
                     <div className="flex-1">
                       <Label htmlFor="additional-info-toggle" className="text-sm font-medium">
-                        If pricing hints, customer outcomes, case studies, average deal size, currency, or ROI timeframe aren't available on the website linked to your company email, please add them here for the best results
+                        Add additional business details for better results
                       </Label>
                     </div>
                   </div>
@@ -160,7 +155,7 @@ const ConfigurationPage = () => {
                         placeholder="Describe your pricing structure..."
                         value={pricingHints}
                         onChange={(e) => setPricingHints(e.target.value)}
-                        className="min-h-[100px]"
+                        className="min-h-[80px]"
                       />
                     </div>
 
@@ -173,7 +168,7 @@ const ConfigurationPage = () => {
                         placeholder="What results do customers achieve?"
                         value={customerOutcomes}
                         onChange={(e) => setCustomerOutcomes(e.target.value)}
-                        className="min-h-[100px]"
+                        className="min-h-[80px]"
                       />
                     </div>
 
@@ -183,10 +178,10 @@ const ConfigurationPage = () => {
                       </Label>
                       <Textarea
                         id="case-studies"
-                        placeholder="Share success stories or case studies..."
+                        placeholder="Share success stories..."
                         value={caseStudies}
                         onChange={(e) => setCaseStudies(e.target.value)}
-                        className="min-h-[100px]"
+                        className="min-h-[80px]"
                       />
                     </div>
 
@@ -244,7 +239,7 @@ const ConfigurationPage = () => {
                     className="flex-1 sm:flex-none px-6 py-3"
                   >
                     <HelpCircle className="w-4 h-4 mr-2" />
-                    Get help with setup
+                    Get Setup Help
                   </Button>
                 </div>
               </div>
@@ -284,16 +279,11 @@ const ConfigurationPage = () => {
             <div className="bg-muted/50 rounded-lg p-6">
               <div className="text-center mb-6">
                 <h3 className="text-xl font-semibold mb-2">
-                  Boost customer retention with AI-powered insights
+                  AI-powered retention insights
                 </h3>
                 <p className="text-muted-foreground text-sm max-w-2xl mx-auto mb-4">
-                  Integrate with PostHog to track user behavior, identify at-risk customers, and automatically trigger retention campaigns to keep your customers engaged longer.
+                  PostHog integration for behavioral tracking and automated retention campaigns.
                 </p>
-                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
-                  <p className="text-sm text-green-800 dark:text-green-200">
-                    <strong>What we'll set up:</strong> PostHog integration for behavioral tracking, automated retention campaigns, churn prediction models, personalized re-engagement sequences, and customer health scoring to maximize lifetime value.
-                  </p>
-                </div>
               </div>
 
               <div className="space-y-6">
@@ -301,8 +291,7 @@ const ConfigurationPage = () => {
                   <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
                   <h4 className="text-lg font-medium mb-2">Coming Soon</h4>
                   <p className="text-sm text-muted-foreground mb-6">
-                    PostHog integration and retention features are currently in development. 
-                    Get notified when it's ready and receive help setting it up.
+                    PostHog integration and retention features are in development.
                   </p>
                 </div>
 
@@ -314,7 +303,7 @@ const ConfigurationPage = () => {
                     className="px-8 py-3"
                   >
                     <HelpCircle className="w-4 h-4 mr-2" />
-                    Get help with PostHog setup
+                    Get Setup Help
                   </Button>
                 </div>
               </div>
@@ -354,16 +343,11 @@ const ConfigurationPage = () => {
             <div className="bg-muted/50 rounded-lg p-6">
               <div className="text-center mb-6">
                 <h3 className="text-xl font-semibold mb-2">
-                  AI Impact Analysis & Referral Tracking
+                  Impact Analysis & Referral Tracking
                 </h3>
                 <p className="text-muted-foreground text-sm max-w-2xl mx-auto mb-4">
-                  Analyze the business impact for all your customers and leads while tracking earnings from ROI calculator referrals. Get comprehensive insights into your partner ecosystem.
+                  Analyze business impact for customers and track ROI calculator referral earnings.
                 </p>
-                <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 mb-6">
-                  <p className="text-sm text-purple-800 dark:text-purple-200">
-                    <strong>What you'll get:</strong> Bulk AI Impact Analysis for all customers/leads, referral earnings tracking, ROI calculator usage analytics, partner performance metrics, and automated impact reports to maximize your partnership revenue.
-                  </p>
-                </div>
               </div>
 
               <div className="space-y-6">
@@ -372,7 +356,7 @@ const ConfigurationPage = () => {
                   <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border">
                     <div className="flex items-center space-x-2 mb-2">
                       <TrendingUp className="w-5 h-5 text-green-500" />
-                      <h4 className="font-medium">Total Referral Earnings</h4>
+                      <h4 className="font-medium">Referral Earnings</h4>
                     </div>
                     <p className="text-2xl font-bold text-green-600">$12,450</p>
                     <p className="text-xs text-muted-foreground">+23% from last month</p>
@@ -390,10 +374,10 @@ const ConfigurationPage = () => {
                   <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border">
                     <div className="flex items-center space-x-2 mb-2">
                       <FileText className="w-5 h-5 text-orange-500" />
-                      <h4 className="font-medium">ROI Calculators Shared</h4>
+                      <h4 className="font-medium">ROI Calculators</h4>
                     </div>
                     <p className="text-2xl font-bold text-orange-600">89</p>
-                    <p className="text-xs text-muted-foreground">Leading to referrals</p>
+                    <p className="text-xs text-muted-foreground">Shared for referrals</p>
                   </div>
                 </div>
 
@@ -404,7 +388,7 @@ const ConfigurationPage = () => {
                     className="px-6 py-3"
                   >
                     <BarChart3 className="w-4 h-4 mr-2" />
-                    Run Bulk Analysis
+                    Run Analysis
                   </Button>
                   <Button 
                     onClick={handleViewReferralEarnings}
@@ -420,13 +404,13 @@ const ConfigurationPage = () => {
                     className="px-6 py-3"
                   >
                     <FileText className="w-4 h-4 mr-2" />
-                    Export Analytics
+                    Export Data
                   </Button>
                 </div>
 
                 <div className="text-center pt-4">
                   <p className="text-xs text-muted-foreground">
-                    Note: These are preview metrics. Actual data will be available once backend integration is complete.
+                    Preview metrics - actual data available after backend integration
                   </p>
                 </div>
               </div>
