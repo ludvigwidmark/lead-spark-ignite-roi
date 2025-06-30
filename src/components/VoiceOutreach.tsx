@@ -14,7 +14,7 @@ const VoiceOutreach = () => {
   const handleGetSetupHelp = () => {
     toast({
       title: "Setup Help Request",
-      description: "We'll help you set up your voice outreach campaigns. Our team will reach out to you soon!",
+      description: "We'll help you set up your follow up campaigns. Our team will reach out to you soon!",
     });
   };
 
@@ -43,7 +43,7 @@ const VoiceOutreach = () => {
                   <div className="flex-1 min-w-0">
                     <h3 className={`font-semibold ${isMobile ? 'text-base' : 'text-lg'} text-black dark:text-white`}>Get Setup Help</h3>
                     <p className={`${isMobile ? 'text-xs' : 'text-sm'} text-titanium-600 dark:text-titanium-400`}>
-                      We'll help you set up your voice outreach campaigns manually
+                      We'll help you set up your follow up campaigns manually
                     </p>
                   </div>
                 </div>
