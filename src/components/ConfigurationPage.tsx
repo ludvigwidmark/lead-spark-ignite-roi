@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Magnet, Settings2, HelpCircle, Users, BarChart3, Handshake, TrendingUp, Calculator, FileText } from "lucide-react";
+import { Magnet, Settings2, HelpCircle, Users, BarChart3, Handshake, TrendingUp, Calculator, FileText, Wand, Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const ConfigurationPage = () => {
@@ -64,6 +64,13 @@ const ConfigurationPage = () => {
     toast({
       title: "Coming Soon",
       description: "Analytics export functionality is coming soon! Export all your impact analysis and referral data."
+    });
+  };
+
+  const handleAILeadsRefill = () => {
+    toast({
+      title: "Coming Soon",
+      description: "AI Leads Refill is in development! Soon you'll be able to upload your ICP information and our AI will automatically find and refill your leads."
     });
   };
 
@@ -412,6 +419,58 @@ const ConfigurationPage = () => {
                   <p className="text-xs text-muted-foreground">
                     Preview metrics - actual data available after backend integration
                   </p>
+                </div>
+              </div>
+            </div>
+
+            {/* AI Leads Refill Section */}
+            <div className="bg-muted/50 rounded-lg p-6 mt-6">
+              <div className="text-center mb-6">
+                <div className="flex items-center justify-center space-x-2 mb-4">
+                  <Wand className="w-8 h-8 text-primary" />
+                  <h3 className="text-xl font-semibold">
+                    AI Leads Refill
+                  </h3>
+                </div>
+                <p className="text-muted-foreground text-sm max-w-2xl mx-auto mb-4">
+                  Upload your Ideal Customer Profile (ICP) information and let our AI automatically find and refill your leads database with qualified prospects.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <div className="text-center">
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-dashed border-primary/30">
+                    <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <h4 className="text-lg font-medium mb-2">Coming Soon</h4>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Upload your ICP documents, competitor lists, or customer data and our AI will automatically find similar prospects to refill your leads pipeline.
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 text-xs text-muted-foreground">
+                      <div className="flex items-center justify-center space-x-2">
+                        <FileText className="w-4 h-4" />
+                        <span>ICP Documents</span>
+                      </div>
+                      <div className="flex items-center justify-center space-x-2">
+                        <Users className="w-4 h-4" />
+                        <span>Customer Lists</span>
+                      </div>
+                      <div className="flex items-center justify-center space-x-2">
+                        <BarChart3 className="w-4 h-4" />
+                        <span>Market Data</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Button */}
+                <div className="pt-4 flex justify-center">
+                  <Button 
+                    onClick={handleAILeadsRefill}
+                    className="px-8 py-3"
+                  >
+                    <Wand className="w-4 h-4 mr-2" />
+                    Start AI Leads Refill
+                  </Button>
                 </div>
               </div>
             </div>
