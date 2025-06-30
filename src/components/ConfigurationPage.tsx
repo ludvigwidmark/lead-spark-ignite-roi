@@ -271,7 +271,7 @@ const ConfigurationPage = () => {
             <div className="flex items-center space-x-3">
               <Users className="w-6 h-6 text-primary" />
               <div>
-                <CardTitle>Retention</CardTitle>
+                <CardTitle>Retention & Reactivation</CardTitle>
                 <p className="text-sm text-muted-foreground">
                   Keep customers engaged longer with data-driven insights and automated retention strategies
                 </p>
