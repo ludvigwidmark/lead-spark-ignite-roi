@@ -12,7 +12,6 @@ import LeadDetailsModal from "./LeadDetailsModal";
 import AddLeadsModal from "./AddLeadsModal";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-
 const LeadsPage = () => {
   const {
     toast
@@ -264,7 +263,6 @@ const LeadsPage = () => {
       description: "AI-powered lead generation is coming soon! Stay tuned for updates."
     });
   };
-
   if (loading) {
     return <div className="space-y-6">
         <div className="flex items-center justify-center p-8">
@@ -395,10 +393,7 @@ const LeadsPage = () => {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>}
-                <Button onClick={handleGetMoreLeads} variant="outline" className="border-titanium-300 dark:border-titanium-600 text-black dark:text-white hover:bg-titanium-100 dark:hover:bg-titanium-800">
-                  <Wand className="w-4 h-4 mr-2" />
-                  Get More Leads
-                </Button>
+                
                 <Button onClick={() => setIsAddLeadsModalOpen(true)} className="bg-black dark:bg-white text-white dark:text-black hover:bg-titanium-800 dark:hover:bg-titanium-200">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Leads
@@ -478,5 +473,4 @@ const LeadsPage = () => {
       <AddLeadsModal isOpen={isAddLeadsModalOpen} onClose={() => setIsAddLeadsModalOpen(false)} onLeadsAdded={fetchLeads} />
     </div>;
 };
-
 export default LeadsPage;
