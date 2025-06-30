@@ -12,6 +12,7 @@ const ConfigurationPage = () => {
   const [leadMagnetEnabled, setLeadMagnetEnabled] = useState(false);
   const [retentionEnabled, setRetentionEnabled] = useState(false);
   const [partnersEnabled, setPartnersEnabled] = useState(false);
+  const [aiLeadsRefillEnabled, setAiLeadsRefillEnabled] = useState(false);
   const [workEmail, setWorkEmail] = useState("");
   const [pricingHints, setPricingHints] = useState("");
   const [customerOutcomes, setCustomerOutcomes] = useState("");
@@ -422,16 +423,43 @@ const ConfigurationPage = () => {
                 </div>
               </div>
             </div>
+          </CardContent>
+        )}
+      </Card>
 
-            {/* AI Leads Refill Section */}
-            <div className="bg-muted/50 rounded-lg p-6 mt-6">
+      {/* AI Leads Refill Feature Toggle */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Wand className="w-6 h-6 text-primary" />
+              <div>
+                <CardTitle>AI Leads Refill</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Upload your ICP information and let AI automatically find and refill your leads database
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="ai-leads-refill-toggle" className="text-sm">
+                Enable
+              </Label>
+              <Switch
+                id="ai-leads-refill-toggle"
+                checked={aiLeadsRefillEnabled}
+                onCheckedChange={setAiLeadsRefillEnabled}
+              />
+            </div>
+          </div>
+        </CardHeader>
+
+        {aiLeadsRefillEnabled && (
+          <CardContent className="pt-0">
+            <div className="bg-muted/50 rounded-lg p-6">
               <div className="text-center mb-6">
-                <div className="flex items-center justify-center space-x-2 mb-4">
-                  <Wand className="w-8 h-8 text-primary" />
-                  <h3 className="text-xl font-semibold">
-                    AI Leads Refill
-                  </h3>
-                </div>
+                <h3 className="text-xl font-semibold mb-2">
+                  AI-Powered Lead Discovery
+                </h3>
                 <p className="text-muted-foreground text-sm max-w-2xl mx-auto mb-4">
                   Upload your Ideal Customer Profile (ICP) information and let our AI automatically find and refill your leads database with qualified prospects.
                 </p>
