@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Magnet, Settings2, HelpCircle, Users, BarChart3, Handshake, TrendingUp, Calculator, FileText, Wand, Upload } from "lucide-react";
+import { Magnet, Settings2, HelpCircle, Users, BarChart3, Handshake, TrendingUp, Calculator, FileText, Wand, Upload, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const ConfigurationPage = () => {
@@ -13,6 +13,7 @@ const ConfigurationPage = () => {
   const [retentionEnabled, setRetentionEnabled] = useState(false);
   const [partnersEnabled, setPartnersEnabled] = useState(false);
   const [aiLeadsRefillEnabled, setAiLeadsRefillEnabled] = useState(false);
+  const [customerInsightsEnabled, setCustomerInsightsEnabled] = useState(false);
   const [workEmail, setWorkEmail] = useState("");
   const [pricingHints, setPricingHints] = useState("");
   const [customerOutcomes, setCustomerOutcomes] = useState("");
@@ -72,6 +73,13 @@ const ConfigurationPage = () => {
     toast({
       title: "Coming Soon",
       description: "AI Leads Refill is in development! Soon you'll be able to upload your ICP information and our AI will automatically find and refill your leads."
+    });
+  };
+
+  const handleCustomerInsights = () => {
+    toast({
+      title: "Coming Soon",
+      description: "Voice AI agent for customer insights and feedback collection is in development! Soon you'll be able to have automated calls with customers to gather valuable insights."
     });
   };
 
@@ -498,6 +506,85 @@ const ConfigurationPage = () => {
                   >
                     <Wand className="w-4 h-4 mr-2" />
                     Start AI Leads Refill
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        )}
+      </Card>
+
+      {/* Customer Insights Feature Toggle */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Phone className="w-6 h-6 text-primary" />
+              <div>
+                <CardTitle>Customer Insights</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Voice AI agent that calls customers to gather insights, feedback, and understand their needs
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="customer-insights-toggle" className="text-sm">
+                Enable
+              </Label>
+              <Switch
+                id="customer-insights-toggle"
+                checked={customerInsightsEnabled}
+                onCheckedChange={setCustomerInsightsEnabled}
+              />
+            </div>
+          </div>
+        </CardHeader>
+
+        {customerInsightsEnabled && (
+          <CardContent className="pt-0">
+            <div className="bg-muted/50 rounded-lg p-6">
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-semibold mb-2">
+                  AI-Powered Customer Calls
+                </h3>
+                <p className="text-muted-foreground text-sm max-w-2xl mx-auto mb-4">
+                  Deploy voice AI agents to conduct customer interviews, gather feedback, and discover what your customers truly want and need.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                <div className="text-center">
+                  <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-dashed border-primary/30">
+                    <Phone className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <h4 className="text-lg font-medium mb-2">Coming Soon</h4>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Configure AI agents to call your customers and gather valuable insights about their experience, needs, and preferences. Get actionable feedback to improve your product and service.
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 text-xs text-muted-foreground">
+                      <div className="flex items-center justify-center space-x-2">
+                        <Phone className="w-4 h-4" />
+                        <span>Automated Calls</span>
+                      </div>
+                      <div className="flex items-center justify-center space-x-2">
+                        <Users className="w-4 h-4" />
+                        <span>Customer Feedback</span>
+                      </div>
+                      <div className="flex items-center justify-center space-x-2">
+                        <BarChart3 className="w-4 h-4" />
+                        <span>Insight Analysis</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Button */}
+                <div className="pt-4 flex justify-center">
+                  <Button 
+                    onClick={handleCustomerInsights}
+                    className="px-8 py-3"
+                  >
+                    <Phone className="w-4 h-4 mr-2" />
+                    Setup Customer Insights
                   </Button>
                 </div>
               </div>
